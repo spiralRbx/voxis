@@ -1,10 +1,10 @@
-# 🎧 Lista de Efeitos de Áudio - 108 recursos de áudio no checklist
+# Audio Effects Checklist - 108 audio features in the checklist
 
-Resumo atual:
-- `95` efeitos/processadores encadeáveis via `effect_names()`
-- `108` recursos no checklist total, contando clip ops, efeitos, utilitários e análises
+Current summary:
+- `95` chainable effects/processors via `effect_names()`
+- `108` resources in the full checklist, including clip ops, effects, utilities, and analysis helpers
 
-## 🔊 1. Efeitos básicos (obrigatórios)
+## 1. Basic effects (required)
 - [x] Gain (volume)
 - [x] Normalize
 - [x] Fade in
@@ -18,7 +18,7 @@ Resumo atual:
 - [x] Mono ↔ Stereo
 - [x] DC offset removal
 
-Status atual na Voxis:
+Current status in Voxis:
 - `AudioClip.gain()`
 - `AudioClip.normalize()`
 - `AudioClip.fade_in()`
@@ -35,7 +35,7 @@ Status atual na Voxis:
 
 ---
 
-## 🎛️ 2. Dinâmica
+## 2. Dynamics
 - [x] Compressor
 - [x] Limiter
 - [x] Expander
@@ -46,7 +46,7 @@ Status atual na Voxis:
 - [x] Upward compression
 - [x] Downward compression
 
-Status atual na Voxis:
+Current status in Voxis:
 - `compressor()`
 - `limiter()`
 - `expander()`
@@ -55,12 +55,12 @@ Status atual na Voxis:
 - `downward_compression()`
 - `upward_compression()`
 - `transient_shaper()`
-- `multiband_compressor()` ou `AudioClip.multiband_compressor()`
+- `multiband_compressor()` or `AudioClip.multiband_compressor()`
 
 ---
 
-## 🎚️ 3. Equalização / Filtros
-- [x] Equalizer (paramétrico)
+## 3. EQ / Filters
+- [x] Parametric equalizer
 - [x] Graphic EQ
 - [x] Low-pass filter
 - [x] High-pass filter
@@ -72,7 +72,7 @@ Status atual na Voxis:
 - [x] Dynamic EQ
 - [x] Formant filter
 
-Status atual na Voxis:
+Current status in Voxis:
 - `parametric_eq()`
 - `graphic_eq()`
 - `lowpass()`
@@ -87,7 +87,7 @@ Status atual na Voxis:
 
 ---
 
-## 🌊 4. Modulação
+## 4. Modulation
 - [x] Chorus
 - [x] Flanger
 - [x] Phaser
@@ -98,7 +98,7 @@ Status atual na Voxis:
 - [x] Ring modulation
 - [x] Frequency shifter
 
-Status atual na Voxis:
+Current status in Voxis:
 - `chorus()`
 - `flanger()`
 - `phaser()`
@@ -111,7 +111,7 @@ Status atual na Voxis:
 
 ---
 
-## 🏔️ 5. Espaço / Ambiência
+## 5. Space / Ambience
 - [x] Reverb (plate, hall, room)
 - [x] Convolution reverb (IR)
 - [x] Early reflections
@@ -121,7 +121,7 @@ Status atual na Voxis:
 - [x] Multi-tap delay
 - [x] Slapback delay
 
-Status atual na Voxis:
+Current status in Voxis:
 - `delay()`
 - `feedback_delay()`
 - `echo()`
@@ -136,7 +136,7 @@ Status atual na Voxis:
 
 ---
 
-## 🔥 6. Distortion / Saturação
+## 6. Distortion / Saturation
 - [x] Distortion
 - [x] Overdrive
 - [x] Fuzz
@@ -147,7 +147,7 @@ Status atual na Voxis:
 - [x] Soft clipping
 - [x] Hard clipping
 
-Status atual na Voxis:
+Current status in Voxis:
 - `distortion()`
 - `overdrive()`
 - `fuzz()`
@@ -160,18 +160,18 @@ Status atual na Voxis:
 
 ---
 
-## 🎼 7. Pitch / Tempo
+## 7. Pitch / Time
 - [x] Pitch shift  
-  - Obs: muda o tom do áudio sem alterar a duração (tempo)
+  - Note: changes pitch without changing duration (time)
 - [x] Time stretch  
-  - Obs: altera a duração (tempo) do áudio sem mudar o tom
+  - Note: changes duration (time) without changing pitch
 - [x] Time compression
 - [x] Auto-tune (pitch correction)
 - [x] Harmonizer
 - [x] Octaver
 - [x] Formant shifting
 
-Status atual na Voxis:
+Current status in Voxis:
 - `pitch_shift()`
 - `time_stretch()`
 - `time_compression()`
@@ -182,7 +182,7 @@ Status atual na Voxis:
 
 ---
 
-## 🤖 8. Efeitos modernos / IA-like
+## 8. Modern / AI-like effects
 - [x] Noise reduction
 - [x] Voice isolation
 - [x] Source separation
@@ -192,7 +192,7 @@ Status atual na Voxis:
 - [x] AI enhancer
 - [x] Speech enhancement
 
-Status atual na Voxis:
+Current status in Voxis:
 - `noise_reduction()`
 - `voice_isolation()`
 - `source_separation()`
@@ -204,7 +204,7 @@ Status atual na Voxis:
 
 ---
 
-## 📡 9. Efeitos criativos / especiais
+## 9. Creative / special effects
 - [x] Glitch effect
 - [x] Stutter
 - [x] Tape stop
@@ -214,13 +214,13 @@ Status atual na Voxis:
 - [x] Random pitch mod
 - [x] Vinyl effect
 - [x] Radio effect
-- [x] Telefone effect
+- [x] Telephone effect
 - [x] 8-bit / retro sound
 - [x] Slow motion extreme
 - [x] Robot voice
 - [x] Alien voice
 
-Status atual na Voxis:
+Current status in Voxis:
 - `glitch_effect()`
 - `stutter()`
 - `tape_stop()`
@@ -238,7 +238,7 @@ Status atual na Voxis:
 
 ---
 
-## 🧪 10. Processamento espectral
+## 10. Spectral processing
 - [x] FFT filter
 - [x] Spectral gating
 - [x] Spectral blur
@@ -248,7 +248,7 @@ Status atual na Voxis:
 - [x] Harmonic/percussive separation
 - [x] Spectral delay
 
-Status atual na Voxis:
+Current status in Voxis:
 - `fft_filter()`
 - `spectral_gating()`
 - `spectral_blur()`
@@ -260,7 +260,7 @@ Status atual na Voxis:
 
 ---
 
-## 🔊 11. Stereo / espacial avançado
+## 11. Advanced stereo / spatial
 - [x] Stereo widening
 - [x] Mid/Side processing
 - [x] Stereo imager
@@ -268,7 +268,7 @@ Status atual na Voxis:
 - [x] 3D audio positioning
 - [x] HRTF simulation
 
-Status atual na Voxis:
+Current status in Voxis:
 - `stereo_widening()`
 - `mid_side_processing()`
 - `stereo_imager()`
@@ -278,7 +278,7 @@ Status atual na Voxis:
 
 ---
 
-## 🧱 12. Utilitários avançados
+## 12. Advanced utilities
 - [x] Resample
 - [x] Dither
 - [x] Bit depth conversion
@@ -287,7 +287,7 @@ Status atual na Voxis:
 - [x] RMS analysis
 - [x] Envelope follower
 
-Status atual na Voxis:
+Current status in Voxis:
 - `AudioClip.resample()`
 - `AudioClip.dither()`
 - `AudioClip.bit_depth_conversion()`
@@ -296,3 +296,4 @@ Status atual na Voxis:
 - `AudioClip.rms_analysis()`
 - `AudioClip.loudness_lufs()`
 - `AudioClip.envelope_follower()`
+

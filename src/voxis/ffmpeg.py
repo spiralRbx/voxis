@@ -119,7 +119,7 @@ def prepare_export_settings(
         resolved_ffmpeg_format = str(capabilities.get("ffmpeg_format", resolved_format))
         if not bool(capabilities.get("bitrate", False)) and resolved_bitrate is not None:
             warnings.append(
-                f"O formato {resolved_format.upper()} nao usa bitrate neste fluxo. O valor {resolved_bitrate!r} foi ignorado."
+                f"The {resolved_format.upper()} format does not use bitrate in this workflow. The value {resolved_bitrate!r} was ignored."
             )
             resolved_bitrate = None
 

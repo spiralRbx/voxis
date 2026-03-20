@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voxis Web Test</title>
+  <style>
+    :root {
+      --paper: #f1e7d8;
+      --paper-2: #e2d0bd;
+      --ink: #191613;
+      --muted: #605648;
+      --accent: #ad4727;
+      --accent-deep: #6f2815;
+      --petrol: #1a5d59;
+      --line: rgba(25, 22, 19, 0.14);
+      --shadow: 0 22px 60px rgba(53, 35, 18, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Bahnschrift", "Aptos", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(26, 93, 89, 0.12), transparent 26%),
+        radial-gradient(circle at top right, rgba(173, 71, 39, 0.14), transparent 32%),
+        linear-gradient(180deg, var(--paper), var(--paper-2));
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, transparent 0 64px, rgba(25, 22, 19, 0.03) 64px 65px),
+        repeating-linear-gradient(180deg, transparent 0 64px, rgba(25, 22, 19, 0.022) 64px 65px);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 18px;
+      border: 1px solid rgba(25, 22, 19, 0.08);
+      pointer-events: none;
+    }
+
+    .wrap {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(250, 241, 230, 0.96));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent), #d28a3e, var(--petrol));
+    }
+
+    .top,
+    .toolbar,
+    .grid,
+    .form-stack,
+    .effect-columns,
+    .effect-lane {
+      display: grid;
+      gap: 14px;
+    }
+
+    .top {
+      grid-template-columns: 1.3fr 0.9fr;
+      align-items: end;
+    }
+
+    .form-stack {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .toolbar {
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .effect-columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .effect-lane {
+      align-content: start;
+    }
+
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .hero-copy,
+    .hero-side {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-side {
+      align-content: start;
+    }
+
+    .kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Rockwell", "Book Antiqua", serif;
+      font-size: clamp(34px, 5vw, 68px);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .stat {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.56);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Rockwell", "Book Antiqua", serif;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .fx {
+      border: 1px solid rgba(25, 22, 19, 0.12);
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(247, 238, 228, 0.92));
+      display: grid;
+      gap: 10px;
+      min-height: 100%;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .title {
+      font-family: "Rockwell", "Book Antiqua", serif;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .title::after {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 3px;
+      margin-top: 7px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 16px 18px;
+      font-family: "Rockwell", "Book Antiqua", serif;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(90deg, rgba(26, 93, 89, 0.10), rgba(173, 71, 39, 0.12));
+    }
+
+    label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+    }
+
+    input[type="file"],
+    select,
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--petrol);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .body {
+      padding: 13px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #fff6ed;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(111, 40, 21, 0.24);
+    }
+
+    .warn {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #fff1e4;
+      border: 1px solid rgba(173, 71, 39, 0.22);
+      color: var(--accent-deep);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(26, 93, 89, 0.12);
+      color: var(--petrol);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 14px;
+      filter: saturate(1.2);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      background: #171411;
+      color: #f2e7d8;
+      border-radius: 20px;
+      padding: 16px;
+      overflow: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 1040px) {
+      .effect-columns,
+      .top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .wrap {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card top">
+      <div class="hero-copy">
+        <div class="kicker">Voxis Audio Lab</div>
+        <div class="badge">Effects and DSP playground</div>
+        <h1>Test the library like a dedicated sound design bench.</h1>
+        <div class="muted">
+          Every engine block is visible here: clip ops, dynamics, spectral tools, spatial processors, and utilities.
+          The page measures each stage, shows the final pipeline, and uses demo-friendly defaults so you can test fast.
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="stat">
+          <strong>{{ effect_count }} effects</strong>
+          <span class="muted">Chainable processors currently exposed by the package.</span>
+        </div>
+        <div class="stat">
+          <strong>PCM float32</strong>
+          <span class="muted">Audio is decoded into raw memory, processed there, and only encoded at the final export step.</span>
+        </div>
+      </div>
+    </section>
+
+    <form id="form" class="form-stack" enctype="multipart/form-data">
+      <section class="card toolbar">
+        <div>
+          <label>Input file</label>
+          <input type="file" name="audio" required>
+        </div>
+        <div>
+          <label>Preset</label>
+          <select name="preset">
+            <option value="">None</option>
+            {% for preset in presets %}
+            <option value="{{ preset }}">{{ preset }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Format</label>
+          <select name="format" id="format">
+            {% for audio_format in formats %}
+            <option value="{{ audio_format }}">{{ audio_format }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Bitrate</label>
+          <select name="bitrate" id="bitrate">
+            <option value="">Auto / Ignore</option>
+            <option>96k</option>
+            <option>128k</option>
+            <option selected>192k</option>
+            <option>256k</option>
+            <option>320k</option>
+          </select>
+        </div>
+        <div>
+          <label>Sample rate</label>
+          <select name="sample_rate">
+            <option value="">Original</option>
+            <option>22050</option>
+            <option selected>44100</option>
+            <option>48000</option>
+          </select>
+        </div>
+        <div>
+          <label>Output channels</label>
+          <select name="channels">
+            <option value="">Original</option>
+            <option value="1">Mono</option>
+            <option value="2" selected>Stereo</option>
+          </select>
+        </div>
+        <div>
+          <label>Normalize</label>
+          <select name="normalize_enabled">
+            <option value="yes" selected>On</option>
+            <option value="no">Off</option>
+          </select>
+        </div>
+        <div>
+          <label>Headroom (dB)</label>
+          <input type="number" name="normalize_headroom_db" min="0" max="12" step="0.1" value="1.0">
+        </div>
+      </section>
+
+      <section class="effect-columns">
+        {% for lane in effect_columns %}
+        <div class="effect-lane">
+          {% for group_title, effects in lane %}
+          <section class="card">
+            <details {% if loop.first %}open{% endif %}>
+              <summary>{{ group_title }}</summary>
+              <div class="body grid">
+                {% for effect_id, effect_label, fields in effects %}
+                <article class="fx">
+                  <div class="head">
+                    <div class="title">{{ effect_label }}</div>
+                    <label><input type="checkbox" name="{{ effect_id }}"> enable</label>
+                  </div>
+                  {% for field in fields %}
+                  <div>
+                    <div class="meta">
+                      <label>{{ field.label }}</label>
+                      <span data-value="{{ field.name }}">{{ field.value }}</span>
+                    </div>
+                    <input
+                      data-range="1"
+                      type="range"
+                      name="{{ field.name }}"
+                      min="{{ field.min }}"
+                      max="{{ field.max }}"
+                      step="{{ field.step }}"
+                      value="{{ field.value }}"
+                    >
+                  </div>
+                  {% endfor %}
+                  {% if effect_id == "convolution_reverb" %}
+                  <div>
+                    <label>Impulse response (optional)</label>
+                    <input type="file" name="impulse_response">
+                  </div>
+                  {% endif %}
+                  {% if effect_id == "crossfade" %}
+                  <div>
+                    <label>Second file (required when enabled)</label>
+                    <input type="file" name="crossfade_audio">
+                  </div>
+                  {% endif %}
+                </article>
+                {% endfor %}
+              </div>
+            </details>
+          </section>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </section>
+
+      <section class="card">
+        <button class="btn" type="submit">Render and export</button>
+        <span class="muted">WAV and FLAC ignore bitrate by validation. MP3, OGG, AAC, and M4A accept bitrate. The debug panel shows timing per stage.</span>
+      </section>
+    </form>
+
+    <section class="card" id="result">
+      <div class="muted">The processed result, export warnings, timing breakdown, and pipeline debug output appear here.</div>
+    </section>
+  </main>
+
+  <script>
+    const caps = {{ caps|safe }};
+
+    function refresh() {
+      document.querySelectorAll("[data-range='1']").forEach((input) => {
+        const target = document.querySelector(`[data-value="${input.name}"]`);
+        if (target) target.innerText = input.value;
+      });
+
+      const format = document.getElementById("format").value;
+      const bitrate = document.getElementById("bitrate");
+      const supportsBitrate = Boolean((caps[format] || {}).bitrate);
+      bitrate.disabled = !supportsBitrate;
+      if (!supportsBitrate) bitrate.value = "";
+    }
+
+    document.addEventListener("input", refresh);
+    document.getElementById("format").addEventListener("change", refresh);
+    refresh();
+
+    document.getElementById("form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const response = await fetch("/process", {
+        method: "POST",
+        body: new FormData(event.target),
+      });
+      document.getElementById("result").innerHTML = await response.text();
+    });
+  </script>
+</body>
+</html>

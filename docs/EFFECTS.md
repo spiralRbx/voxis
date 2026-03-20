@@ -1,19 +1,19 @@
 # Voxis Effects
 
-Voxis trabalha com `decoder -> PCM float32 -> pipeline DSP -> encoder`.
+Voxis uses `decoder -> PCM float32 -> DSP pipeline -> encoder`.
 
-Resumo atual:
+Current summary:
 
-- `95` efeitos/processadores encadeáveis disponíveis por `effect_names()`
-- `108` recursos no checklist completo quando você conta clip ops, utilitários e análises
+- `95` chainable effects/processors available via `effect_names()`
+- `108` resources in the full checklist when you count clip ops, utilities, and analysis helpers
 
-- Entrada `mp3`, `ogg`, `wav`, `flac`, `aac` ou `m4a` sempre vira PCM `float32` antes do DSP.
-- O buffer interno usa layout `(frames, channels)`.
-- O hot path fica no core nativo C++; o caminho Python fica para efeitos avancados e automacao.
+- Input `mp3`, `ogg`, `wav`, `flac`, `aac`, or `m4a` is always converted to `float32` PCM before DSP.
+- The internal buffer uses `(frames, channels)` layout.
+- The hot path lives in the native C++ core; the Python path is used for advanced effects and automation.
 
-## Basicos (Item 1)
+## Basic Clip Ops (Item 1)
 
-Operacoes de clip:
+Clip operations:
 
 - `AudioClip.gain(db)`
 - `AudioClip.normalize(headroom_db=1.0)`
@@ -29,7 +29,7 @@ Operacoes de clip:
 - `AudioClip.to_stereo()`
 - `AudioClip.remove_dc_offset()`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -45,9 +45,9 @@ edited = (
 edited.export("voice_clean.wav")
 ```
 
-## Dinamica (Item 2)
+## Dynamics (Item 2)
 
-Efeitos individuais:
+Individual effects:
 
 - `compressor(threshold_db, ratio, attack_ms, release_ms, makeup_db)`
 - `downward_compression(threshold_db, ratio, attack_ms, release_ms, makeup_db)`
@@ -58,12 +58,12 @@ Efeitos individuais:
 - `deesser(frequency_hz, threshold_db, ratio, attack_ms, release_ms, amount)`
 - `transient_shaper(attack, sustain, attack_ms, release_ms)`
 
-Processamento multibanda:
+Multiband processing:
 
 - `multiband_compressor(sample_rate, ...)`
 - `AudioClip.multiband_compressor(...)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -78,7 +78,7 @@ mastered = (
 mastered.export("mix_master.wav")
 ```
 
-## Filtros E EQ
+## Filters and EQ
 
 - `lowpass(frequency_hz, q, stages)`
 - `highpass(frequency_hz, q, stages)`
@@ -93,7 +93,7 @@ mastered.export("mix_master.wav")
 - `dynamic_eq(frequency_hz, threshold_db, cut_db, q, attack_ms, release_ms)`
 - `formant_filter(morph=0.0, intensity=1.0, q=4.0)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -108,7 +108,7 @@ shaped = (
 shaped.export("voice_eq.wav")
 ```
 
-## Delay E Reverb
+## Delay and Reverb
 
 - `delay(delay_ms, feedback, mix)`
 - `feedback_delay(delay_ms, feedback, mix)`
@@ -122,7 +122,7 @@ shaped.export("voice_eq.wav")
 - `plate_reverb(decay_seconds, mix, tone_hz)`
 - `convolution_reverb(impulse_response, mix, normalize_ir)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -136,7 +136,7 @@ spaced = (
 spaced.export("guitar_space.wav")
 ```
 
-## Modulacao
+## Modulation
 
 - `chorus(rate_hz, depth_ms, delay_ms, mix, feedback)`
 - `flanger(rate_hz, depth_ms, delay_ms, mix, feedback)`
@@ -148,7 +148,7 @@ spaced.export("guitar_space.wav")
 - `ring_modulation(frequency_hz, mix)`
 - `frequency_shifter(shift_hz, mix)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -162,7 +162,7 @@ modded = (
 modded.export("synth_motion.wav")
 ```
 
-## Saturacao E Drive
+## Saturation and Drive
 
 - `distortion(drive)`
 - `overdrive(drive, tone, mix)`
@@ -174,7 +174,7 @@ modded.export("synth_motion.wav")
 - `soft_clipping(threshold)`
 - `hard_clipping(threshold)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -188,7 +188,7 @@ driven = (
 driven.export("bass_drive.wav")
 ```
 
-## Pitch E Tempo
+## Pitch and Time
 
 - `pitch_shift(semitones, fft_size, hop_size)`
 - `time_stretch(rate, fft_size, hop_size)`
@@ -198,7 +198,7 @@ driven.export("bass_drive.wav")
 - `octaver(octaves_down, octaves_up, down_mix, up_mix, fft_size, hop_size)`
 - `formant_shifting(shift, mix, fft_size, hop_size)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -212,7 +212,7 @@ pitched = (
 pitched.export("lead_shifted.wav")
 ```
 
-## Restauracao E AI-like
+## Restoration and AI-like
 
 - `noise_reduction(strength, fft_size, hop_size)`
 - `voice_isolation(strength, low_hz, high_hz, fft_size, hop_size)`
@@ -223,7 +223,7 @@ pitched.export("lead_shifted.wav")
 - `ai_enhancer(amount, fft_size, hop_size)`
 - `speech_enhancement(amount, fft_size, hop_size)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -237,7 +237,7 @@ restored = (
 restored.export("podcast_restored.wav")
 ```
 
-## Criativos E Especiais
+## Creative and Special
 
 - `glitch_effect(slice_ms, repeat_probability, dropout_probability, reverse_probability, mix)`
 - `stutter(slice_ms, repeats, interval_ms, mix)`
@@ -254,7 +254,7 @@ restored.export("podcast_restored.wav")
 - `robot_voice(carrier_hz, mix)`
 - `alien_voice(shift_semitones, formant_shift, mix)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -268,7 +268,7 @@ creative = (
 creative.export("hook_fx.wav")
 ```
 
-## Espectral
+## Spectral
 
 - `fft_filter(low_hz, high_hz, mix, fft_size, hop_size)`
 - `spectral_gating(threshold_db, floor, fft_size, hop_size)`
@@ -279,7 +279,7 @@ creative.export("hook_fx.wav")
 - `harmonic_percussive_separation(target, mix, fft_size, hop_size)`
 - `spectral_delay(max_delay_ms, feedback, mix, fft_size, hop_size)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -293,7 +293,7 @@ spectral = (
 spectral.export("texture_spectral.wav")
 ```
 
-## Espacial
+## Spatial
 
 - `pan(position)`
 - `stereo_width(width)`
@@ -304,7 +304,7 @@ spectral.export("texture_spectral.wav")
 - `spatial_positioning(azimuth_deg, elevation_deg, distance)`
 - `hrtf_simulation(azimuth_deg, elevation_deg, distance)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -318,23 +318,23 @@ space = (
 space.export("ambience_spatial.wav")
 ```
 
-## Utilitarios E Analise
+## Utilities and Analysis
 
-Processamento:
+Processing:
 
 - `AudioClip.resample(target_sample_rate)`
 - `AudioClip.dither(bit_depth=16)`
 - `AudioClip.bit_depth_conversion(bit_depth=16, dither=True)`
 - `AudioClip.loudness_normalization(target_lufs=-16.0)`
 
-Analise:
+Analysis:
 
 - `AudioClip.peak_detection()`
 - `AudioClip.rms_analysis()`
 - `AudioClip.loudness_lufs()`
 - `AudioClip.envelope_follower(attack_ms=10.0, release_ms=80.0)`
 
-Exemplo:
+Example:
 
 ```python
 from voxis import AudioClip
@@ -369,7 +369,7 @@ rendered = clip.apply("radio", lazy=True).render()
 print(rendered.pipeline_info())
 ```
 
-Exemplo:
+Example:
 
 ```text
 [0] highpass(frequency_hz=180.00Hz, q=0.707, stages=2)
@@ -377,20 +377,21 @@ Exemplo:
 [2] distortion(drive=1.2)
 ```
 
-## Lazy E Cache
+## Lazy Render and Cache
 
 ```python
 first = clip.apply("cinematic", lazy=True).normalize().render()
 second = clip.apply("cinematic", lazy=True).normalize().render()
 ```
 
-Se a cadeia lazy for igual para o mesmo `AudioClip`, a Voxis reaproveita o render em cache.
+If the lazy chain is identical for the same `AudioClip`, Voxis reuses the cached render.
 
 ## Web Test
 
-`web-test/app.py` agora expoe os itens 1 a 12 diretamente, separa os grupos em colunas independentes para teste rapido e mostra tempos por etapa no bloco `<pre>`, o que ajuda a validar:
+`web-test/app.py` now exposes items 1 through 12 directly, splits the groups into independent columns for faster testing, and shows timing per stage in the `<pre>` block, which helps validate:
 
-- custo por efeito/operacao
-- pipeline final
-- warnings de export
-- comportamento de resample/export por formato
+- cost per effect/operation
+- final pipeline
+- export warnings
+- resample/export behavior by format
+

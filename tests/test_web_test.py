@@ -13,7 +13,7 @@ def load_web_app():
     module_path = Path(__file__).resolve().parents[1] / "web-test" / "app.py"
     spec = importlib.util.spec_from_file_location("voxis_web_test", module_path)
     if spec is None or spec.loader is None:
-        raise RuntimeError("Nao foi possivel carregar web-test/app.py")
+        raise RuntimeError("Could not load web-test/app.py")
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
@@ -60,8 +60,8 @@ def test_web_test_process_endpoint_returns_timing_debug() -> None:
 
     text = response.get_data(as_text=True)
     assert response.status_code == 200
-    assert "Tempos por etapa" in text
-    assert "Render concluido" in text
+    assert "Timings by stage" in text
+    assert "Render complete" in text
 
 
 def test_web_test_index_renders_effect_columns() -> None:
@@ -96,7 +96,7 @@ def test_web_test_handles_time_stretch_effect() -> None:
     text = response.get_data(as_text=True)
     assert response.status_code == 200
     assert "time_stretch" in text
-    assert "Render concluido" in text
+    assert "Render complete" in text
 
 
 def test_web_test_handles_creative_and_spectral_effects() -> None:
@@ -126,7 +126,7 @@ def test_web_test_handles_creative_and_spectral_effects() -> None:
     assert response.status_code == 200
     assert "glitch_effect" in text
     assert "spectral_delay" in text
-    assert "Render concluido" in text
+    assert "Render complete" in text
 
 
 def test_web_test_handles_spatial_and_analysis_blocks() -> None:
@@ -154,6 +154,6 @@ def test_web_test_handles_spatial_and_analysis_blocks() -> None:
 
     text = response.get_data(as_text=True)
     assert response.status_code == 200
-    assert "Metricas de entrada" in text
-    assert "Metricas de saida" in text
+    assert "Input metrics" in text
+    assert "Output metrics" in text
     assert "stereo_imager" in text

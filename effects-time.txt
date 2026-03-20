@@ -124,14 +124,12 @@ spectral_delay(max_delay_ms=520.00, feedback=0.65, mix=0.50) -> 1735.71 ms
 Stereo / Spatial
 stereo_widening(amount=1.99) -> 164.35 ms
 mid_side_processing(mid_gain_db=7.50, side_gain_db=-8.60) -> 184.02 ms
-stereo_imager(low_width=1.58, high_width=0.74) -> 13350.83 ms (melhorar time)
+stereo_imager(low_width=1.58, high_width=0.74) -> 13350.83 ms
 binaural_effect(azimuth_deg=67.00, distance=2.61, room_mix=0.34) -> 8212.48 ms
-spatial_positioning(azimuth_deg=55.00, elevation_deg=52.00, distance=2.77) -> 21465.53 ms (melhorar time)
-hrtf_simulation(azimuth_deg=50.00, elevation_deg=10.00, distance=2.68) -> 27953.88 ms (melhorar time)
+spatial_positioning(azimuth_deg=55.00, elevation_deg=52.00, distance=2.77) -> 21465.53 ms
+hrtf_simulation(azimuth_deg=50.00, elevation_deg=10.00, distance=2.68) -> 27953.88 ms
 
 Utilities / Analysis
-Resample da erro eu acho que depedendo do efeito não testei com outro so testei com .ogg
-Erro ao processar: FFmpeg encode failed for C:\Users\talys\Downloads\libary\Voxera\web-test\outputs\2c13b439-c89f-4c3e-a533-de0e6e3c6e37.ogg: [libopus @ 00000214f6635440] Specified sample rate 44100 is not supported by the libopus encoder [libopus @ 00000214f6635440] Supported sample rates: [libopus @ 00000214f6635440] 48000 [libopus @ 00000214f6635440] 24000 [libopus @ 00000214f6635440] 16000 [libopus @ 00000214f6635440] 12000 [libopus @ 00000214f6635440] 8000 [aost#0:0/libopus @ 00000214f6235000] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height. [af#0:0 @ 00000214f6636800] Error sending frames to consumers: Invalid argument [af#0:0 @ 00000214f6636800] Task finished with error code: -22 (Invalid argument) [af#0:0 @ 00000214f6636800] Terminating thread with return code -22 (Invalid argument) [aost#0:0/libopus @ 00000214f6235000] Could not open encoder before EOF [aost#0:0/libopus @ 00000214f6235000] Task finished with error code: -22 (Invalid argument) [aost#0:0/libopus @ 00000214f6235000] Terminating thread with return code -22 (Invalid argument) [out#0/ogg @ 00000214f6234f00] Nothing was written into output file, because at least one of its streams received no packets.
 dither(bit_depth=24) -> 430.11 ms
 bit_depth_conversion(bit_depth=8) -> 405.26 ms
 loudness_normalization(target_lufs=-30.00) -> 6445.60 ms

@@ -146,7 +146,7 @@ def _resolve_slice_bounds(
     start = max(0, min(total_frames, start))
     end = max(0, min(total_frames, end))
     if end < start:
-        raise ValueError("end_ms precisa ser maior ou igual a start_ms.")
+        raise ValueError("end_ms must be greater than or equal to start_ms.")
     return start, end
 
 
@@ -193,7 +193,7 @@ def _remix_channels(samples: np.ndarray, target_channels: int) -> np.ndarray:
     frames = ensure_float32_frames(samples)
     target = int(target_channels)
     if target <= 0:
-        raise ValueError("target_channels precisa ser positivo.")
+        raise ValueError("target_channels must be positive.")
     if frames.shape[1] == target:
         return frames.copy()
     if target == 1:
@@ -260,7 +260,7 @@ def _remove_silence_samples(
 
 def _crossfade_samples(left: "AudioClip", right: "AudioClip", duration_ms: float) -> np.ndarray:
     if left.sample_rate != right.sample_rate:
-        raise ValueError("crossfade requer clips com o mesmo sample_rate.")
+        raise ValueError("crossfade requires clips with the same sample_rate.")
 
     left_samples = ensure_float32_frames(left.samples)
     right_samples = _remix_channels(right.samples, left.channels)

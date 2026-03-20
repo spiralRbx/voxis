@@ -9,7 +9,7 @@ from html import escape
 from pathlib import Path
 
 import numpy as np
-from flask import Flask, render_template_string, request, send_file
+from flask import Flask, render_template, request, send_file
 
 from voxis import (
     AudioClip,
@@ -27,7 +27,12 @@ OUTPUT_FOLDER = BASE_DIR / "outputs"
 UPLOAD_FOLDER.mkdir(exist_ok=True)
 OUTPUT_FOLDER.mkdir(exist_ok=True)
 
-RG = lambda n, l, mi, ma, st, v: {"name": n, "label": l, "min": mi, "max": ma, "step": st, "value": v}
+
+def range_field(name: str, label: str, minimum: float, maximum: float, step: float, value: float) -> dict[str, float | str]:
+    return {"name": name, "label": label, "min": minimum, "max": maximum, "step": step, "value": value}
+
+
+RG = range_field
 
 EFFECT_GROUPS = [
     ("Basic", [
@@ -179,15 +184,7 @@ def split_effect_groups(groups: list[tuple[str, list[tuple[str, str, list[dict[s
     return lanes
 
 
-TEMPLATE = """
-<!doctype html><html lang='pt-BR'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Voxis Web Test</title>
-<style>:root{--paper:#f1e7d8;--paper-2:#e2d0bd;--ink:#191613;--muted:#605648;--accent:#ad4727;--accent-deep:#6f2815;--petrol:#1a5d59;--line:rgba(25,22,19,.14);--card:#fffaf2;--card-strong:#f8efe3;--shadow:0 22px 60px rgba(53,35,18,.12)}*{box-sizing:border-box}body{margin:0;font-family:"Bahnschrift","Aptos","Trebuchet MS",sans-serif;color:var(--ink);background:radial-gradient(circle at top left,rgba(26,93,89,.12),transparent 26%),radial-gradient(circle at top right,rgba(173,71,39,.14),transparent 32%),linear-gradient(180deg,var(--paper),var(--paper-2));min-height:100vh;position:relative}body:before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent 0 64px,rgba(25,22,19,.03) 64px 65px),repeating-linear-gradient(180deg,transparent 0 64px,rgba(25,22,19,.022) 64px 65px);pointer-events:none}body:after{content:"";position:fixed;inset:18px;border:1px solid rgba(25,22,19,.08);pointer-events:none}.wrap{max-width:1480px;margin:0 auto;padding:18px;display:grid;gap:16px}.card{background:linear-gradient(180deg,rgba(255,250,242,.98),rgba(250,241,230,.96));border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:0;top:0;width:100%;height:5px;background:linear-gradient(90deg,var(--accent),#d28a3e,var(--petrol))}.top,.toolbar,.grid,.form-stack,.effect-columns,.effect-lane{display:grid;gap:14px}.top{grid-template-columns:1.3fr .9fr;align-items:end}.form-stack{grid-template-columns:minmax(0,1fr)}.toolbar{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}.effect-columns{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.effect-lane{align-content:start}.grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}.hero-copy{display:grid;gap:10px}.hero-side{display:grid;gap:10px;align-content:start}.kicker{font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}h1{margin:0;font-family:"Rockwell","Book Antiqua",serif;font-size:clamp(34px,5vw,68px);line-height:.94;letter-spacing:-.05em;max-width:10ch}.muted{color:var(--muted);line-height:1.6;font-size:14px}.stat{padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.56)}.stat strong{display:block;font-family:"Rockwell","Book Antiqua",serif;font-size:22px;letter-spacing:-.04em}.fx{border:1px solid rgba(25,22,19,.12);border-radius:18px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(247,238,228,.92));display:grid;gap:10px;min-height:100%;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}.head{display:flex;justify-content:space-between;gap:10px;align-items:center}.title{font-family:"Rockwell","Book Antiqua",serif;font-size:20px;letter-spacing:-.03em}.title:after{content:"";display:block;width:34px;height:3px;margin-top:7px;background:linear-gradient(90deg,var(--accent),transparent)}details{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.24)}summary{cursor:pointer;padding:16px 18px;font-family:"Rockwell","Book Antiqua",serif;font-size:22px;letter-spacing:-.03em;background:linear-gradient(90deg,rgba(26,93,89,.10),rgba(173,71,39,.12))}label{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:.12em}input[type=file],select,input[type=number]{width:100%;padding:12px 13px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink)}input[type=range]{width:100%;accent-color:var(--accent)}input[type=checkbox]{accent-color:var(--petrol)}.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.body{padding:13px}.btn{border:0;border-radius:999px;padding:14px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#fff6ed;font-weight:800;letter-spacing:.04em;cursor:pointer;box-shadow:0 14px 30px rgba(111,40,21,.24)}.warn{padding:12px 14px;border-radius:16px;background:#fff1e4;border:1px solid rgba(173,71,39,.22);color:var(--accent-deep)}.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(26,93,89,.12);color:var(--petrol);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em}audio{width:100%;margin-top:14px;filter:saturate(1.2)}pre{white-space:pre-wrap;background:#171411;color:#f2e7d8;border-radius:20px;padding:16px;overflow:auto;border:1px solid rgba(255,255,255,.08)}@media (max-width:1040px){.effect-columns,.top{grid-template-columns:1fr}}@media (max-width:900px){.wrap{padding:14px}}</style></head><body>
-<main class='wrap'><section class='card top'><div class='hero-copy'><div class='kicker'>Voxis Audio Lab</div><div class='badge'>Playground de efeitos e DSP</div><h1>Teste a biblioteca como uma bancada de mix e design sonoro.</h1><div class='muted'>Todos os blocos da engine ficam visiveis aqui: clip ops, dinamica, espectral, espacial e utilitarios. A tela mede cada etapa, mostra o pipeline final e usa defaults pensados para demonstracao rapida.</div></div><div class='hero-side'><div class='stat'><strong>{{effect_count}} efeitos</strong><span class='muted'>Processadores encadeaveis disponiveis hoje no pacote.</span></div><div class='stat'><strong>PCM float32</strong><span class='muted'>O audio entra, vira buffer cru em memoria, recebe os efeitos e so depois vai para o codec final.</span></div></div></section>
-<form id='form' class='form-stack' enctype='multipart/form-data'><section class='card toolbar'><div><label>Arquivo</label><input type='file' name='audio' required></div><div><label>Preset</label><select name='preset'><option value=''>Nenhum</option>{% for p in presets %}<option value='{{p}}'>{{p}}</option>{% endfor %}</select></div><div><label>Formato</label><select name='format' id='format'>{% for f in formats %}<option value='{{f}}'>{{f}}</option>{% endfor %}</select></div><div><label>Bitrate</label><select name='bitrate' id='bitrate'><option value=''>Auto / Ignorar</option><option>96k</option><option>128k</option><option selected>192k</option><option>256k</option><option>320k</option></select></div><div><label>Sample Rate</label><select name='sample_rate'><option value=''>Original</option><option>22050</option><option selected>44100</option><option>48000</option></select></div><div><label>Canais de Saida</label><select name='channels'><option value=''>Original</option><option value='1'>Mono</option><option value='2' selected>Stereo</option></select></div><div><label>Normalize</label><select name='normalize_enabled'><option value='yes' selected>Ligado</option><option value='no'>Desligado</option></select></div><div><label>Headroom (dB)</label><input type='number' name='normalize_headroom_db' min='0' max='12' step='0.1' value='1.0'></div></section>
-<section class='effect-columns'>{% for lane in effect_columns %}<div class='effect-lane'>{% for group_title, effects in lane %}<section class='card'><details {% if loop.first %}open{% endif %}><summary>{{group_title}}</summary><div class='body grid'>{% for effect_id, effect_label, fields in effects %}<article class='fx'><div class='head'><div class='title'>{{effect_label}}</div><label><input type='checkbox' name='{{effect_id}}'> ativar</label></div>{% for field in fields %}<div><div class='meta'><label>{{field.label}}</label><span data-value='{{field.name}}'>{{field.value}}</span></div><input data-range='1' type='range' name='{{field.name}}' min='{{field.min}}' max='{{field.max}}' step='{{field.step}}' value='{{field.value}}'></div>{% endfor %}{% if effect_id == 'convolution_reverb' %}<div><label>Impulse Response (opcional)</label><input type='file' name='impulse_response'></div>{% endif %}{% if effect_id == 'crossfade' %}<div><label>Segundo Arquivo (obrigatorio se ativado)</label><input type='file' name='crossfade_audio'></div>{% endif %}</article>{% endfor %}</div></details></section>{% endfor %}</div>{% endfor %}</section>
-<section class='card'><button class='btn' type='submit'>Renderizar E Exportar</button> <span class='muted'>WAV e FLAC ignoram bitrate por validacao. MP3, OGG, AAC e M4A aceitam bitrate. O debug mostra o tempo por etapa.</span></section></form><section class='card' id='result'><div class='muted'>O resultado, os warnings, os tempos e o debug do pipeline aparecem aqui.</div></section></main>
-<script>const caps={{caps|safe}};function refresh(){document.querySelectorAll("[data-range='1']").forEach(i=>{const t=document.querySelector(`[data-value="${i.name}"]`);if(t)t.innerText=i.value;});const f=document.getElementById('format').value;const b=document.getElementById('bitrate');const ok=Boolean((caps[f]||{}).bitrate);b.disabled=!ok;if(!ok)b.value='';}document.addEventListener('input',refresh);document.getElementById('format').addEventListener('change',refresh);refresh();document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();const res=await fetch('/process',{method:'POST',body:new FormData(e.target)});document.getElementById('result').innerHTML=await res.text();});</script></body></html>
-"""
+TEMPLATE_NAME = "index.html"
 
 
 @dataclass(slots=True)
@@ -279,7 +276,7 @@ def build_steps(uid: str, clip: AudioClip, crossfade_clip: AudioClip | None) -> 
         steps.append(RenderStep("remove_dc_offset()", lambda current: current.remove_dc_offset()))
     if "crossfade" in request.form:
         if crossfade_clip is None:
-            raise ValueError("crossfade foi ativado, mas o segundo arquivo nao foi enviado.")
+            raise ValueError("Crossfade was enabled, but the second file was not uploaded.")
         crossfade_ms = f("crossfade_ms", 400.0)
         steps.append(RenderStep(f"crossfade(duration_ms={crossfade_ms:.2f})", lambda current, other=crossfade_clip, duration=crossfade_ms: current.crossfade(other, duration)))
     if "pan" in request.form:
@@ -431,8 +428,8 @@ def build_steps(uid: str, clip: AudioClip, crossfade_clip: AudioClip | None) -> 
 
 @app.route("/")
 def index():
-    return render_template_string(
-        TEMPLATE,
+    return render_template(
+        TEMPLATE_NAME,
         effect_columns=split_effect_groups(EFFECT_GROUPS, column_count=2),
         effect_count=len(effect_names()),
         presets=preset_names(),
@@ -446,14 +443,14 @@ def process():
     try:
         total_started = time.perf_counter()
         if "audio" not in request.files or request.files["audio"].filename == "":
-            return "<div class='warn'>Nenhum arquivo foi enviado.</div>"
+            return "<div class='warn'>No audio file was uploaded.</div>"
         file = request.files["audio"]
         uid = str(uuid.uuid4())
         ext = Path(file.filename).suffix.lower() or ".wav"
         input_path = UPLOAD_FOLDER / f"{uid}{ext}"
         file.save(input_path)
         if not input_path.exists() or input_path.stat().st_size == 0:
-            return "<div class='warn'>Falha ao salvar o arquivo de entrada.</div>"
+            return "<div class='warn'>Failed to save the input file.</div>"
 
         decode_started = time.perf_counter()
         clip = AudioClip.from_file(input_path)
@@ -473,7 +470,7 @@ def process():
         if "crossfade" in request.form:
             crossfade_path = save_optional_upload("crossfade_audio", uid, "crossfade")
             if crossfade_path is None:
-                return "<div class='warn'>Crossfade ativado, mas o segundo arquivo nao foi enviado.</div>"
+                return "<div class='warn'>Crossfade was enabled, but the second audio file was not uploaded.</div>"
             second_started = time.perf_counter()
             crossfade_clip = AudioClip.from_file(crossfade_path, sample_rate=clip.sample_rate)
             timings.append(f"decode_crossfade: {(time.perf_counter() - second_started) * 1000.0:.2f} ms")
@@ -511,18 +508,18 @@ def process():
         mime = str(FORMAT_CAPABILITIES.get(settings.format, {}).get("mime", "audio/wav"))
         warnings = "".join(f"<div class='warn'>{escape(w)}</div>" for w in settings.warnings)
         debug = (
-            "Metricas de entrada\n"
+            "Input metrics\n"
             + "\n".join(input_metrics)
-            + "\n\nTempos por etapa\n"
+            + "\n\nTimings by stage\n"
             + "\n".join(timings)
             + "\n\nPipeline final\n"
             + current.pipeline_info()
-            + "\n\nMetricas de saida\n"
+            + "\n\nOutput metrics\n"
             + "\n".join(output_metrics)
         )
-        return f"<div class='badge'>Render concluido</div>{warnings}<audio controls><source src='/download/{output_name}' type='{mime}'></audio><p><a class='btn' href='/download/{output_name}'>Baixar arquivo</a></p><pre>{escape(debug)}</pre>"
+        return f"<div class='badge'>Render complete</div>{warnings}<audio controls><source src='/download/{output_name}' type='{mime}'></audio><p><a class='btn' href='/download/{output_name}'>Download file</a></p><pre>{escape(debug)}</pre>"
     except Exception as exc:
-        return f"<div class='warn'>Erro ao processar: {escape(str(exc))}</div>"
+        return f"<div class='warn'>Processing error: {escape(str(exc))}</div>"
 
 
 @app.route("/download/<filename>")
