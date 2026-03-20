@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging
+build/
+dist/
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+
+# CMake / native build artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+_skbuild/
+
+# Visual Studio / Windows
+.vs/
+*.sln
+*.vcxproj*
+*.obj
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.tlog
+*.lastbuildstate
+
+# Editor / OS
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
+
+# Local app outputs
+web-test/uploads/*
+!web-test/uploads/.gitkeep
+web-test/outputs/*
+!web-test/outputs/.gitkeep
+tmp_*.wav
+tmp_*.ogg
+voxera_preview.*
