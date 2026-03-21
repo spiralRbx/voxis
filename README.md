@@ -132,8 +132,6 @@ make build
 make check
 ```
 
-Publishing details for PyPI and GitHub Trusted Publishing are in [docs/PYPI_RELEASE.md](docs/PYPI_RELEASE.md).
-
 ## Roadmap
 
 - Streaming decoder -> pipeline -> encoder path without loading entire files into memory
