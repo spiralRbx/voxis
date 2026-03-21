@@ -49,7 +49,7 @@ decoder (FFmpeg) -> PCM float32 buffer -> DSP pipeline -> encoder (FFmpeg)
 - FFmpeg backend using `imageio-ffmpeg` to resolve the binary portably
 - Tests and a simple benchmark
 
-See [docs/EFFECTS.md](docs/EFFECTS.md) for the full effect and preset catalog. The `web-test` app now exposes items 1 through 12 with ready-to-demo defaults, independent control columns, metrics, and per-step timing.
+See [docs/EFFECTS.md](docs/EFFECTS.md) for the overview and [docs/EFFECT_REFERENCE.md](docs/EFFECT_REFERENCE.md) for the complete per-effect usage catalog. The `web-test` app now exposes items 1 through 12 with ready-to-demo defaults, independent control columns, metrics, and per-step timing.
 
 ## Quick start
 
