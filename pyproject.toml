@@ -23,7 +23,6 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/spiralRbx/voxis"
 Repository = "https://github.com/spiralRbx/voxis"
-Issues = "https://github.com/spiralRbx/voxis/issues"
 
 [project.optional-dependencies]
 dev = [
