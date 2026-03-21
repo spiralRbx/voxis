@@ -268,7 +268,7 @@ creative = (
 creative.export("hook_fx.wav")
 ```
 
-## Spectral
+## Spectral.
 
 - `fft_filter(low_hz, high_hz, mix, fft_size, hop_size)`
 - `spectral_gating(threshold_db, floor, fft_size, hop_size)`
