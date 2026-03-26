@@ -135,21 +135,6 @@ player.setEffects([
 
 That wrapper now ships effect builders for sections `1` through `11`, creates a standard `<audio>` element automatically when you pass a container, resolves its processor and WASM files relative to the module location, and can load a file source, microphone source, crossfade partner, and convolution IR without depending on the main demo controller.
 
-To build a minified browser API distribution, run:
-
-```bash
-npm install
-npm run build:api
-```
-
-That command reads the source files from `api/`, minifies the JavaScript modules, copies the `.wasm` asset unchanged, and writes a ready-to-ship mirror into `dist-api/` together with a build manifest. The output is intentionally minified, not obfuscated, so the shipped code stays easier to audit and keeps the public API trustworthy.
-
-For app-side browser controls, the public API also exports `createLockedControl(...)`, which lets you define the real min/max/step in JavaScript so the effect value is normalized again before it reaches the realtime engine.
-
-That helps prevent casual DevTools edits from pushing the UI outside the limits you defined, but it is still app-side protection. Final product rules are always the responsibility of the project that embeds Voxis, because browser-side JavaScript still runs in an environment the end user controls.
-
-The shipped `voxis-realtime-dynamics.wasm` module is now also the native source of truth for realtime parameter metadata across the browser API. EQ/filter/dynamics values are still validated in the native DSP bridge itself, and the remaining realtime stages read their public limits from the WASM metadata before configuration reaches the JavaScript processors. In the browser API you can listen for warnings with `player.onWarning((warning) => { ... })`, inspect the full native metadata with `player.getNativeRealtimeLimits()`, and keep `player.getNativeDynamicsLimits()` as a compatibility alias.
-
 ## Path resolution
 
 For audio input and output, Voxis resolves every relative path from the directory of the Python file that called the API.
