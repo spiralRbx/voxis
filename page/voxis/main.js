@@ -3,25 +3,25 @@ const documents = [
     id: "readme",
     title: "Package Overview",
     summary: "Start here for installation, architecture, quickstart examples, path resolution, presets, and the high-level package story.",
-    path: "./README.md",
+    path: "../../README.md",
   },
   {
     id: "effects",
     title: "Effects Overview",
     summary: "Read the grouped catalog summary before going deeper into the full callable reference.",
-    path: "./docs/EFFECTS.md",
+    path: "../../docs/EFFECTS.md",
   },
   {
     id: "reference",
     title: "Effect Reference",
     summary: "Full Python callable catalog with signatures, starter calls, clip operations, utilities, and preset helpers.",
-    path: "./docs/EFFECT_REFERENCE.md",
+    path: "../../docs/EFFECT_REFERENCE.md",
   },
   {
     id: "realtime",
     title: "Realtime Guide",
     summary: "Architecture, browser-side API layout, realtime notes, local demo apps, and the relationship between Python and JS paths.",
-    path: "./docs/REALTIME.md",
+    path: "../../docs/REALTIME.md",
   },
 ];
 
