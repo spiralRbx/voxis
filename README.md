@@ -181,7 +181,7 @@ Exports follow the same rule, so relative outputs are also created next to the s
 
 ```text
 project/
-  tests/
+  test/
     test_readme.md.py
 ```
 ---
@@ -194,7 +194,7 @@ The examples above will create:
 
 ```text
 project/
-  tests/
+  test/
     output-1.mp3
     outputs/
       clean.wav
