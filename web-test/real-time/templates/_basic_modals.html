@@ -1,0 +1,138 @@
+<div id="modal-gain-volume" class="modal">
+  <div class="modal-header"><h3>Gain (volume)</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Gain (volume)</h3>
+      <label class="slider-field"><span>Input gain</span><output for="input-gain" id="input-gain-value">1.00x</output><input id="input-gain" type="range" min="0" max="4" step="0.01" value="1"></label>
+      <label class="slider-field"><span>Output level</span><output for="output-gain" id="output-gain-value">1.00x</output><input id="output-gain" type="range" min="0" max="2" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-normalize" class="modal">
+  <div class="modal-header"><h3>Normalize</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Normalize</h3>
+      <label class="toggle-field"><input id="normalize-enabled" type="checkbox"><span>Realtime normalize enabled</span></label>
+      <label class="slider-field"><span>Headroom</span><output for="normalize-headroom" id="normalize-headroom-value">1.0 dB</output><input id="normalize-headroom" type="range" min="0" max="12" step="0.1" value="1"></label>
+      <label class="slider-field"><span>Max gain</span><output for="normalize-max-gain" id="normalize-max-gain-value">4.0x</output><input id="normalize-max-gain" type="range" min="1" max="8" step="0.1" value="4"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-fade-in" class="modal">
+  <div class="modal-header"><h3>Fade in</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Fade in</h3>
+      <label class="toggle-field"><input id="fade-in-enabled" type="checkbox"><span>Fade in enabled</span></label>
+      <label class="slider-field"><span>Duration</span><output for="fade-in-duration" id="fade-in-duration-value">400 ms</output><input id="fade-in-duration" type="range" min="10" max="10000" step="10" value="400"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-fade-out" class="modal">
+  <div class="modal-header"><h3>Fade out</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Fade out</h3>
+      <label class="toggle-field"><input id="fade-out-enabled" type="checkbox"><span>Fade out enabled</span></label>
+      <label class="slider-field"><span>Duration</span><output for="fade-out-duration" id="fade-out-duration-value">500 ms</output><input id="fade-out-duration" type="range" min="10" max="10000" step="10" value="500"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-crossfade" class="modal">
+  <div class="modal-header"><h3>Crossfade</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Crossfade</h3>
+      <label class="toggle-field"><input id="crossfade-enabled" type="checkbox"><span>Crossfade enabled</span></label>
+      <label class="slider-field"><span>Crossfade duration</span><output for="crossfade-duration" id="crossfade-duration-value">1200 ms</output><input id="crossfade-duration" type="range" min="50" max="10000" step="10" value="1200"></label>
+      <label class="field"><span>Crossfade partner file</span><input id="crossfade-file-input" type="file" accept="audio/*"></label>
+      <audio id="crossfade-player" controls preload="metadata"></audio>
+    </section>
+  </div>
+</div>
+
+<div id="modal-trim" class="modal">
+  <div class="modal-header"><h3>Trim</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Trim</h3>
+      <label class="toggle-field"><input id="trim-enabled" type="checkbox"><span>Trim enabled</span></label>
+      <label class="slider-field"><span>Start</span><output for="trim-start" id="trim-start-value">0 ms</output><input id="trim-start" type="range" min="0" max="300000" step="10" value="0"></label>
+      <label class="slider-field"><span>End</span><output for="trim-end" id="trim-end-value">30000 ms</output><input id="trim-end" type="range" min="0" max="300000" step="10" value="30000"></label>
+      <label class="slider-field"><span>Feather</span><output for="trim-feather" id="trim-feather-value">12 ms</output><input id="trim-feather" type="range" min="1" max="250" step="1" value="12"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-cut" class="modal">
+  <div class="modal-header"><h3>Cut</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Cut</h3>
+      <label class="toggle-field"><input id="cut-enabled" type="checkbox"><span>Cut enabled</span></label>
+      <label class="slider-field"><span>Start</span><output for="cut-start" id="cut-start-value">1200 ms</output><input id="cut-start" type="range" min="0" max="300000" step="10" value="1200"></label>
+      <label class="slider-field"><span>End</span><output for="cut-end" id="cut-end-value">2200 ms</output><input id="cut-end" type="range" min="0" max="300000" step="10" value="2200"></label>
+      <label class="slider-field"><span>Feather</span><output for="cut-feather" id="cut-feather-value">12 ms</output><input id="cut-feather" type="range" min="1" max="250" step="1" value="12"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-silence-removal" class="modal">
+  <div class="modal-header"><h3>Silence removal</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Silence removal</h3>
+      <label class="toggle-field"><input id="silence-removal-enabled" type="checkbox"><span>Silence removal enabled</span></label>
+      <label class="slider-field"><span>Threshold</span><output for="silence-removal-threshold" id="silence-removal-threshold-value">-48 dB</output><input id="silence-removal-threshold" type="range" min="-80" max="-6" step="1" value="-48"></label>
+      <label class="slider-field"><span>Min silence</span><output for="silence-removal-min" id="silence-removal-min-value">80 ms</output><input id="silence-removal-min" type="range" min="10" max="2000" step="5" value="80"></label>
+      <label class="slider-field"><span>Padding</span><output for="silence-removal-padding" id="silence-removal-padding-value">10 ms</output><input id="silence-removal-padding" type="range" min="1" max="250" step="1" value="10"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-reverse" class="modal">
+  <div class="modal-header"><h3>Reverse</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Reverse</h3>
+      <label class="toggle-field"><input id="reverse-enabled" type="checkbox"><span>Reverse enabled</span></label>
+      <label class="slider-field"><span>Window</span><output for="reverse-window" id="reverse-window-value">350 ms</output><input id="reverse-window" type="range" min="20" max="4000" step="10" value="350"></label>
+      <label class="slider-field"><span>Wet mix</span><output for="reverse-mix" id="reverse-mix-value">100%</output><input id="reverse-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-stereo-balance" class="modal">
+  <div class="modal-header"><h3>Stereo balance (pan)</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Stereo balance (pan)</h3>
+      <label class="slider-field"><span>Pan</span><output for="pan" id="pan-value">0.00</output><input id="pan" type="range" min="-1" max="1" step="0.01" value="0"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-mono-stereo" class="modal">
+  <div class="modal-header"><h3>Mono ↔ Stereo</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Mono ↔ Stereo</h3>
+      <label class="slider-field"><span>Mono mix</span><output for="mono-mix" id="mono-mix-value">0%</output><input id="mono-mix" type="range" min="0" max="1" step="0.01" value="0"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-dc-offset-removal" class="modal">
+  <div class="modal-header"><h3>DC offset removal</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>DC offset removal</h3>
+      <label class="toggle-field"><input id="dc-block" type="checkbox" checked><span>DC offset removal enabled</span></label>
+    </section>
+  </div>
+</div>

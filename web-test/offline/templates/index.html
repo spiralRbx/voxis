@@ -310,9 +310,62 @@
         padding: 14px;
       }
     }
+
+    /* --- Menu Bar --- */
+    .menubar { display: flex; align-items: center; padding: 0 20px; height: 54px; background: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255, 255, 255, 0.4); position: relative; z-index: 200; backdrop-filter: blur(10px); margin-bottom: 0px; }
+    .menubar-brand { font-weight: 800; margin-right: 32px; color: var(--accent-deep); font-family: "Rockwell", "Book Antiqua", serif; font-size: 1.2rem; }
+    .menubar-nav, .dropdown, .submenu { list-style: none; margin: 0; padding: 0; }
+    .menubar-nav { display: flex; height: 100%; }
+    .menu-item { position: relative; display: flex; align-items: center; }
+    .menu-item > a, .dropdown a, .submenu a { padding: 0 16px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 0.95rem; display: block; }
+    .menu-item > a { height: 100%; display: flex; align-items: center; }
+    .menu-item:hover > a { background: rgba(0,0,0,0.05); }
+    .dropdown, .submenu { display: none; position: absolute; top: 100%; left: 0; background: #fff5eb; border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 0 0 8px 8px; min-width: 180px; padding: 8px 0; z-index: 250;}
+    .menu-item:hover > .dropdown { display: block; }
+    .has-submenu { position: relative; }
+    .has-submenu > a { padding: 10px 16px; display: flex; justify-content: space-between; }
+    .has-submenu > a::after { content: "▸"; margin-left: 8px; color: var(--muted); }
+    .has-submenu:hover > a { background: rgba(0,0,0,0.05); }
+    .submenu { top: -8px; left: 100%; border-radius: 8px; }
+    .has-submenu:hover > .submenu { display: block; }
+    .submenu a { padding: 8px 16px; font-weight: 400; }
+    .submenu a::after { display: none; }
+    .submenu a:hover { background: rgba(0,0,0,0.05); }
+
+    /* --- Modals --- */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(25, 22, 19, 0.4); backdrop-filter: blur(4px); z-index: 300; }
+    .modal-overlay.active { display: block; }
+    .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(250, 241, 230, 0.96)); border: 1px solid rgba(255, 255, 255, 0.65); border-radius: 20px; box-shadow: var(--shadow); z-index: 301; width: 96%; max-width: 480px; backdrop-filter: blur(18px); }
+    .modal.active { display: block; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+    .modal-header h3 { margin: 0; font-size: 1.2rem; font-family: "Rockwell", "Book Antiqua", serif; }
+    .modal-close { background: transparent; border: none; font-size: 1.8rem; line-height: 1; color: var(--muted); cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .modal-close:hover { color: var(--accent-deep); transform: none; background: rgba(0,0,0,0.05); }
+    .modal-body { padding: 20px; max-height: calc(100vh - 120px); overflow-y: auto; }
   </style>
 </head>
 <body>
+  <nav class="menubar">
+  <div class="menubar-brand">Voxis</div>
+  <ul class="menubar-nav">
+    <li class="menu-item has-dropdown">
+      <a href="javascript:void(0);">Effects</a>
+      <ul class="dropdown">
+        {% for group_title, effects in effect_groups %}
+        <li class="has-submenu">
+          <a href="javascript:void(0);">{{ group_title }}</a>
+          <ul class="submenu">
+            {% for effect_id, effect_label, _ in effects %}
+            <li><a href="javascript:void(0);" data-open-modal="modal-{{ effect_id }}">{{ effect_label }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+</nav>
+
   <main class="wrap">
     <section class="card top">
       <div class="hero-copy">
@@ -400,70 +453,64 @@
         </div>
       </section>
 
-      <section class="effect-columns">
-        {% for lane in effect_columns %}
-        <div class="effect-lane">
-          {% for group_title, effects in lane %}
-          <section class="card">
-            <details {% if loop.first %}open{% endif %}>
-              <summary>{{ group_title }}</summary>
-              <div class="body grid">
-                {% for effect_id, effect_label, fields in effects %}
-                <article class="fx">
-                  <div class="head">
-                    <div class="title">{{ effect_label }}</div>
-                    <label><input type="checkbox" name="{{ effect_id }}"> enable</label>
-                  </div>
-                  {% for field in fields %}
-                  <div>
-                    <div class="meta">
-                      <label>{{ field.label }}</label>
-                      <span data-value="{{ field.name }}">{{ field.value }}</span>
-                    </div>
-                    <input
-                      data-range="1"
-                      type="range"
-                      name="{{ field.name }}"
-                      min="{{ field.min }}"
-                      max="{{ field.max }}"
-                      step="{{ field.step }}"
-                      value="{{ field.value }}"
-                    >
-                  </div>
-                  {% endfor %}
-                  {% if effect_id == "convolution_reverb" %}
-                  <div>
-                    <label>Impulse response (optional)</label>
-                    <input type="file" name="impulse_response">
-                  </div>
-                  {% endif %}
-                  {% if effect_id == "crossfade" %}
-                  <div>
-                    <label>Second file (required when enabled)</label>
-                    <input type="file" name="crossfade_audio">
-                  </div>
-                  {% endif %}
-                </article>
-                {% endfor %}
-              </div>
-            </details>
-          </section>
-          {% endfor %}
-        </div>
-        {% endfor %}
-      </section>
-
       <section class="card">
         <button class="btn" type="submit">Render and export</button>
         <span class="muted">WAV and FLAC ignore bitrate by validation. MP3, OGG, AAC, and M4A accept bitrate. The debug panel shows timing per stage.</span>
       </section>
-    </form>
-
     <section class="card" id="result">
       <div class="muted">The processed result, export warnings, timing breakdown, and pipeline debug output appear here.</div>
     </section>
+<div id="modal-overlay" class="modal-overlay"></div>
+{% for group_title, effects in effect_groups %}
+  {% for effect_id, effect_label, fields in effects %}
+  <div id="modal-{{ effect_id }}" class="modal">
+    <div class="modal-header">
+      <h3>{{ effect_label }}</h3>
+      <button type="button" class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body form-stack">
+      <article class="fx">
+        <div class="head">
+          <div class="title">{{ effect_label }}</div>
+          <label><input type="checkbox" name="{{ effect_id }}"> enable</label>
+        </div>
+        {% for field in fields %}
+        <div>
+          <div class="meta">
+            <label>{{ field.label }}</label>
+            <span data-value="{{ field.name }}">{{ field.value }}</span>
+          </div>
+          <input
+            data-range="1"
+            type="range"
+            name="{{ field.name }}"
+            min="{{ field.min }}"
+            max="{{ field.max }}"
+            step="{{ field.step }}"
+            value="{{ field.value }}"
+          >
+        </div>
+        {% endfor %}
+        {% if effect_id == "convolution_reverb" %}
+        <div>
+          <label>Impulse response (optional)</label>
+          <input type="file" name="impulse_response">
+        </div>
+        {% endif %}
+        {% if effect_id == "crossfade" %}
+        <div>
+          <label>Second file (required when enabled)</label>
+          <input type="file" name="crossfade_audio">
+        </div>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+  {% endfor %}
+{% endfor %}
+</form>
   </main>
-
+  <script src="/static/ui.js"></script>
   <script>
     const caps = {{ caps|safe }};
 

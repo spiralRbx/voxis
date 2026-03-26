@@ -1,0 +1,255 @@
+:root {
+  --bg: #f2ecdf;
+  --panel: rgba(255, 252, 246, 0.92);
+  --line: rgba(74, 52, 26, 0.16);
+  --ink: #23170f;
+  --accent: #b95b1d;
+  --accent-soft: rgba(185, 91, 29, 0.14);
+  --muted: #6b5948;
+  --shadow: 0 20px 60px rgba(42, 27, 10, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(185, 91, 29, 0.05) 0,
+      rgba(185, 91, 29, 0.05) 1px,
+      transparent 1px,
+      transparent 64px
+    ),
+    var(--bg);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button,
+input,
+label,
+output {
+  font: inherit;
+}
+
+.shell {
+  width: min(1440px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.hero {
+  margin-bottom: 24px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255, 248, 239, 0.96), rgba(255, 252, 248, 0.88));
+  box-shadow: var(--shadow);
+}
+
+.eyebrow,
+.kicker {
+  margin: 0 0 8px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.hero h1,
+.panel h2,
+.effect-card h3,
+.callout h3 {
+  margin: 0;
+}
+
+.hero-copy,
+.card-head p,
+.callout p,
+.status-list p {
+  color: var(--muted);
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.hero-badges span,
+.chip,
+.card-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.hero-badges span,
+.chip {
+  padding: 8px 12px;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: minmax(360px, 1.25fr) minmax(300px, 0.9fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.panel {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.panel-header,
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chip {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.field,
+.control,
+.toggle {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.field span,
+.control span,
+.toggle span {
+  font-weight: 600;
+}
+
+.field input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+button {
+  border: 0;
+  border-radius: 16px;
+  padding: 12px 16px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #6b5948;
+}
+
+.player-host {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px dashed rgba(185, 91, 29, 0.28);
+  background: var(--accent-soft);
+}
+
+.player-host audio {
+  width: 100%;
+}
+
+.status-list {
+  display: grid;
+  gap: 10px;
+}
+
+.status-list p {
+  margin: 0;
+}
+
+.callout {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.card-index {
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.effect-card p {
+  margin: 4px 0 0;
+}
+
+.toggle {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.control {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.control input[type="range"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+output {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(35, 23, 15, 0.08);
+}
+
+@media (max-width: 980px) {
+  .top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shell {
+    width: min(100% - 20px, 1440px);
+    padding-top: 20px;
+  }
+}

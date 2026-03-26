@@ -1,6 +1,6 @@
-normalize(headroom_db=1.00) -> 68.72 ms
 
 Basic
+normalize(headroom_db=1.00) -> 68.72 ms
 gain(db=24.00) -> 36.72 ms
 fade_in(duration_ms=5000.00) -> 31.75 ms
 fade_out(duration_ms=5000.00) -> 33.27 ms
@@ -145,15 +145,15 @@ lufs_approx: -8.37
 envelope_mean: 0.5826
 envelope_peak: 0.8982
 
-Tempos por etapa
+Times per stage
 decode_input: 1712.73 ms
 export: 4428.63 ms
 total: 17410.05 ms
 
-Pipeline final
+Final pipeline
 (source clip)
 
-Metricas de saida
+Output metrics
 sample_rate: 44100
 channels: 2
 duration_seconds: 153.50

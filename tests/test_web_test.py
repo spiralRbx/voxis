@@ -9,15 +9,24 @@ from pathlib import Path
 import numpy as np
 
 
-def load_web_app():
-    module_path = Path(__file__).resolve().parents[1] / "web-test" / "app.py"
-    spec = importlib.util.spec_from_file_location("voxis_web_test", module_path)
+def load_module(module_path: Path, module_name: str):
+    spec = importlib.util.spec_from_file_location(module_name, module_path)
     if spec is None or spec.loader is None:
-        raise RuntimeError("Could not load web-test/app.py")
+        raise RuntimeError(f"Could not load {module_path}")
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
-    return module.app
+    return module
+
+
+def load_web_app():
+    module_path = Path(__file__).resolve().parents[1] / "web-test" / "app.py"
+    return load_module(module_path, "voxis_web_test").app
+
+
+def load_offline_web_module():
+    module_path = Path(__file__).resolve().parents[1] / "web-test" / "offline" / "app.py"
+    return load_module(module_path, "voxis_web_test_offline")
 
 
 def make_wav_bytes(*, sample_rate: int = 22_050, duration_seconds: float = 0.15) -> io.BytesIO:
@@ -157,3 +166,29 @@ def test_web_test_handles_spatial_and_analysis_blocks() -> None:
     assert "Input metrics" in text
     assert "Output metrics" in text
     assert "stereo_imager" in text
+
+
+def test_web_test_recreates_missing_runtime_directories(tmp_path) -> None:
+    module = load_offline_web_module()
+    module.app.config["VOXIS_UPLOAD_FOLDER"] = tmp_path / "runtime" / "uploads"
+    module.app.config["VOXIS_OUTPUT_FOLDER"] = tmp_path / "runtime" / "outputs"
+    client = module.app.test_client()
+    audio = make_wav_bytes()
+
+    response = client.post(
+        "/process",
+        data={
+            "audio": (audio, "demo.wav"),
+            "format": "wav",
+            "normalize_enabled": "no",
+            "gain": "on",
+            "gain_db": "2.0",
+        },
+        content_type="multipart/form-data",
+    )
+
+    text = response.get_data(as_text=True)
+    assert response.status_code == 200
+    assert "Render complete" in text
+    assert Path(module.app.config["VOXIS_UPLOAD_FOLDER"]).exists()
+    assert Path(module.app.config["VOXIS_OUTPUT_FOLDER"]).exists()

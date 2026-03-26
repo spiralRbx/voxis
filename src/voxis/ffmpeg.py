@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import os
 import re
 import shutil
@@ -56,6 +57,15 @@ class ExportSettings:
     warnings: tuple[str, ...]
 
 
+@dataclass(frozen=True, slots=True)
+class InputPathResolution:
+    original_path: str | Path
+    resolved_path: str | Path
+    is_local_file: bool
+    used_caller_dir: bool
+    caller_dir: Path | None
+
+
 def resolve_ffmpeg() -> str:
     env_path = os.environ.get("VOXIS_FFMPEG") or os.environ.get("VOXERA_FFMPEG")
     if env_path:
@@ -97,6 +107,104 @@ def infer_format(path: str | Path, format: str | None = None) -> str:
     return suffix or "wav"
 
 
+def _is_local_path(value: str | Path) -> bool:
+    if isinstance(value, Path):
+        return True
+    text = str(value)
+    if text == "-" or text.startswith("pipe:"):
+        return False
+    return "://" not in text
+
+
+def _package_root() -> Path:
+    return Path(__file__).resolve().parent
+
+
+def _find_caller_dir() -> Path | None:
+    frame = inspect.currentframe()
+    if frame is None:
+        return None
+
+    package_root = _package_root()
+    current = frame.f_back
+    try:
+        while current is not None:
+            filename = current.f_code.co_filename
+            if filename and not filename.startswith("<"):
+                candidate = Path(filename).resolve()
+                if not candidate.is_relative_to(package_root):
+                    return candidate.parent
+            current = current.f_back
+    finally:
+        del frame
+
+    return None
+
+
+def _resolve_input_path(path: str | Path) -> InputPathResolution:
+    if not _is_local_path(path):
+        return InputPathResolution(
+            original_path=path,
+            resolved_path=path,
+            is_local_file=False,
+            used_caller_dir=False,
+            caller_dir=None,
+        )
+
+    local_path = Path(path).expanduser()
+    caller_dir = _find_caller_dir() if not local_path.is_absolute() else None
+
+    if local_path.is_absolute():
+        return InputPathResolution(
+            original_path=path,
+            resolved_path=local_path,
+            is_local_file=True,
+            used_caller_dir=False,
+            caller_dir=None,
+        )
+
+    base_dir = caller_dir if caller_dir is not None else Path.cwd()
+    resolved_path = (base_dir / local_path).resolve()
+
+    return InputPathResolution(
+        original_path=path,
+        resolved_path=resolved_path,
+        is_local_file=True,
+        used_caller_dir=caller_dir is not None,
+        caller_dir=caller_dir,
+    )
+
+
+def _resolve_output_path(path: str | Path) -> str | Path:
+    if not _is_local_path(path):
+        return path
+
+    local_path = Path(path).expanduser()
+    if local_path.is_absolute():
+        return local_path
+
+    caller_dir = _find_caller_dir()
+    base_dir = caller_dir if caller_dir is not None else Path.cwd()
+    return (base_dir / local_path).resolve()
+
+
+def _missing_input_error(resolution: InputPathResolution) -> FFmpegError:
+    original = Path(resolution.original_path).expanduser()
+    if original.is_absolute():
+        return FFmpegError(f"Audio file not found: {original!s}.")
+
+    if resolution.caller_dir is not None:
+        checked = str((resolution.caller_dir / original).resolve())
+        return FFmpegError(
+            f"Audio file not found: {original!s}. Voxis resolved this relative path from the calling script directory: {checked}."
+        )
+
+    checked = str((Path.cwd() / original).resolve())
+    return FFmpegError(
+        f"Audio file not found: {original!s}. Voxis resolved this relative path from the current working directory: {checked}."
+    )
+
+
 def prepare_export_settings(
     path: str | Path,
     *,
@@ -104,7 +212,8 @@ def prepare_export_settings(
     codec: str | None = None,
     bitrate: str | None = None,
 ) -> ExportSettings:
-    output_path = Path(path)
+    resolved_output = _resolve_output_path(path)
+    output_path = Path(resolved_output)
     resolved_format = infer_format(output_path, format)
     warnings: list[str] = []
 
@@ -134,9 +243,14 @@ def prepare_export_settings(
 
 
 def probe_audio(path: str | Path) -> AudioMetadata:
+    resolution = _resolve_input_path(path)
+    resolved_path = resolution.resolved_path
+    if resolution.is_local_file and isinstance(resolved_path, Path) and not resolved_path.exists():
+        raise _missing_input_error(resolution)
+
     ffmpeg = resolve_ffmpeg()
     result = subprocess.run(
-        [ffmpeg, "-hide_banner", "-i", str(path)],
+        [ffmpeg, "-hide_banner", "-i", str(resolved_path)],
         capture_output=True,
         text=True,
         check=False,
@@ -145,7 +259,7 @@ def probe_audio(path: str | Path) -> AudioMetadata:
     combined = "\n".join(part for part in (result.stdout, result.stderr) if part)
     match = _AUDIO_LINE_RE.search(combined)
     if match is None:
-        raise FFmpegError(f"Unable to probe audio stream metadata for {path!s}.")
+        raise FFmpegError(f"Unable to probe audio stream metadata for {resolved_path!s}.")
 
     return AudioMetadata(
         sample_rate=int(match.group("rate")),
@@ -160,7 +274,11 @@ def decode_audio(
     sample_rate: int | None = None,
     channels: int | None = None,
 ) -> tuple[np.ndarray, AudioMetadata]:
-    input_path = Path(path)
+    resolution = _resolve_input_path(path)
+    input_path = resolution.resolved_path
+    if resolution.is_local_file and isinstance(input_path, Path) and not input_path.exists():
+        raise _missing_input_error(resolution)
+
     metadata = probe_audio(input_path)
     target_sample_rate = metadata.sample_rate if sample_rate is None else int(sample_rate)
     target_channels = metadata.channels if channels is None else int(channels)
@@ -224,6 +342,8 @@ def encode_audio(
         supported_values = tuple(int(value) for value in supported_rates)  # type: ignore[arg-type]
         if target_sample_rate not in supported_values:
             target_sample_rate = min(supported_values, key=lambda value: abs(value - target_sample_rate))
+
+    settings.output_path.parent.mkdir(parents=True, exist_ok=True)
 
     command = [
         ffmpeg,

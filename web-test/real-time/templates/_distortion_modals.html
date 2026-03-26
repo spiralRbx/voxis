@@ -1,0 +1,44 @@
+<div id="modal-distortion" class="modal">
+  <div class="modal-header"><h3>Distortion</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Distortion</h3><label class="toggle-field"><input id="distortion-enabled" type="checkbox"><span>Distortion enabled</span></label><label class="slider-field"><span>Drive</span><output for="distortion-drive" id="distortion-drive-value">2.00x</output><input id="distortion-drive" type="range" min="0.1" max="8" step="0.01" value="2"></label></section></div>
+</div>
+
+<div id="modal-overdrive" class="modal">
+  <div class="modal-header"><h3>Overdrive</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Overdrive</h3><label class="toggle-field"><input id="overdrive-enabled" type="checkbox"><span>Overdrive enabled</span></label><label class="slider-field"><span>Drive</span><output for="overdrive-drive" id="overdrive-drive-value">1.80x</output><input id="overdrive-drive" type="range" min="0.1" max="8" step="0.01" value="1.8"></label><label class="slider-field"><span>Tone</span><output for="overdrive-tone" id="overdrive-tone-value">55%</output><input id="overdrive-tone" type="range" min="0" max="1" step="0.01" value="0.55"></label><label class="slider-field"><span>Mix</span><output for="overdrive-mix" id="overdrive-mix-value">100%</output><input id="overdrive-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-fuzz" class="modal">
+  <div class="modal-header"><h3>Fuzz</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Fuzz</h3><label class="toggle-field"><input id="fuzz-enabled" type="checkbox"><span>Fuzz enabled</span></label><label class="slider-field"><span>Drive</span><output for="fuzz-drive" id="fuzz-drive-value">3.60x</output><input id="fuzz-drive" type="range" min="0.1" max="10" step="0.01" value="3.6"></label><label class="slider-field"><span>Bias</span><output for="fuzz-bias" id="fuzz-bias-value">0.12</output><input id="fuzz-bias" type="range" min="-0.45" max="0.45" step="0.01" value="0.12"></label><label class="slider-field"><span>Mix</span><output for="fuzz-mix" id="fuzz-mix-value">100%</output><input id="fuzz-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-bitcrusher" class="modal">
+  <div class="modal-header"><h3>Bitcrusher</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Bitcrusher</h3><label class="toggle-field"><input id="bitcrusher-enabled" type="checkbox"><span>Bitcrusher enabled</span></label><label class="slider-field"><span>Bit depth</span><output for="bitcrusher-bit-depth" id="bitcrusher-bit-depth-value">8-bit</output><input id="bitcrusher-bit-depth" type="range" min="2" max="16" step="1" value="8"></label><label class="slider-field"><span>Sample-rate reduction</span><output for="bitcrusher-sample-rate-reduction" id="bitcrusher-sample-rate-reduction-value">4x</output><input id="bitcrusher-sample-rate-reduction" type="range" min="1" max="24" step="1" value="4"></label><label class="slider-field"><span>Mix</span><output for="bitcrusher-mix" id="bitcrusher-mix-value">100%</output><input id="bitcrusher-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-waveshaper" class="modal">
+  <div class="modal-header"><h3>Waveshaper</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Waveshaper</h3><label class="toggle-field"><input id="waveshaper-enabled" type="checkbox"><span>Waveshaper enabled</span></label><label class="slider-field"><span>Amount</span><output for="waveshaper-amount" id="waveshaper-amount-value">1.40x</output><input id="waveshaper-amount" type="range" min="0.1" max="6" step="0.01" value="1.4"></label><label class="slider-field"><span>Symmetry</span><output for="waveshaper-symmetry" id="waveshaper-symmetry-value">0.00</output><input id="waveshaper-symmetry" type="range" min="-0.95" max="0.95" step="0.01" value="0"></label><label class="slider-field"><span>Mix</span><output for="waveshaper-mix" id="waveshaper-mix-value">100%</output><input id="waveshaper-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-tube-saturation" class="modal">
+  <div class="modal-header"><h3>Tube saturation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Tube saturation</h3><label class="toggle-field"><input id="tube-saturation-enabled" type="checkbox"><span>Tube saturation enabled</span></label><label class="slider-field"><span>Drive</span><output for="tube-saturation-drive" id="tube-saturation-drive-value">1.60x</output><input id="tube-saturation-drive" type="range" min="0.1" max="8" step="0.01" value="1.6"></label><label class="slider-field"><span>Bias</span><output for="tube-saturation-bias" id="tube-saturation-bias-value">0.08</output><input id="tube-saturation-bias" type="range" min="-0.4" max="0.4" step="0.01" value="0.08"></label><label class="slider-field"><span>Mix</span><output for="tube-saturation-mix" id="tube-saturation-mix-value">100%</output><input id="tube-saturation-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-tape-saturation" class="modal">
+  <div class="modal-header"><h3>Tape saturation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Tape saturation</h3><label class="toggle-field"><input id="tape-saturation-enabled" type="checkbox"><span>Tape saturation enabled</span></label><label class="slider-field"><span>Drive</span><output for="tape-saturation-drive" id="tape-saturation-drive-value">1.40x</output><input id="tape-saturation-drive" type="range" min="0.1" max="8" step="0.01" value="1.4"></label><label class="slider-field"><span>Softness</span><output for="tape-saturation-softness" id="tape-saturation-softness-value">35%</output><input id="tape-saturation-softness" type="range" min="0" max="1" step="0.01" value="0.35"></label><label class="slider-field"><span>Mix</span><output for="tape-saturation-mix" id="tape-saturation-mix-value">100%</output><input id="tape-saturation-mix" type="range" min="0" max="1" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-soft-clipping" class="modal">
+  <div class="modal-header"><h3>Soft clipping</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Soft clipping</h3><label class="toggle-field"><input id="soft-clipping-enabled" type="checkbox"><span>Soft clipping enabled</span></label><label class="slider-field"><span>Threshold</span><output for="soft-clipping-threshold" id="soft-clipping-threshold-value">0.85</output><input id="soft-clipping-threshold" type="range" min="0.05" max="1" step="0.01" value="0.85"></label></section></div>
+</div>
+
+<div id="modal-hard-clipping" class="modal">
+  <div class="modal-header"><h3>Hard clipping</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Hard clipping</h3><label class="toggle-field"><input id="hard-clipping-enabled" type="checkbox"><span>Hard clipping enabled</span></label><label class="slider-field"><span>Threshold</span><output for="hard-clipping-threshold" id="hard-clipping-threshold-value">0.92</output><input id="hard-clipping-threshold" type="range" min="0.05" max="1" step="0.01" value="0.92"></label></section></div>
+</div>

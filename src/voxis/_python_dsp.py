@@ -401,6 +401,24 @@ def _make_biquad_coefficients(
 
     if kind == "bandpass":
         return _normalize_biquad(alpha, 0.0, -alpha, 1.0 + alpha, -2.0 * cos_omega, 1.0 - alpha)
+    if kind == "highpass":
+        return _normalize_biquad(
+            (1.0 + cos_omega) * 0.5,
+            -(1.0 + cos_omega),
+            (1.0 + cos_omega) * 0.5,
+            1.0 + alpha,
+            -2.0 * cos_omega,
+            1.0 - alpha,
+        )
+    if kind == "notch":
+        return _normalize_biquad(
+            1.0,
+            -2.0 * cos_omega,
+            1.0,
+            1.0 + alpha,
+            -2.0 * cos_omega,
+            1.0 - alpha,
+        )
     if kind == "peak":
         return _normalize_biquad(
             1.0 + alpha * a,
@@ -409,6 +427,24 @@ def _make_biquad_coefficients(
             1.0 + alpha / a,
             -2.0 * cos_omega,
             1.0 - alpha / a,
+        )
+    if kind == "low_shelf":
+        return _normalize_biquad(
+            a * ((a + 1.0) - (a - 1.0) * cos_omega + 2.0 * sqrt_a * shelf_alpha),
+            2.0 * a * ((a - 1.0) - (a + 1.0) * cos_omega),
+            a * ((a + 1.0) - (a - 1.0) * cos_omega - 2.0 * sqrt_a * shelf_alpha),
+            (a + 1.0) + (a - 1.0) * cos_omega + 2.0 * sqrt_a * shelf_alpha,
+            -2.0 * ((a - 1.0) + (a + 1.0) * cos_omega),
+            (a + 1.0) + (a - 1.0) * cos_omega - 2.0 * sqrt_a * shelf_alpha,
+        )
+    if kind == "high_shelf":
+        return _normalize_biquad(
+            a * ((a + 1.0) + (a - 1.0) * cos_omega + 2.0 * sqrt_a * shelf_alpha),
+            -2.0 * a * ((a - 1.0) + (a + 1.0) * cos_omega),
+            a * ((a + 1.0) + (a - 1.0) * cos_omega - 2.0 * sqrt_a * shelf_alpha),
+            (a + 1.0) - (a - 1.0) * cos_omega + 2.0 * sqrt_a * shelf_alpha,
+            2.0 * ((a - 1.0) - (a + 1.0) * cos_omega),
+            (a + 1.0) - (a - 1.0) * cos_omega - 2.0 * sqrt_a * shelf_alpha,
         )
     if kind == "lowpass":
         return _normalize_biquad(
@@ -440,13 +476,31 @@ def _biquad_process_block(
     return output
 
 
-def _lowpass_signal(samples: np.ndarray, sample_rate: int, cutoff_hz: float) -> np.ndarray:
+def _filter_signal(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    kind: str,
+    frequency_hz: float,
+    q: float = 0.70710678,
+    gain_db: float = 0.0,
+    slope: float = 1.0,
+    stages: int = 1,
+) -> np.ndarray:
     frames = ensure_float32_frames(samples)
-    coeff = _make_biquad_coefficients("lowpass", sample_rate, cutoff_hz)
+    coeff = _make_biquad_coefficients(kind, sample_rate, frequency_hz, q=q, gain_db=gain_db, slope=slope)
     output = np.empty_like(frames)
+    stage_count = max(1, int(stages))
     for channel in range(frames.shape[1]):
-        output[:, channel] = _biquad_process_block(frames[:, channel], coeff, [0.0, 0.0])
+        processed = np.array(frames[:, channel], copy=True)
+        for _ in range(stage_count):
+            processed = _biquad_process_block(processed, coeff, [0.0, 0.0])
+        output[:, channel] = processed
     return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _lowpass_signal(samples: np.ndarray, sample_rate: int, cutoff_hz: float) -> np.ndarray:
+    return _filter_signal(samples, sample_rate, kind="lowpass", frequency_hz=cutoff_hz)
 
 
 def _dynamic_eq(
@@ -668,9 +722,28 @@ def _db_to_linear(value_db: float) -> float:
     return float(10.0 ** (float(value_db) / 20.0))
 
 
+def _gain(samples: np.ndarray, *, db: float) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    return np.ascontiguousarray(frames * _db_to_linear(db), dtype=np.float32)
+
+
+def _clip(samples: np.ndarray, *, threshold: float) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    safe_threshold = max(abs(float(threshold)), 0.0001)
+    return np.ascontiguousarray(np.clip(frames, -safe_threshold, safe_threshold), dtype=np.float32)
+
+
 def _mix_wet_dry(frames: np.ndarray, wet: np.ndarray, mix: float) -> np.ndarray:
     clamped_mix = float(np.clip(mix, 0.0, 1.0))
     return np.ascontiguousarray(frames * (1.0 - clamped_mix) + wet * clamped_mix, dtype=np.float32)
+
+
+def _distortion(samples: np.ndarray, *, drive: float) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    shaped_drive = max(float(drive), 0.01)
+    normalizer = max(float(np.tanh(max(shaped_drive, 1.0))), 1e-6)
+    wet = np.tanh(frames * shaped_drive).astype(np.float32) / normalizer
+    return np.ascontiguousarray(wet, dtype=np.float32)
 
 
 def _overdrive(samples: np.ndarray, *, drive: float, tone: float, mix: float) -> np.ndarray:
@@ -836,6 +909,205 @@ def _transient_shaper(
     return np.ascontiguousarray(output, dtype=np.float32)
 
 
+def _compressor(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    threshold_db: float,
+    ratio: float,
+    attack_ms: float,
+    release_ms: float,
+    makeup_db: float,
+) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    output = np.empty_like(frames)
+    threshold = _db_to_linear(threshold_db)
+    safe_ratio = max(float(ratio), 1.0)
+    attack_coeff = np.exp(-1.0 / (0.001 * max(float(attack_ms), 0.001) * sample_rate))
+    release_coeff = np.exp(-1.0 / (0.001 * max(float(release_ms), 0.001) * sample_rate))
+    makeup_gain = _db_to_linear(makeup_db)
+    envelopes = np.zeros(frames.shape[1], dtype=np.float32)
+
+    for frame_index in range(frames.shape[0]):
+        for channel in range(frames.shape[1]):
+            sample = frames[frame_index, channel]
+            detector = abs(sample)
+            coeff = attack_coeff if detector > envelopes[channel] else release_coeff
+            envelopes[channel] = coeff * envelopes[channel] + (1.0 - coeff) * detector
+
+            gain = 1.0
+            if envelopes[channel] > threshold and envelopes[channel] > 0.0:
+                gain = float((envelopes[channel] / threshold) ** (1.0 / safe_ratio - 1.0))
+
+            output[frame_index, channel] = sample * gain * makeup_gain
+
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _limiter(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    ceiling_db: float,
+    attack_ms: float,
+    release_ms: float,
+) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    output = np.empty_like(frames)
+    ceiling = _db_to_linear(ceiling_db)
+    attack_coeff = np.exp(-1.0 / (0.001 * max(float(attack_ms), 0.001) * sample_rate))
+    release_coeff = np.exp(-1.0 / (0.001 * max(float(release_ms), 0.001) * sample_rate))
+    gain_states = np.ones(frames.shape[1], dtype=np.float32)
+
+    for frame_index in range(frames.shape[0]):
+        for channel in range(frames.shape[1]):
+            sample = frames[frame_index, channel]
+            level = abs(sample)
+            desired_gain = ceiling / level if level > ceiling and level > 0.0 else 1.0
+            coeff = attack_coeff if desired_gain < gain_states[channel] else release_coeff
+            gain_states[channel] = coeff * gain_states[channel] + (1.0 - coeff) * desired_gain
+            output[frame_index, channel] = float(np.clip(sample * gain_states[channel], -ceiling, ceiling))
+
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _expander(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    threshold_db: float,
+    ratio: float,
+    attack_ms: float,
+    release_ms: float,
+    makeup_db: float,
+) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    output = np.empty_like(frames)
+    threshold = _db_to_linear(threshold_db)
+    safe_ratio = max(float(ratio), 1.0)
+    attack_coeff = np.exp(-1.0 / (0.001 * max(float(attack_ms), 0.001) * sample_rate))
+    release_coeff = np.exp(-1.0 / (0.001 * max(float(release_ms), 0.001) * sample_rate))
+    makeup_gain = _db_to_linear(makeup_db)
+    envelopes = np.zeros(frames.shape[1], dtype=np.float32)
+
+    for frame_index in range(frames.shape[0]):
+        for channel in range(frames.shape[1]):
+            sample = frames[frame_index, channel]
+            detector = abs(sample)
+            coeff = attack_coeff if detector > envelopes[channel] else release_coeff
+            envelopes[channel] = coeff * envelopes[channel] + (1.0 - coeff) * detector
+
+            gain = 1.0
+            if 0.0 < envelopes[channel] < threshold:
+                gain = float((envelopes[channel] / threshold) ** (safe_ratio - 1.0))
+
+            output[frame_index, channel] = sample * gain * makeup_gain
+
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _noise_gate(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    threshold_db: float,
+    attack_ms: float,
+    release_ms: float,
+    floor_db: float,
+) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    output = np.array(frames, copy=True)
+    threshold = _db_to_linear(threshold_db)
+    floor_gain = _db_to_linear(floor_db)
+    attack_coeff = np.exp(-1.0 / (0.001 * max(float(attack_ms), 0.001) * sample_rate))
+    release_coeff = np.exp(-1.0 / (0.001 * max(float(release_ms), 0.001) * sample_rate))
+    envelopes = np.zeros(frames.shape[1], dtype=np.float32)
+    gain_states = np.full(frames.shape[1], floor_gain, dtype=np.float32)
+
+    for frame_index in range(frames.shape[0]):
+        for channel in range(frames.shape[1]):
+            detector = abs(output[frame_index, channel])
+            env_coeff = attack_coeff if detector > envelopes[channel] else release_coeff
+            envelopes[channel] = env_coeff * envelopes[channel] + (1.0 - env_coeff) * detector
+
+            target_gain = 1.0 if envelopes[channel] >= threshold else floor_gain
+            gain_coeff = attack_coeff if target_gain > gain_states[channel] else release_coeff
+            gain_states[channel] = gain_coeff * gain_states[channel] + (1.0 - gain_coeff) * target_gain
+            output[frame_index, channel] *= gain_states[channel]
+
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _deesser(
+    samples: np.ndarray,
+    sample_rate: int,
+    *,
+    frequency_hz: float,
+    threshold_db: float,
+    ratio: float,
+    attack_ms: float,
+    release_ms: float,
+    amount: float,
+) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    output = np.empty_like(frames)
+    detector_coeffs = _make_biquad_coefficients("highpass", sample_rate, frequency_hz)
+    threshold = _db_to_linear(threshold_db)
+    safe_ratio = max(float(ratio), 1.0)
+    attack_coeff = np.exp(-1.0 / (0.001 * max(float(attack_ms), 0.001) * sample_rate))
+    release_coeff = np.exp(-1.0 / (0.001 * max(float(release_ms), 0.001) * sample_rate))
+    clamped_amount = float(np.clip(amount, 0.0, 1.0))
+
+    for channel in range(frames.shape[1]):
+        detector_state = [0.0, 0.0]
+        envelope = 0.0
+        detected = _biquad_process_block(frames[:, channel], detector_coeffs, detector_state)
+
+        for frame_index, input_sample in enumerate(frames[:, channel]):
+            detector = abs(detected[frame_index])
+            coeff = attack_coeff if detector > envelope else release_coeff
+            envelope = coeff * envelope + (1.0 - coeff) * detector
+
+            gain = 1.0
+            if envelope > threshold and envelope > 0.0:
+                gain = float((envelope / threshold) ** (1.0 / safe_ratio - 1.0))
+
+            shaped_gain = 1.0 - clamped_amount * (1.0 - gain)
+            output[frame_index, channel] = input_sample * shaped_gain
+
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _pan(samples: np.ndarray, *, position: float) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    if frames.shape[1] < 2:
+        return frames.copy()
+
+    output = np.array(frames, copy=True)
+    angle = (float(np.clip(position, -1.0, 1.0)) + 1.0) * (np.pi * 0.25)
+    left_gain = np.cos(angle)
+    right_gain = np.sin(angle)
+    output[:, 0] *= left_gain
+    output[:, 1] *= right_gain
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
+def _stereo_width(samples: np.ndarray, *, width: float) -> np.ndarray:
+    frames = ensure_float32_frames(samples)
+    if frames.shape[1] < 2:
+        return frames.copy()
+
+    output = np.array(frames, copy=True)
+    safe_width = max(float(width), 0.0)
+    left = frames[:, 0]
+    right = frames[:, 1]
+    mid = 0.5 * (left + right)
+    side = 0.5 * (left - right) * safe_width
+    output[:, 0] = mid + side
+    output[:, 1] = mid - side
+    return np.ascontiguousarray(output, dtype=np.float32)
+
+
 def process_python_effect(
     effect: Effect,
     samples: np.ndarray,
@@ -846,6 +1118,147 @@ def process_python_effect(
     frames = ensure_float32_frames(samples)
     params = effect.params
     effect_type = effect.type
+
+    if effect_type == "gain":
+        return _gain(frames, db=float(params.get("db", 0.0)))
+
+    if effect_type == "clip":
+        return _clip(frames, threshold=float(params.get("threshold", 0.98)))
+
+    if effect_type == "distortion":
+        return _distortion(frames, drive=float(params.get("drive", 2.0)))
+
+    if effect_type == "lowpass":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="lowpass",
+            frequency_hz=float(params.get("frequency_hz", 8_000.0)),
+            q=float(params.get("q", 0.70710678)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "highpass":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="highpass",
+            frequency_hz=float(params.get("frequency_hz", 120.0)),
+            q=float(params.get("q", 0.70710678)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "bandpass":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="bandpass",
+            frequency_hz=float(params.get("frequency_hz", 1_000.0)),
+            q=float(params.get("q", 0.70710678)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "notch":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="notch",
+            frequency_hz=float(params.get("frequency_hz", 1_000.0)),
+            q=float(params.get("q", 0.70710678)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "peak_eq":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="peak",
+            frequency_hz=float(params.get("frequency_hz", 1_000.0)),
+            q=float(params.get("q", 1.0)),
+            gain_db=float(params.get("gain_db", 0.0)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "low_shelf":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="low_shelf",
+            frequency_hz=float(params.get("frequency_hz", 120.0)),
+            gain_db=float(params.get("gain_db", 0.0)),
+            slope=float(params.get("slope", 1.0)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "high_shelf":
+        return _filter_signal(
+            frames,
+            sample_rate,
+            kind="high_shelf",
+            frequency_hz=float(params.get("frequency_hz", 9_000.0)),
+            gain_db=float(params.get("gain_db", 0.0)),
+            slope=float(params.get("slope", 1.0)),
+            stages=int(params.get("stages", 1)),
+        )
+
+    if effect_type == "compressor":
+        return _compressor(
+            frames,
+            sample_rate,
+            threshold_db=float(params.get("threshold_db", -18.0)),
+            ratio=float(params.get("ratio", 4.0)),
+            attack_ms=float(params.get("attack_ms", 10.0)),
+            release_ms=float(params.get("release_ms", 80.0)),
+            makeup_db=float(params.get("makeup_db", 0.0)),
+        )
+
+    if effect_type == "limiter":
+        return _limiter(
+            frames,
+            sample_rate,
+            ceiling_db=float(params.get("ceiling_db", -1.0)),
+            attack_ms=float(params.get("attack_ms", 1.0)),
+            release_ms=float(params.get("release_ms", 60.0)),
+        )
+
+    if effect_type == "expander":
+        return _expander(
+            frames,
+            sample_rate,
+            threshold_db=float(params.get("threshold_db", -35.0)),
+            ratio=float(params.get("ratio", 2.0)),
+            attack_ms=float(params.get("attack_ms", 8.0)),
+            release_ms=float(params.get("release_ms", 80.0)),
+            makeup_db=float(params.get("makeup_db", 0.0)),
+        )
+
+    if effect_type == "noise_gate":
+        return _noise_gate(
+            frames,
+            sample_rate,
+            threshold_db=float(params.get("threshold_db", -45.0)),
+            attack_ms=float(params.get("attack_ms", 3.0)),
+            release_ms=float(params.get("release_ms", 60.0)),
+            floor_db=float(params.get("floor_db", -80.0)),
+        )
+
+    if effect_type == "deesser":
+        return _deesser(
+            frames,
+            sample_rate,
+            frequency_hz=float(params.get("frequency_hz", 6_500.0)),
+            threshold_db=float(params.get("threshold_db", -28.0)),
+            ratio=float(params.get("ratio", 4.0)),
+            attack_ms=float(params.get("attack_ms", 2.0)),
+            release_ms=float(params.get("release_ms", 60.0)),
+            amount=float(params.get("amount", 1.0)),
+        )
+
+    if effect_type == "pan":
+        return _pan(frames, position=float(params.get("position", 0.0)))
+
+    if effect_type == "stereo_width":
+        return _stereo_width(frames, width=float(params.get("width", 1.0)))
 
     if effect_type == "delay":
         return _variable_delay(

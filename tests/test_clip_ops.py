@@ -33,6 +33,16 @@ def test_basic_clip_operations_are_available() -> None:
     assert "remove_dc_offset" in stereo.pipeline_info()
 
 
+def test_duration_seconds_and_duration_ms_are_available() -> None:
+    clip = make_clip(duration_seconds=0.25)
+    deferred = clip.lazy()
+
+    assert abs(clip.duration_seconds - 0.25) < 1e-6
+    assert abs(clip.duration_ms - 250.0) < 1e-3
+    assert abs(deferred.duration_seconds - 0.25) < 1e-6
+    assert abs(deferred.duration_ms - 250.0) < 1e-3
+
+
 def test_remove_silence_and_crossfade_behave_as_expected() -> None:
     sample_rate = 48_000
     tone = make_clip(sample_rate=sample_rate, duration_seconds=0.1).samples

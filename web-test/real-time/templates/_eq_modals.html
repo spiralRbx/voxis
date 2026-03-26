@@ -1,0 +1,80 @@
+<div id="modal-parametric-equalizer" class="modal">
+  <div class="modal-header"><h3>Parametric equalizer</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Parametric equalizer</h3>
+      <label class="toggle-field"><input id="peak-eq-enabled" type="checkbox"><span>Dedicated peak band enabled</span></label>
+      <label class="slider-field"><span>Peak frequency</span><output for="peak-eq-freq" id="peak-eq-freq-value">2800 Hz</output><input id="peak-eq-freq" type="range" min="40" max="16000" step="10" value="2800"></label>
+      <label class="slider-field"><span>Peak gain</span><output for="peak-eq-gain" id="peak-eq-gain-value">0.0 dB</output><input id="peak-eq-gain" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>Peak Q</span><output for="peak-eq-q" id="peak-eq-q-value">1.00</output><input id="peak-eq-q" type="range" min="0.1" max="12" step="0.01" value="1"></label>
+      {% for index, freq in [(1,180),(2,3000),(3,9500)] %}
+      <label class="toggle-field"><input id="parametric-{{ index }}-enabled" type="checkbox"><span>Band {{ index }} enabled</span></label>
+      <label class="field"><span>Band {{ index }} kind</span><select id="parametric-{{ index }}-kind"><option value="peak">Peak</option><option value="lowShelf">Low shelf</option><option value="highShelf">High shelf</option><option value="bandpass">Band-pass</option><option value="notch">Notch</option><option value="lowpass">Low-pass</option><option value="highpass">High-pass</option></select></label>
+      <label class="slider-field"><span>Band {{ index }} frequency</span><output for="parametric-{{ index }}-freq" id="parametric-{{ index }}-freq-value">{{ freq }} Hz</output><input id="parametric-{{ index }}-freq" type="range" min="20" max="16000" step="10" value="{{ freq }}"></label>
+      <label class="slider-field"><span>Band {{ index }} gain</span><output for="parametric-{{ index }}-gain" id="parametric-{{ index }}-gain-value">0.0 dB</output><input id="parametric-{{ index }}-gain" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>Band {{ index }} Q</span><output for="parametric-{{ index }}-q" id="parametric-{{ index }}-q-value">{% if index == 1 %}0.90{% elif index == 2 %}1.00{% else %}0.80{% endif %}</output><input id="parametric-{{ index }}-q" type="range" min="0.1" max="12" step="0.01" value="{% if index == 1 %}0.9{% elif index == 2 %}1{% else %}0.8{% endif %}"></label>
+      {% endfor %}
+    </section>
+  </div>
+</div>
+
+<div id="modal-graphic-eq" class="modal">
+  <div class="modal-header"><h3>Graphic EQ</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Graphic EQ</h3>
+      <label class="toggle-field"><input id="graphic-eq-enabled" type="checkbox"><span>Graphic EQ enabled</span></label>
+      <label class="slider-field"><span>Q</span><output for="graphic-eq-q" id="graphic-eq-q-value">1.10</output><input id="graphic-eq-q" type="range" min="0.3" max="3" step="0.01" value="1.1"></label>
+      <label class="slider-field"><span>100 Hz</span><output for="graphic-eq-100" id="graphic-eq-100-value">0.0 dB</output><input id="graphic-eq-100" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>250 Hz</span><output for="graphic-eq-250" id="graphic-eq-250-value">0.0 dB</output><input id="graphic-eq-250" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>1 kHz</span><output for="graphic-eq-1000" id="graphic-eq-1000-value">0.0 dB</output><input id="graphic-eq-1000" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>4 kHz</span><output for="graphic-eq-4000" id="graphic-eq-4000-value">0.0 dB</output><input id="graphic-eq-4000" type="range" min="-18" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>12 kHz</span><output for="graphic-eq-12000" id="graphic-eq-12000-value">0.0 dB</output><input id="graphic-eq-12000" type="range" min="-18" max="18" step="0.1" value="0"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-low-pass-filter" class="modal">
+  <div class="modal-header"><h3>Low-pass filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Low-pass filter</h3><label class="toggle-field"><input id="lowpass-enabled" type="checkbox"><span>Low-pass enabled</span></label><label class="slider-field"><span>Frequency</span><output for="lowpass-freq" id="lowpass-freq-value">18000 Hz</output><input id="lowpass-freq" type="range" min="500" max="20000" step="10" value="18000"></label></section></div>
+</div>
+
+<div id="modal-high-pass-filter" class="modal">
+  <div class="modal-header"><h3>High-pass filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>High-pass filter</h3><label class="toggle-field"><input id="highpass-enabled" type="checkbox" checked><span>High-pass enabled</span></label><label class="slider-field"><span>Frequency</span><output for="highpass-freq" id="highpass-freq-value">80 Hz</output><input id="highpass-freq" type="range" min="20" max="1200" step="1" value="80"></label></section></div>
+</div>
+
+<div id="modal-band-pass-filter" class="modal">
+  <div class="modal-header"><h3>Band-pass filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Band-pass filter</h3><label class="toggle-field"><input id="bandpass-enabled" type="checkbox"><span>Band-pass enabled</span></label><label class="slider-field"><span>Frequency</span><output for="bandpass-freq" id="bandpass-freq-value">1200 Hz</output><input id="bandpass-freq" type="range" min="40" max="16000" step="10" value="1200"></label><label class="slider-field"><span>Q</span><output for="bandpass-q" id="bandpass-q-value">0.90</output><input id="bandpass-q" type="range" min="0.1" max="12" step="0.01" value="0.9"></label></section></div>
+</div>
+
+<div id="modal-notch-filter" class="modal">
+  <div class="modal-header"><h3>Notch filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Notch filter</h3><label class="toggle-field"><input id="notch-enabled" type="checkbox"><span>Notch enabled</span></label><label class="slider-field"><span>Frequency</span><output for="notch-freq" id="notch-freq-value">3500 Hz</output><input id="notch-freq" type="range" min="40" max="16000" step="10" value="3500"></label><label class="slider-field"><span>Q</span><output for="notch-q" id="notch-q-value">2.00</output><input id="notch-q" type="range" min="0.1" max="18" step="0.01" value="2"></label></section></div>
+</div>
+
+<div id="modal-low-shelf" class="modal">
+  <div class="modal-header"><h3>Low shelf</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Low shelf</h3><label class="toggle-field"><input id="low-shelf-enabled" type="checkbox"><span>Low shelf enabled</span></label><label class="slider-field"><span>Frequency</span><output for="low-shelf-freq" id="low-shelf-freq-value">120 Hz</output><input id="low-shelf-freq" type="range" min="20" max="1200" step="1" value="120"></label><label class="slider-field"><span>Gain</span><output for="low-shelf-gain" id="low-shelf-gain-value">0.0 dB</output><input id="low-shelf-gain" type="range" min="-18" max="18" step="0.1" value="0"></label><label class="slider-field"><span>Slope</span><output for="low-shelf-slope" id="low-shelf-slope-value">1.00</output><input id="low-shelf-slope" type="range" min="0.2" max="2" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-high-shelf" class="modal">
+  <div class="modal-header"><h3>High shelf</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>High shelf</h3><label class="toggle-field"><input id="high-shelf-enabled" type="checkbox"><span>High shelf enabled</span></label><label class="slider-field"><span>Frequency</span><output for="high-shelf-freq" id="high-shelf-freq-value">9500 Hz</output><input id="high-shelf-freq" type="range" min="1000" max="20000" step="10" value="9500"></label><label class="slider-field"><span>Gain</span><output for="high-shelf-gain" id="high-shelf-gain-value">0.0 dB</output><input id="high-shelf-gain" type="range" min="-18" max="18" step="0.1" value="0"></label><label class="slider-field"><span>Slope</span><output for="high-shelf-slope" id="high-shelf-slope-value">1.00</output><input id="high-shelf-slope" type="range" min="0.2" max="2" step="0.01" value="1"></label></section></div>
+</div>
+
+<div id="modal-resonant-filter" class="modal">
+  <div class="modal-header"><h3>Resonant filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Resonant filter</h3><label class="toggle-field"><input id="resonant-enabled" type="checkbox"><span>Resonant filter enabled</span></label><label class="field"><span>Mode</span><select id="resonant-mode"><option value="lowpass">Low-pass</option><option value="highpass">High-pass</option><option value="bandpass">Band-pass</option></select></label><label class="slider-field"><span>Frequency</span><output for="resonant-freq" id="resonant-freq-value">1200 Hz</output><input id="resonant-freq" type="range" min="40" max="16000" step="10" value="1200"></label><label class="slider-field"><span>Resonance</span><output for="resonant-resonance" id="resonant-resonance-value">1.60</output><input id="resonant-resonance" type="range" min="0.1" max="20" step="0.01" value="1.6"></label></section></div>
+</div>
+
+<div id="modal-dynamic-eq" class="modal">
+  <div class="modal-header"><h3>Dynamic EQ</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Dynamic EQ</h3><label class="toggle-field"><input id="dynamic-eq-enabled" type="checkbox"><span>Dynamic EQ enabled</span></label><label class="slider-field"><span>Frequency</span><output for="dynamic-eq-frequency" id="dynamic-eq-frequency-value">2800 Hz</output><input id="dynamic-eq-frequency" type="range" min="200" max="12000" step="10" value="2800"></label><label class="slider-field"><span>Threshold</span><output for="dynamic-eq-threshold" id="dynamic-eq-threshold-value">-24 dB</output><input id="dynamic-eq-threshold" type="range" min="-60" max="-6" step="1" value="-24"></label><label class="slider-field"><span>Cut</span><output for="dynamic-eq-cut" id="dynamic-eq-cut-value">-6.0 dB</output><input id="dynamic-eq-cut" type="range" min="-18" max="0" step="0.1" value="-6"></label><label class="slider-field"><span>Q</span><output for="dynamic-eq-q" id="dynamic-eq-q-value">1.20</output><input id="dynamic-eq-q" type="range" min="0.2" max="8" step="0.01" value="1.2"></label></section></div>
+</div>
+
+<div id="modal-formant-filter" class="modal">
+  <div class="modal-header"><h3>Formant filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Formant filter</h3><label class="toggle-field"><input id="formant-enabled" type="checkbox"><span>Formant filter enabled</span></label><label class="slider-field"><span>Morph</span><output for="formant-morph" id="formant-morph-value">0.00 (A)</output><input id="formant-morph" type="range" min="0" max="4" step="0.01" value="0"></label><label class="slider-field"><span>Intensity</span><output for="formant-intensity" id="formant-intensity-value">100%</output><input id="formant-intensity" type="range" min="0" max="1" step="0.01" value="1"></label><label class="slider-field"><span>Q</span><output for="formant-q" id="formant-q-value">4.00</output><input id="formant-q" type="range" min="0.5" max="12" step="0.01" value="4"></label></section></div>
+</div>

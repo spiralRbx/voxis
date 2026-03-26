@@ -1,0 +1,104 @@
+<div id="modal-noise-reduction" class="modal">
+  <div class="modal-header"><h3>Noise reduction</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Noise reduction</h3>
+      <label class="toggle-field"><input id="noise-reduction-enabled" type="checkbox"><span>Noise reduction enabled</span></label>
+      <label class="slider-field"><span>Strength</span><output for="noise-reduction-strength" id="noise-reduction-strength-value">50%</output><input id="noise-reduction-strength" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-voice-isolation" class="modal">
+  <div class="modal-header"><h3>Voice isolation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Voice isolation</h3>
+      <label class="toggle-field"><input id="voice-isolation-enabled" type="checkbox"><span>Voice isolation enabled</span></label>
+      <label class="slider-field"><span>Strength</span><output for="voice-isolation-strength" id="voice-isolation-strength-value">75%</output><input id="voice-isolation-strength" type="range" min="0" max="1" step="0.01" value="0.75"></label>
+      <label class="slider-field"><span>Low cutoff</span><output for="voice-isolation-low-hz" id="voice-isolation-low-hz-value">120 Hz</output><input id="voice-isolation-low-hz" type="range" min="40" max="800" step="1" value="120"></label>
+      <label class="slider-field"><span>High cutoff</span><output for="voice-isolation-high-hz" id="voice-isolation-high-hz-value">5200 Hz</output><input id="voice-isolation-high-hz" type="range" min="1200" max="12000" step="10" value="5200"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-source-separation" class="modal">
+  <div class="modal-header"><h3>Source separation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Source separation</h3>
+      <label class="toggle-field"><input id="source-separation-enabled" type="checkbox"><span>Source separation enabled</span></label>
+      <label class="field">
+        <span>Target</span>
+        <select id="source-separation-target">
+          <option value="vocals">Vocals</option>
+          <option value="drums">Drums</option>
+          <option value="bass">Bass</option>
+          <option value="accompaniment">Accompaniment</option>
+        </select>
+      </label>
+      <label class="slider-field"><span>Strength</span><output for="source-separation-strength" id="source-separation-strength-value">80%</output><input id="source-separation-strength" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+      <label class="slider-field"><span>Low cutoff</span><output for="source-separation-low-hz" id="source-separation-low-hz-value">120 Hz</output><input id="source-separation-low-hz" type="range" min="40" max="1200" step="1" value="120"></label>
+      <label class="slider-field"><span>High cutoff</span><output for="source-separation-high-hz" id="source-separation-high-hz-value">5200 Hz</output><input id="source-separation-high-hz" type="range" min="1200" max="16000" step="10" value="5200"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-de-reverb" class="modal">
+  <div class="modal-header"><h3>De-reverb</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>De-reverb</h3>
+      <label class="toggle-field"><input id="de-reverb-enabled" type="checkbox"><span>De-reverb enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="de-reverb-amount" id="de-reverb-amount-value">45%</output><input id="de-reverb-amount" type="range" min="0" max="1" step="0.01" value="0.45"></label>
+      <label class="slider-field"><span>Tail window</span><output for="de-reverb-tail-ms" id="de-reverb-tail-ms-value">240 ms</output><input id="de-reverb-tail-ms" type="range" min="40" max="1200" step="1" value="240"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-de-echo" class="modal">
+  <div class="modal-header"><h3>De-echo</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>De-echo</h3>
+      <label class="toggle-field"><input id="de-echo-enabled" type="checkbox"><span>De-echo enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="de-echo-amount" id="de-echo-amount-value">45%</output><input id="de-echo-amount" type="range" min="0" max="1" step="0.01" value="0.45"></label>
+      <label class="slider-field"><span>Min delay</span><output for="de-echo-min-delay-ms" id="de-echo-min-delay-ms-value">60 ms</output><input id="de-echo-min-delay-ms" type="range" min="10" max="400" step="1" value="60"></label>
+      <label class="slider-field"><span>Max delay</span><output for="de-echo-max-delay-ms" id="de-echo-max-delay-ms-value">800 ms</output><input id="de-echo-max-delay-ms" type="range" min="80" max="2000" step="1" value="800"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-repair" class="modal">
+  <div class="modal-header"><h3>Spectral repair</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral repair</h3>
+      <label class="toggle-field"><input id="spectral-repair-enabled" type="checkbox"><span>Spectral repair enabled</span></label>
+      <label class="slider-field"><span>Strength</span><output for="spectral-repair-strength" id="spectral-repair-strength-value">35%</output><input id="spectral-repair-strength" type="range" min="0" max="1" step="0.01" value="0.35"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-ai-enhancer" class="modal">
+  <div class="modal-header"><h3>AI enhancer</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>AI enhancer</h3>
+      <label class="toggle-field"><input id="ai-enhancer-enabled" type="checkbox"><span>AI enhancer enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="ai-enhancer-amount" id="ai-enhancer-amount-value">60%</output><input id="ai-enhancer-amount" type="range" min="0" max="1" step="0.01" value="0.6"></label>
+      <p class="status-line">Realtime preview uses a low-latency Voxis browser path instead of a heavyweight offline model pass.</p>
+    </section>
+  </div>
+</div>
+
+<div id="modal-speech-enhancement" class="modal">
+  <div class="modal-header"><h3>Speech enhancement</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Speech enhancement</h3>
+      <label class="toggle-field"><input id="speech-enhancement-enabled" type="checkbox"><span>Speech enhancement enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="speech-enhancement-amount" id="speech-enhancement-amount-value">70%</output><input id="speech-enhancement-amount" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+    </section>
+  </div>
+</div>

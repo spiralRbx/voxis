@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voxis Realtime API Editor</title>
+    <link rel="stylesheet" href="../static/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">API Test Site</p>
+        <h1>Voxis Realtime API Editor</h1>
+        <p class="hero-copy">This page tests the browser API directly from <code>./api/voxis-realtime.js</code> with live ranges instead of fixed presets.</p>
+        <div class="hero-badges">
+          <span>Separate app</span>
+          <span>Range editor</span>
+          <span>Realtime preview</span>
+          <span>Sections 1-11</span>
+        </div>
+      </section>
+
+      <section class="top-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="kicker">Source</p>
+              <h2>Player</h2>
+            </div>
+            <span class="chip" id="editor-status">Idle</span>
+          </div>
+          <label class="field">
+            <span>Main audio file</span>
+            <input id="editor-file-input" type="file" accept="audio/*">
+          </label>
+          <label class="field">
+            <span>Crossfade partner</span>
+            <input id="editor-crossfade-input" type="file" accept="audio/*">
+          </label>
+          <label class="field">
+            <span>Convolution IR</span>
+            <input id="editor-ir-input" type="file" accept="audio/*">
+          </label>
+          <div class="button-row">
+            <button id="editor-start" type="button">Start engine</button>
+            <button id="editor-use-mic" type="button">Use microphone</button>
+            <button id="editor-stop-mic" type="button" class="secondary">Stop microphone</button>
+            <button id="editor-reset" type="button" class="secondary">Reset editor</button>
+          </div>
+          <div id="api-player-host" class="player-host"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="kicker">Live state</p>
+              <h2>Realtime summary</h2>
+            </div>
+          </div>
+          <div class="status-list">
+            <p><strong>Mode:</strong> <span id="editor-mode">No source</span></p>
+            <p><strong>IR:</strong> <span id="editor-ir-name">No IR loaded</span></p>
+            <p><strong>Crossfade:</strong> <span id="editor-crossfade-name">No partner loaded</span></p>
+            <p><strong>Active effects:</strong> <span id="editor-active-effects">Gain (volume), Output level</span></p>
+          </div>
+          <div class="callout">
+            <h3>How it works</h3>
+            <p>The editor reads the live range values, rebuilds the effect list with <code>effects.*</code>, and calls <code>player.setEffects(...)</code> in realtime.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="editor-grid">
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">1</span>
+            <div>
+              <h3>Basic effects</h3>
+              <p>Gain, output, pan</p>
+            </div>
+          </div>
+          <label class="control">
+            <span>Gain</span>
+            <output id="gain-value">1.00x</output>
+            <input id="gain-range" type="range" min="0" max="5" step="0.01" value="1">
+          </label>
+          <label class="control">
+            <span>Output level</span>
+            <output id="output-level-value">1.00x</output>
+            <input id="output-level-range" type="range" min="0" max="2" step="0.01" value="1">
+          </label>
+          <label class="control">
+            <span>Pan</span>
+            <output id="pan-value">0.00</output>
+            <input id="pan-range" type="range" min="-1" max="1" step="0.01" value="0">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">2</span>
+            <div>
+              <h3>Dynamics</h3>
+              <p>Compressor</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="compressor-enabled" type="checkbox">
+            <span>Enable compressor</span>
+          </label>
+          <label class="control">
+            <span>Threshold</span>
+            <output id="compressor-threshold-value">-18 dB</output>
+            <input id="compressor-threshold-range" type="range" min="-48" max="-1" step="0.5" value="-18">
+          </label>
+          <label class="control">
+            <span>Ratio</span>
+            <output id="compressor-ratio-value">3.0:1</output>
+            <input id="compressor-ratio-range" type="range" min="1" max="12" step="0.1" value="3">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">3</span>
+            <div>
+              <h3>EQ / Filters</h3>
+              <p>High-pass</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="highpass-enabled" type="checkbox">
+            <span>Enable high-pass</span>
+          </label>
+          <label class="control">
+            <span>Frequency</span>
+            <output id="highpass-frequency-value">90 Hz</output>
+            <input id="highpass-frequency-range" type="range" min="20" max="4000" step="1" value="90">
+          </label>
+          <label class="control">
+            <span>Q</span>
+            <output id="highpass-q-value">0.71</output>
+            <input id="highpass-q-range" type="range" min="0.3" max="4" step="0.01" value="0.71">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">4</span>
+            <div>
+              <h3>Modulation</h3>
+              <p>Chorus</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="chorus-enabled" type="checkbox">
+            <span>Enable chorus</span>
+          </label>
+          <label class="control">
+            <span>Mix</span>
+            <output id="chorus-mix-value">35%</output>
+            <input id="chorus-mix-range" type="range" min="0" max="1" step="0.01" value="0.35">
+          </label>
+          <label class="control">
+            <span>Rate</span>
+            <output id="chorus-rate-value">0.90 Hz</output>
+            <input id="chorus-rate-range" type="range" min="0.1" max="4" step="0.01" value="0.9">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">5</span>
+            <div>
+              <h3>Space / Ambience</h3>
+              <p>Hall reverb</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="hall-enabled" type="checkbox">
+            <span>Enable hall reverb</span>
+          </label>
+          <label class="control">
+            <span>Mix</span>
+            <output id="hall-mix-value">20%</output>
+            <input id="hall-mix-range" type="range" min="0" max="1" step="0.01" value="0.2">
+          </label>
+          <label class="control">
+            <span>Decay</span>
+            <output id="hall-decay-value">1.80 s</output>
+            <input id="hall-decay-range" type="range" min="0.3" max="8" step="0.01" value="1.8">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">6</span>
+            <div>
+              <h3>Distortion / Saturation</h3>
+              <p>Overdrive</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="overdrive-enabled" type="checkbox">
+            <span>Enable overdrive</span>
+          </label>
+          <label class="control">
+            <span>Drive</span>
+            <output id="overdrive-drive-value">1.80</output>
+            <input id="overdrive-drive-range" type="range" min="0.5" max="6" step="0.01" value="1.8">
+          </label>
+          <label class="control">
+            <span>Mix</span>
+            <output id="overdrive-mix-value">80%</output>
+            <input id="overdrive-mix-range" type="range" min="0" max="1" step="0.01" value="0.8">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">7</span>
+            <div>
+              <h3>Pitch / Time</h3>
+              <p>Pitch shift</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="pitch-enabled" type="checkbox">
+            <span>Enable pitch shift</span>
+          </label>
+          <label class="control">
+            <span>Semitones</span>
+            <output id="pitch-semitones-value">0.0 st</output>
+            <input id="pitch-semitones-range" type="range" min="-12" max="12" step="0.1" value="0">
+          </label>
+          <label class="control">
+            <span>Mix</span>
+            <output id="pitch-mix-value">45%</output>
+            <input id="pitch-mix-range" type="range" min="0" max="1" step="0.01" value="0.45">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">8</span>
+            <div>
+              <h3>Modern / AI-like</h3>
+              <p>Noise reduction</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="noise-reduction-enabled" type="checkbox">
+            <span>Enable noise reduction</span>
+          </label>
+          <label class="control">
+            <span>Strength</span>
+            <output id="noise-reduction-strength-value">50%</output>
+            <input id="noise-reduction-strength-range" type="range" min="0" max="1" step="0.01" value="0.5">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">9</span>
+            <div>
+              <h3>Creative / Special</h3>
+              <p>Glitch effect</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="glitch-enabled" type="checkbox">
+            <span>Enable glitch</span>
+          </label>
+          <label class="control">
+            <span>Slice</span>
+            <output id="glitch-slice-value">60 ms</output>
+            <input id="glitch-slice-range" type="range" min="10" max="300" step="1" value="60">
+          </label>
+          <label class="control">
+            <span>Mix</span>
+            <output id="glitch-mix-value">45%</output>
+            <input id="glitch-mix-range" type="range" min="0" max="1" step="0.01" value="0.45">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">10</span>
+            <div>
+              <h3>Spectral processing</h3>
+              <p>FFT filter</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="fft-enabled" type="checkbox">
+            <span>Enable FFT filter</span>
+          </label>
+          <label class="control">
+            <span>Low Hz</span>
+            <output id="fft-low-value">90 Hz</output>
+            <input id="fft-low-range" type="range" min="20" max="4000" step="1" value="90">
+          </label>
+          <label class="control">
+            <span>High Hz</span>
+            <output id="fft-high-value">9000 Hz</output>
+            <input id="fft-high-range" type="range" min="1000" max="18000" step="1" value="9000">
+          </label>
+        </article>
+
+        <article class="panel effect-card">
+          <div class="card-head">
+            <span class="card-index">11</span>
+            <div>
+              <h3>Advanced stereo / spatial</h3>
+              <p>Stereo widening + HRTF</p>
+            </div>
+          </div>
+          <label class="toggle">
+            <input id="spatial-enabled" type="checkbox">
+            <span>Enable spatial section</span>
+          </label>
+          <label class="control">
+            <span>Width</span>
+            <output id="spatial-width-value">1.25x</output>
+            <input id="spatial-width-range" type="range" min="0.5" max="2" step="0.01" value="1.25">
+          </label>
+          <label class="control">
+            <span>Azimuth</span>
+            <output id="spatial-azimuth-value">30°</output>
+            <input id="spatial-azimuth-range" type="range" min="-90" max="90" step="1" value="30">
+          </label>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="../static/editor.js"></script>
+  </body>
+</html>

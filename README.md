@@ -49,7 +49,19 @@ decoder (FFmpeg) -> PCM float32 buffer -> DSP pipeline -> encoder (FFmpeg)
 - FFmpeg backend using `imageio-ffmpeg` to resolve the binary portably
 - Tests and a simple benchmark
 
-See [docs/EFFECTS.md](docs/EFFECTS.md) for the overview and [docs/EFFECT_REFERENCE.md](docs/EFFECT_REFERENCE.md) for the complete per-effect usage catalog. The `web-test` app now exposes items 1 through 12 with ready-to-demo defaults, independent control columns, metrics, and per-step timing.
+See [docs/EFFECTS.md](docs/EFFECTS.md) for the overview, [docs/EFFECT_REFERENCE.md](docs/EFFECT_REFERENCE.md) for the complete per-effect usage catalog, and [docs/REALTIME.md](docs/REALTIME.md) for the first realtime browser starter. The offline `web-test` app exposes items 1 through 12 with ready-to-demo defaults, independent control columns, metrics, and per-step timing.
+
+## Documentation site
+
+The repository ships a static documentation site for GitHub Pages and local browsing:
+
+- `index.html`: documentation home page
+- `python.html`: step-by-step offline Python guide
+- `realtime.html`: step-by-step browser realtime guide
+- `realtime-example.html`: live minimal browser example with a `View code` toggle
+- `api/`: public browser runtime modules and the shipped WASM asset
+
+The public tutorials are written as learning material, not just reference pages. The Python guide starts from `AudioClip`, `Pipeline`, imports, and presets. The realtime guide explains the HTML + JavaScript wiring pattern, how file inputs connect to `createVoxisRealtimePlayer()`, how `player.setEffects([...])` works, and how to build a slider-based editor.
 
 ## Quick start
 
@@ -71,6 +83,139 @@ pipeline = (
 processed = clip.apply_pipeline(pipeline)
 processed.export("output.wav")
 ```
+
+## Realtime Starter
+
+The first realtime browser demo lives in `web-test/real-time/`.
+
+- It now covers checklist sections `1. Basic effects`, `2. Dynamics`, `3. EQ / Filters`, `4. Modulation`, `5. Space / Ambience`, `6. Distortion / Saturation`, `7. Pitch / Time`, `8. Modern / AI-like effects`, `9. Creative / special effects`, `10. Spectral processing`, and `11. Advanced stereo / spatial` in realtime.
+- The popup menu now uses the same effect names from `list-effect.md`.
+- The basic `AudioWorklet` layer now carries realtime paths for gain, normalize, fade in, fade out, crossfade, trim, cut, silence removal, reverse, pan, mono ↔ stereo, and DC offset removal.
+- The WASM EQ/filter/dynamics chain now includes high-pass, low-pass, band-pass, notch, low shelf, high shelf, resonant filter, parametric equalizer, graphic EQ, dynamic EQ, formant filter, compressor, downward compression, upward compression, limiter, expander, noise gate, multiband compressor, de-esser, and transient shaper.
+- The modulation `AudioWorklet` layer now includes chorus, flanger, phaser, tremolo, vibrato, auto-pan, rotary speaker, ring modulation, and frequency shifter.
+- The realtime space / ambience rack now includes delay, echo, ping-pong delay, multi-tap delay, slapback delay, early reflections, room / hall / plate reverb, and convolution reverb (IR).
+- The realtime color/time `AudioWorklet` layer now includes distortion, overdrive, fuzz, bitcrusher, waveshaper, tube saturation, tape saturation, soft clipping, hard clipping, pitch shift, auto-tune, harmonizer, octaver, and formant shifting.
+- The realtime modern/creative `AudioWorklet` layer now includes noise reduction, voice isolation, source separation, de-reverb, de-echo, spectral repair, AI enhancer, speech enhancement, glitch effect, stutter, tape stop, reverse reverb, granular synthesis, time slicing, random pitch mod, vinyl effect, radio effect, telephone effect, 8-bit / retro sound, slow motion extreme, robot voice, and alien voice.
+- The realtime spectral/spatial `AudioWorklet` layer now includes FFT filter, spectral gating, spectral blur, spectral freeze, spectral morphing, phase vocoder, harmonic/percussive separation, spectral delay, stereo widening, mid/side processing, stereo imager, binaural effect, 3D audio positioning, and HRTF simulation.
+- `Time stretch` and `Time compression` now run in realtime preview through the browser file transport with preserved pitch. On microphone input, those two controls are bypassed.
+- It uses Web Audio API plus `AudioWorklet` for low-latency preview with either a file source or microphone input.
+- The browser UI/controller lives in `app.js`; the realtime DSP entry points live in the processor files; the native EQ/filter/dynamics core is compiled to `voxis-realtime-dynamics.wasm`.
+- The processor files are part of the current browser-side Voxis realtime layer. The `.wasm` file alone is not enough by itself; it needs the JavaScript worklet bridge and Web Audio graph wiring around it.
+- The reusable browser module now lives in the root `api/` folder, with `voxis-realtime.js` as the public entry point, `voxis-realtime-player.js` handling the graph/player side, and `voxis-realtime-effects.js` exposing builder helpers for the checklist sections.
+- It still does not replace the offline `AudioClip` workflow. The browser demo uses streaming-safe counterparts for section 1 clip edits, while the offline API keeps the destructive full-buffer versions.
+- For section 8, the browser path is a low-latency realtime approximation layer for monitoring and UI preview; the heavier offline restoration flow still lives in the Python/C++ path.
+
+Run it with:
+
+```bash
+python web-test/real-time/app.py
+```
+
+Then open `http://127.0.0.1:5101`.
+
+For the separate API test site with live range controls, run `python web-test/api-test/app.py` and open `http://127.0.0.1:5102`.
+
+For a browser-side reusable starter, you can also import:
+
+```js
+import { createVoxisRealtimePlayer, effects } from "./api/voxis-realtime.js";
+
+const player = await createVoxisRealtimePlayer({ container: "#player" });
+await player.loadUrl("/audio/example.mp3");
+player.setEffects([
+  effects.gain({ value: 1.1 }),
+  effects.compressor({ thresholdDb: -18, ratio: 3.0, makeupDb: 2.0 }),
+  effects.chorus({ mix: 0.35, rateHz: 0.9 }),
+  effects.hall_reverb({ decaySeconds: 1.8, mix: 0.2 }),
+  effects.noise_reduction({ strength: 0.8 }),
+  effects.fft_filter({ lowHz: 90, highHz: 9000, mix: 1.0 }),
+  effects.hrtf_simulation({ azimuthDeg: 30, elevationDeg: 0, distance: 1.1 }),
+]);
+```
+
+That wrapper now ships effect builders for sections `1` through `11`, creates a standard `<audio>` element automatically when you pass a container, resolves its processor and WASM files relative to the module location, and can load a file source, microphone source, crossfade partner, and convolution IR without depending on the main demo controller.
+
+To build a minified browser API distribution, run:
+
+```bash
+npm install
+npm run build:api
+```
+
+That command reads the source files from `api/`, minifies the JavaScript modules, copies the `.wasm` asset unchanged, and writes a ready-to-ship mirror into `dist-api/` together with a build manifest. The output is intentionally minified, not obfuscated, so the shipped code stays easier to audit and keeps the public API trustworthy.
+
+For app-side browser controls, the public API also exports `createLockedControl(...)`, which lets you define the real min/max/step in JavaScript so the effect value is normalized again before it reaches the realtime engine.
+
+That helps prevent casual DevTools edits from pushing the UI outside the limits you defined, but it is still app-side protection. Final product rules are always the responsibility of the project that embeds Voxis, because browser-side JavaScript still runs in an environment the end user controls.
+
+The shipped `voxis-realtime-dynamics.wasm` module is now also the native source of truth for realtime parameter metadata across the browser API. EQ/filter/dynamics values are still validated in the native DSP bridge itself, and the remaining realtime stages read their public limits from the WASM metadata before configuration reaches the JavaScript processors. In the browser API you can listen for warnings with `player.onWarning((warning) => { ... })`, inspect the full native metadata with `player.getNativeRealtimeLimits()`, and keep `player.getNativeDynamicsLimits()` as a compatibility alias.
+
+## Path resolution
+
+For audio input and output, Voxis resolves every relative path from the directory of the Python file that called the API.
+
+That means this works even when you launch Python from the project root:
+
+```text
+project/
+  tests/
+    test_readme.md.py
+    example.mp3
+```
+---
+```python
+from voxis import AudioClip
+
+audio = AudioClip.from_file("example.mp3")
+```
+
+`example.mp3` is resolved as `tests/example.mp3` because the script is inside `tests/`.
+
+If the file is outside the script folder, use normal relative navigation:
+
+```python
+AudioClip.from_file("../example.mp3")
+AudioClip.from_file("../folder/example.mp3")
+AudioClip.from_file("folder/example.mp3")
+```
+
+Those examples mean:
+
+```text
+../example.mp3
+  go one folder up from the script directory
+
+../folder/example.mp3
+  go one folder up, then enter folder/
+
+folder/example.mp3
+  enter folder/ inside the script directory
+```
+
+Exports follow the same rule, so relative outputs are also created next to the script by default:
+
+```text
+project/
+  tests/
+    test_readme.md.py
+```
+---
+```python
+processed.export("output-1.mp3")
+processed.export("outputs/clean.wav")
+```
+
+The examples above will create:
+
+```text
+project/
+  tests/
+    output-1.mp3
+    outputs/
+      clean.wav
+```
+
+If you want to save or load using another base, pass an explicit relative path like `../example.wav` or an absolute path.
 
 ## Presets
 
@@ -113,6 +258,8 @@ print(rendered.pipeline_info())
 python -m pip install voxis
 ```
 
+PyPI releases are meant to ship prebuilt wheels for Windows, Linux, and macOS. If `pip` ever falls back to the source distribution, Voxis can still install without a local C++ toolchain and will use the Python DSP backend automatically, with the native extension remaining an optional speed-up.
+
 For local development:
 
 ```bash
@@ -131,6 +278,8 @@ make test
 make build
 make check
 ```
+
+Tagged releases are published through GitHub Actions with `cibuildwheel`, so the normal `pip install voxis` path downloads a ready-made wheel instead of compiling C++ on the user's machine.
 
 ## Roadmap
 

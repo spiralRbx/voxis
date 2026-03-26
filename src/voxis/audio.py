@@ -328,6 +328,10 @@ class AudioClip:
     def duration_seconds(self) -> float:
         return self.frames / float(self.sample_rate)
 
+    @property
+    def duration_ms(self) -> float:
+        return self.duration_seconds * 1000.0
+
     def copy(self) -> "AudioClip":
         return AudioClip(
             np.array(self.samples, copy=True),
@@ -915,6 +919,10 @@ class DeferredClip:
     @property
     def duration_seconds(self) -> float:
         return self.source.duration_seconds
+
+    @property
+    def duration_ms(self) -> float:
+        return self.source.duration_ms
 
     def _clone_with(self, operation: _DeferredOperation) -> "DeferredClip":
         operations = list(self.operations)

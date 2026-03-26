@@ -1,0 +1,62 @@
+<div id="modal-compressor" class="modal">
+  <div class="modal-header"><h3>Compressor</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Compressor</h3><label class="toggle-field"><input id="compressor-enabled" type="checkbox" checked><span>Compressor enabled</span></label><label class="slider-field"><span>Threshold</span><output for="compressor-threshold" id="compressor-threshold-value">-18 dB</output><input id="compressor-threshold" type="range" min="-60" max="0" step="1" value="-18"></label><label class="slider-field"><span>Ratio</span><output for="compressor-ratio" id="compressor-ratio-value">3.00:1</output><input id="compressor-ratio" type="range" min="1" max="20" step="0.1" value="3"></label><label class="slider-field"><span>Makeup</span><output for="compressor-makeup" id="compressor-makeup-value">0.0 dB</output><input id="compressor-makeup" type="range" min="-6" max="18" step="0.1" value="0"></label></section></div>
+</div>
+
+<div id="modal-limiter" class="modal">
+  <div class="modal-header"><h3>Limiter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Limiter</h3><label class="toggle-field"><input id="limiter-enabled" type="checkbox"><span>Limiter enabled</span></label><label class="slider-field"><span>Ceiling</span><output for="limiter-ceiling" id="limiter-ceiling-value">-1.0 dB</output><input id="limiter-ceiling" type="range" min="-12" max="0" step="0.1" value="-1"></label></section></div>
+</div>
+
+<div id="modal-expander" class="modal">
+  <div class="modal-header"><h3>Expander</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Expander</h3><label class="toggle-field"><input id="expander-enabled" type="checkbox"><span>Expander enabled</span></label><label class="slider-field"><span>Threshold</span><output for="expander-threshold" id="expander-threshold-value">-35 dB</output><input id="expander-threshold" type="range" min="-72" max="-6" step="1" value="-35"></label><label class="slider-field"><span>Ratio</span><output for="expander-ratio" id="expander-ratio-value">2.00:1</output><input id="expander-ratio" type="range" min="1" max="8" step="0.1" value="2"></label></section></div>
+</div>
+
+<div id="modal-noise-gate" class="modal">
+  <div class="modal-header"><h3>Noise Gate</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Noise Gate</h3><label class="toggle-field"><input id="noise-gate-enabled" type="checkbox"><span>Noise Gate enabled</span></label><label class="slider-field"><span>Threshold</span><output for="noise-gate-threshold" id="noise-gate-threshold-value">-45 dB</output><input id="noise-gate-threshold" type="range" min="-80" max="-6" step="1" value="-45"></label><label class="slider-field"><span>Floor</span><output for="noise-gate-floor" id="noise-gate-floor-value">-80 dB</output><input id="noise-gate-floor" type="range" min="-96" max="-6" step="1" value="-80"></label></section></div>
+</div>
+
+<div id="modal-multiband-compressor" class="modal">
+  <div class="modal-header"><h3>Multiband Compressor</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Multiband Compressor</h3>
+      <label class="toggle-field"><input id="multiband-enabled" type="checkbox"><span>Multiband Compressor enabled</span></label>
+      <label class="slider-field"><span>Low cut</span><output for="multiband-low-cut" id="multiband-low-cut-value">180 Hz</output><input id="multiband-low-cut" type="range" min="40" max="1200" step="10" value="180"></label>
+      <label class="slider-field"><span>High cut</span><output for="multiband-high-cut" id="multiband-high-cut-value">3200 Hz</output><input id="multiband-high-cut" type="range" min="400" max="12000" step="10" value="3200"></label>
+      <label class="slider-field"><span>Low threshold</span><output for="multiband-low-threshold" id="multiband-low-threshold-value">-24 dB</output><input id="multiband-low-threshold" type="range" min="-60" max="0" step="1" value="-24"></label>
+      <label class="slider-field"><span>Mid threshold</span><output for="multiband-mid-threshold" id="multiband-mid-threshold-value">-18 dB</output><input id="multiband-mid-threshold" type="range" min="-60" max="0" step="1" value="-18"></label>
+      <label class="slider-field"><span>High threshold</span><output for="multiband-high-threshold" id="multiband-high-threshold-value">-20 dB</output><input id="multiband-high-threshold" type="range" min="-60" max="0" step="1" value="-20"></label>
+      <label class="slider-field"><span>Low ratio</span><output for="multiband-low-ratio" id="multiband-low-ratio-value">2.20:1</output><input id="multiband-low-ratio" type="range" min="1" max="10" step="0.1" value="2.2"></label>
+      <label class="slider-field"><span>Mid ratio</span><output for="multiband-mid-ratio" id="multiband-mid-ratio-value">3.00:1</output><input id="multiband-mid-ratio" type="range" min="1" max="10" step="0.1" value="3"></label>
+      <label class="slider-field"><span>High ratio</span><output for="multiband-high-ratio" id="multiband-high-ratio-value">2.40:1</output><input id="multiband-high-ratio" type="range" min="1" max="10" step="0.1" value="2.4"></label>
+      <label class="slider-field"><span>Attack</span><output for="multiband-attack" id="multiband-attack-value">10 ms</output><input id="multiband-attack" type="range" min="1" max="120" step="1" value="10"></label>
+      <label class="slider-field"><span>Release</span><output for="multiband-release" id="multiband-release-value">90 ms</output><input id="multiband-release" type="range" min="10" max="500" step="1" value="90"></label>
+      <label class="slider-field"><span>Low makeup</span><output for="multiband-low-makeup" id="multiband-low-makeup-value">0.0 dB</output><input id="multiband-low-makeup" type="range" min="-6" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>Mid makeup</span><output for="multiband-mid-makeup" id="multiband-mid-makeup-value">0.0 dB</output><input id="multiband-mid-makeup" type="range" min="-6" max="18" step="0.1" value="0"></label>
+      <label class="slider-field"><span>High makeup</span><output for="multiband-high-makeup" id="multiband-high-makeup-value">0.0 dB</output><input id="multiband-high-makeup" type="range" min="-6" max="18" step="0.1" value="0"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-de-esser" class="modal">
+  <div class="modal-header"><h3>De-esser</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>De-esser</h3><label class="toggle-field"><input id="deesser-enabled" type="checkbox"><span>De-esser enabled</span></label><label class="slider-field"><span>Frequency</span><output for="deesser-frequency" id="deesser-frequency-value">6500 Hz</output><input id="deesser-frequency" type="range" min="2500" max="12000" step="50" value="6500"></label><label class="slider-field"><span>Threshold</span><output for="deesser-threshold" id="deesser-threshold-value">-28 dB</output><input id="deesser-threshold" type="range" min="-60" max="-6" step="1" value="-28"></label><label class="slider-field"><span>Amount</span><output for="deesser-amount" id="deesser-amount-value">80%</output><input id="deesser-amount" type="range" min="0" max="1" step="0.01" value="0.8"></label></section></div>
+</div>
+
+<div id="modal-transient-shaper" class="modal">
+  <div class="modal-header"><h3>Transient shaper</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Transient shaper</h3><label class="toggle-field"><input id="transient-enabled" type="checkbox"><span>Transient shaper enabled</span></label><label class="slider-field"><span>Attack emphasis</span><output for="transient-attack" id="transient-attack-value">0.70</output><input id="transient-attack" type="range" min="-1" max="2" step="0.01" value="0.7"></label><label class="slider-field"><span>Sustain emphasis</span><output for="transient-sustain" id="transient-sustain-value">0.20</output><input id="transient-sustain" type="range" min="-1" max="2" step="0.01" value="0.2"></label></section></div>
+</div>
+
+<div id="modal-upward-compression" class="modal">
+  <div class="modal-header"><h3>Upward compression</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Upward compression</h3><label class="toggle-field"><input id="upward-enabled" type="checkbox"><span>Upward compression enabled</span></label><label class="slider-field"><span>Threshold</span><output for="upward-threshold" id="upward-threshold-value">-42 dB</output><input id="upward-threshold" type="range" min="-72" max="-6" step="1" value="-42"></label><label class="slider-field"><span>Ratio</span><output for="upward-ratio" id="upward-ratio-value">2.00:1</output><input id="upward-ratio" type="range" min="1" max="8" step="0.1" value="2"></label><label class="slider-field"><span>Max gain</span><output for="upward-max-gain" id="upward-max-gain-value">18.0 dB</output><input id="upward-max-gain" type="range" min="0" max="30" step="0.1" value="18"></label></section></div>
+</div>
+
+<div id="modal-downward-compression" class="modal">
+  <div class="modal-header"><h3>Downward compression</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Downward compression</h3><label class="toggle-field"><input id="downward-enabled" type="checkbox"><span>Downward compression enabled</span></label><label class="slider-field"><span>Threshold</span><output for="downward-threshold" id="downward-threshold-value">-18 dB</output><input id="downward-threshold" type="range" min="-60" max="0" step="1" value="-18"></label><label class="slider-field"><span>Ratio</span><output for="downward-ratio" id="downward-ratio-value">4.00:1</output><input id="downward-ratio" type="range" min="1" max="20" step="0.1" value="4"></label></section></div>
+</div>

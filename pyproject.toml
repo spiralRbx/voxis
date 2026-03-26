@@ -7,7 +7,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "voxis"
-version = "0.0.3"
+version = "0.0.4"
 description = "Voxis is a hybrid Python + C++ audio DSP library for fast, modular effect pipelines."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -31,6 +31,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/spiralRbx/voxis"
 Repository = "https://github.com/spiralRbx/voxis"
+Documentation = "https://spiralRbx.github.io/voxis/page/voxis/"
 
 [project.optional-dependencies]
 dev = [
@@ -45,6 +46,7 @@ web = [
 [tool.scikit-build]
 wheel.packages = ["src/voxis"]
 build-dir = "build/{wheel_tag}"
+cmake.args = ["-GNinja"]
 sdist.exclude = [
     ".github/**",
     ".pytest_cache/**",
@@ -59,6 +61,13 @@ sdist.exclude = [
     "web-test/outputs/**",
     "web-test/uploads/**",
 ]
+
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
+skip = "*-win32 *-manylinux_i686 *-musllinux*"
+environment = { CMAKE_GENERATOR = "Ninja" }
+test-requires = ["pytest>=8.4"]
+test-command = "pytest {project}/tests/test_pipeline.py -q"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

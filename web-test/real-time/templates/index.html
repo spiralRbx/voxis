@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voxis Realtime Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <nav class="menubar">
+      <div class="menubar-brand">Voxis</div>
+      <ul class="menubar-nav">
+        <li class="menu-item has-dropdown">
+          <a href="javascript:void(0);">Effects</a>
+          <ul class="dropdown">
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Basic effects</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-gain-volume">Gain (volume)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-normalize">Normalize</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-fade-in">Fade in</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-fade-out">Fade out</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-crossfade">Crossfade</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-trim">Trim</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-cut">Cut</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-silence-removal">Silence removal</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-reverse">Reverse</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-stereo-balance">Stereo balance (pan)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-mono-stereo">Mono ↔ Stereo</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-dc-offset-removal">DC offset removal</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Dynamics</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-compressor">Compressor</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-limiter">Limiter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-expander">Expander</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-noise-gate">Noise Gate</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-multiband-compressor">Multiband Compressor</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-de-esser">De-esser</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-transient-shaper">Transient shaper</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-upward-compression">Upward compression</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-downward-compression">Downward compression</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">EQ / Filters</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-parametric-equalizer">Parametric equalizer</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-graphic-eq">Graphic EQ</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-low-pass-filter">Low-pass filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-high-pass-filter">High-pass filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-band-pass-filter">Band-pass filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-notch-filter">Notch filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-low-shelf">Low shelf</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-high-shelf">High shelf</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-resonant-filter">Resonant filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-dynamic-eq">Dynamic EQ</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-formant-filter">Formant filter</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Modulation</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-chorus">Chorus</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-flanger">Flanger</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-phaser">Phaser</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-tremolo">Tremolo</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-vibrato">Vibrato</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-auto-pan">Auto-pan</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-rotary-speaker">Rotary speaker (Leslie)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-ring-modulation">Ring modulation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-frequency-shifter">Frequency shifter</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Space / Ambience</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-reverb">Reverb (plate, hall, room)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-convolution-reverb">Convolution reverb (IR)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-early-reflections">Early reflections</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-delay">Delay</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-echo">Echo</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-ping-pong-delay">Ping-pong delay</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-multi-tap-delay">Multi-tap delay</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-slapback-delay">Slapback delay</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Distortion / Saturation</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-distortion">Distortion</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-overdrive">Overdrive</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-fuzz">Fuzz</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-bitcrusher">Bitcrusher</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-waveshaper">Waveshaper</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-tube-saturation">Tube saturation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-tape-saturation">Tape saturation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-soft-clipping">Soft clipping</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-hard-clipping">Hard clipping</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Pitch / Time</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-pitch-shift">Pitch shift</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-time-stretch">Time stretch</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-time-compression">Time compression</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-auto-tune">Auto-tune (pitch correction)</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-harmonizer">Harmonizer</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-octaver">Octaver</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-formant-shifting">Formant shifting</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Modern / AI-like effects</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-noise-reduction">Noise reduction</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-voice-isolation">Voice isolation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-source-separation">Source separation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-de-reverb">De-reverb</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-de-echo">De-echo</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-repair">Spectral repair</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-ai-enhancer">AI enhancer</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-speech-enhancement">Speech enhancement</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Creative / special effects</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-glitch-effect">Glitch effect</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-stutter">Stutter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-tape-stop">Tape stop</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-reverse-reverb">Reverse reverb</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-granular-synthesis">Granular synthesis</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-time-slicing">Time slicing</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-random-pitch-mod">Random pitch mod</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-vinyl-effect">Vinyl effect</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-radio-effect">Radio effect</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-telephone-effect">Telephone effect</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-8bit-retro-sound">8-bit / retro sound</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-slow-motion-extreme">Slow motion extreme</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-robot-voice">Robot voice</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-alien-voice">Alien voice</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Spectral processing</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-fft-filter">FFT filter</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-gating">Spectral gating</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-blur">Spectral blur</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-freeze">Spectral freeze</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-morphing">Spectral morphing</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-phase-vocoder">Phase vocoder</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-harmonic-percussive-separation">Harmonic/percussive separation</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spectral-delay">Spectral delay</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Advanced stereo / spatial</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-stereo-widening">Stereo widening</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-mid-side-processing">Mid/Side processing</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-stereo-imager">Stereo imager</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-binaural-effect">Binaural effect</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-spatial-positioning">3D audio positioning</a></li>
+                <li><a href="javascript:void(0);" data-open-modal="modal-hrtf-simulation">HRTF simulation</a></li>
+              </ul>
+            </li>
+            <li class="has-submenu">
+              <a href="javascript:void(0);">Extras</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0);" data-open-modal="modal-drive">Drive</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="page-shell">
+      <div class="editor-workspace">
+        <section class="layout-grid">
+          <article class="panel main-panel">
+            <div class="panel-header">
+              <div>
+                <p class="kicker">Source</p>
+                <h2>Input and transport</h2>
+              </div>
+              <span class="chip" id="engine-state">Engine idle</span>
+            </div>
+            <label class="field">
+              <span>Audio file</span>
+              <input id="file-input" type="file" accept="audio/*">
+            </label>
+            <audio id="source-player" controls preload="metadata"></audio>
+            <div class="button-row">
+              <button id="start-engine" type="button">Start audio engine</button>
+              <button id="use-mic" type="button">Use microphone</button>
+              <button id="stop-mic" type="button" class="secondary">Stop microphone</button>
+            </div>
+            <div class="status-card">
+              <p class="status-line"><strong>Active source:</strong> <span id="source-kind">No source connected</span></p>
+              <p class="status-line"><strong>Crossfade partner:</strong> <span id="crossfade-partner-name">No crossfade partner loaded</span></p>
+              <p class="status-line"><strong>Realtime effect chain:</strong> Media source -> JS basic processor -> JS color/time -> JS modern/creative -> JS spectral/spatial -> WASM EQ/filter/dynamics -> JS modulation -> JS space/ambience -> pan -> output</p>
+            </div>
+            <div class="meter-card">
+              <div class="meter-labels">
+                <span>Output level</span>
+                <strong id="meter-db">-inf dBFS</strong>
+              </div>
+              <div class="meter-track"><div class="meter-fill" id="meter-fill"></div></div>
+            </div>
+            <div class="metrics-grid">
+              <div class="metric"><span>Sample rate</span><strong id="metric-sample-rate">--</strong></div>
+              <div class="metric"><span>Base latency</span><strong id="metric-latency">--</strong></div>
+              <div class="metric"><span>Render quantum</span><strong id="metric-quantum">128 frames</strong></div>
+              <div class="metric"><span>Graph mode</span><strong id="metric-mode">JS basic + JS color/time + JS modern/creative + JS spectral/spatial + WASM EQ/filter/dynamics + JS modulation/space</strong></div>
+            </div>
+          </article>
+
+          <article class="panel main-panel">
+            <div class="panel-header">
+              <div>
+                <p class="kicker">Presets</p>
+                <h2>Fast starting points</h2>
+              </div>
+            </div>
+            <div class="preset-grid">
+              <button class="preset-btn" data-preset="clean">Clean Voice</button>
+              <button class="preset-btn" data-preset="warm">Warm Drive</button>
+              <button class="preset-btn" data-preset="space">Space Delay</button>
+              <button class="preset-btn" data-preset="mono">Mono Monitor</button>
+            </div>
+            <div class="callout">
+              <h3>Checklist-aligned realtime path</h3>
+              <p>Sections 1 through 11 now use the same names as <code>list-effect.md</code> in the popup menu. The basic layer handles the streaming-safe clip operations, the color/time layer handles saturation and pitch work, the modern/creative layer handles the low-latency previews for sections 8 and 9, the spectral/spatial layer handles sections 10 and 11, the native WASM chain handles EQ/filter/dynamics, and the modulation/space layers run in dedicated realtime browser DSP paths.</p>
+            </div>
+            <div class="callout subtle">
+              <h3>CSS customization</h3>
+              <p>The interface still uses CSS variables in <code>:root</code>, so you can restyle the menu, modal layout, and player chrome without changing the processing logic.</p>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <section class="hero hero-footer">
+        <p class="eyebrow">Voxis Realtime Starter</p>
+        <h1>Streaming preview for Basic effects, Dynamics, EQ / Filters, Modulation, Space / Ambience, Distortion / Saturation, Pitch / Time, Modern / AI-like effects, Creative / special effects, Spectral processing, and Advanced stereo / spatial</h1>
+        <p class="hero-copy">File or microphone in, Web Audio API graph in the middle, speakers out. The JS basic processor carries the checklist-aligned clip effects, the JS color/time processor handles saturation and pitch work, the JS modern/creative processor handles sections 8 and 9, the JS spectral/spatial processor handles sections 10 and 11, the Voxis native WASM module carries the realtime EQ/filter/dynamics chain, and the browser-side modulation/space rack handles the motion and ambience layers.</p>
+        <div class="hero-badges">
+          <span>Interactive latency hint</span>
+          <span>AudioWorklet custom DSP</span>
+          <span>EQ + Dynamics in WASM</span>
+          <span>Modern + creative in JS</span>
+          <span>Spectral + spatial in JS</span>
+          <span>Basic effects in JS</span>
+          <span>Mic + file preview</span>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+    {% include '_basic_modals.html' %}
+    {% include '_eq_modals.html' %}
+    {% include '_dynamics_modals.html' %}
+    {% include '_modulation_modals.html' %}
+    {% include '_space_modals.html' %}
+    {% include '_distortion_modals.html' %}
+    {% include '_pitch_time_modals.html' %}
+    {% include '_modern_modals.html' %}
+    {% include '_creative_modals.html' %}
+    {% include '_spectral_modals.html' %}
+    {% include '_stereo_spatial_modals.html' %}
+    {% include '_extras_modals.html' %}
+
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

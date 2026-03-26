@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-03-25T06:27:52.189Z",
+  "strategy": "minified-esm",
+  "sourceDirectory": "api",
+  "outputDirectory": "dist-api",
+  "totalFiles": 12,
+  "totalSourceBytes": 292064,
+  "totalOutputBytes": 196722,
+  "totalSavedBytes": 95342,
+  "entries": [
+    {
+      "file": "realtime-space.js",
+      "type": "javascript",
+      "sourceBytes": 15867,
+      "outputBytes": 6946,
+      "savedBytes": 8921
+    },
+    {
+      "file": "voxis-basic-processor.js",
+      "type": "javascript",
+      "sourceBytes": 13783,
+      "outputBytes": 6980,
+      "savedBytes": 6803
+    },
+    {
+      "file": "voxis-color-time-processor.js",
+      "type": "javascript",
+      "sourceBytes": 21426,
+      "outputBytes": 10592,
+      "savedBytes": 10834
+    },
+    {
+      "file": "voxis-dynamics-processor.js",
+      "type": "javascript",
+      "sourceBytes": 13903,
+      "outputBytes": 8879,
+      "savedBytes": 5024
+    },
+    {
+      "file": "voxis-modern-creative-processor.js",
+      "type": "javascript",
+      "sourceBytes": 30890,
+      "outputBytes": 16055,
+      "savedBytes": 14835
+    },
+    {
+      "file": "voxis-modulation-processor.js",
+      "type": "javascript",
+      "sourceBytes": 15574,
+      "outputBytes": 7929,
+      "savedBytes": 7645
+    },
+    {
+      "file": "voxis-realtime-controls.js",
+      "type": "javascript",
+      "sourceBytes": 3731,
+      "outputBytes": 1757,
+      "savedBytes": 1974
+    },
+    {
+      "file": "voxis-realtime-dynamics.wasm",
+      "type": "asset",
+      "sourceBytes": 85118,
+      "outputBytes": 85118,
+      "savedBytes": 0
+    },
+    {
+      "file": "voxis-realtime-effects.js",
+      "type": "javascript",
+      "sourceBytes": 38556,
+      "outputBytes": 22701,
+      "savedBytes": 15855
+    },
+    {
+      "file": "voxis-realtime-player.js",
+      "type": "javascript",
+      "sourceBytes": 29757,
+      "outputBytes": 18219,
+      "savedBytes": 11538
+    },
+    {
+      "file": "voxis-realtime.js",
+      "type": "javascript",
+      "sourceBytes": 264,
+      "outputBytes": 432,
+      "savedBytes": -168
+    },
+    {
+      "file": "voxis-spectral-spatial-processor.js",
+      "type": "javascript",
+      "sourceBytes": 23195,
+      "outputBytes": 11114,
+      "savedBytes": 12081
+    }
+  ]
+}

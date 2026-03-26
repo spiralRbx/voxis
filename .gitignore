@@ -49,6 +49,7 @@ _skbuild/
 # Editor / OS
 .idea/
 .vscode/
+node_modules/
 Thumbs.db
 Desktop.ini
 

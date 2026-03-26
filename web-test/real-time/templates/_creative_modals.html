@@ -1,0 +1,180 @@
+<div id="modal-glitch-effect" class="modal">
+  <div class="modal-header"><h3>Glitch effect</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Glitch effect</h3>
+      <label class="toggle-field"><input id="glitch-effect-enabled" type="checkbox"><span>Glitch effect enabled</span></label>
+      <label class="slider-field"><span>Slice</span><output for="glitch-effect-slice-ms" id="glitch-effect-slice-ms-value">70 ms</output><input id="glitch-effect-slice-ms" type="range" min="10" max="500" step="1" value="70"></label>
+      <label class="slider-field"><span>Repeat probability</span><output for="glitch-effect-repeat-probability" id="glitch-effect-repeat-probability-value">22%</output><input id="glitch-effect-repeat-probability" type="range" min="0" max="1" step="0.01" value="0.22"></label>
+      <label class="slider-field"><span>Dropout probability</span><output for="glitch-effect-dropout-probability" id="glitch-effect-dropout-probability-value">12%</output><input id="glitch-effect-dropout-probability" type="range" min="0" max="1" step="0.01" value="0.12"></label>
+      <label class="slider-field"><span>Reverse probability</span><output for="glitch-effect-reverse-probability" id="glitch-effect-reverse-probability-value">10%</output><input id="glitch-effect-reverse-probability" type="range" min="0" max="1" step="0.01" value="0.1"></label>
+      <label class="slider-field"><span>Mix</span><output for="glitch-effect-mix" id="glitch-effect-mix-value">100%</output><input id="glitch-effect-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-stutter" class="modal">
+  <div class="modal-header"><h3>Stutter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Stutter</h3>
+      <label class="toggle-field"><input id="stutter-enabled" type="checkbox"><span>Stutter enabled</span></label>
+      <label class="slider-field"><span>Slice</span><output for="stutter-slice-ms" id="stutter-slice-ms-value">90 ms</output><input id="stutter-slice-ms" type="range" min="10" max="600" step="1" value="90"></label>
+      <label class="slider-field"><span>Repeats</span><output for="stutter-repeats" id="stutter-repeats-value">3</output><input id="stutter-repeats" type="range" min="1" max="12" step="1" value="3"></label>
+      <label class="slider-field"><span>Interval</span><output for="stutter-interval-ms" id="stutter-interval-ms-value">480 ms</output><input id="stutter-interval-ms" type="range" min="40" max="2000" step="1" value="480"></label>
+      <label class="slider-field"><span>Mix</span><output for="stutter-mix" id="stutter-mix-value">100%</output><input id="stutter-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-tape-stop" class="modal">
+  <div class="modal-header"><h3>Tape stop</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Tape stop</h3>
+      <label class="toggle-field"><input id="tape-stop-enabled" type="checkbox"><span>Tape stop enabled</span></label>
+      <label class="slider-field"><span>Stop time</span><output for="tape-stop-stop-time-ms" id="tape-stop-stop-time-ms-value">900 ms</output><input id="tape-stop-stop-time-ms" type="range" min="80" max="4000" step="1" value="900"></label>
+      <label class="slider-field"><span>Curve</span><output for="tape-stop-curve" id="tape-stop-curve-value">2.00</output><input id="tape-stop-curve" type="range" min="0.2" max="6" step="0.01" value="2"></label>
+      <label class="slider-field"><span>Mix</span><output for="tape-stop-mix" id="tape-stop-mix-value">100%</output><input id="tape-stop-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-reverse-reverb" class="modal">
+  <div class="modal-header"><h3>Reverse reverb</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Reverse reverb</h3>
+      <label class="toggle-field"><input id="reverse-reverb-enabled" type="checkbox"><span>Reverse reverb enabled</span></label>
+      <label class="slider-field"><span>Decay</span><output for="reverse-reverb-decay-seconds" id="reverse-reverb-decay-seconds-value">1.20 s</output><input id="reverse-reverb-decay-seconds" type="range" min="0.1" max="8" step="0.01" value="1.2"></label>
+      <label class="slider-field"><span>Mix</span><output for="reverse-reverb-mix" id="reverse-reverb-mix-value">45%</output><input id="reverse-reverb-mix" type="range" min="0" max="1" step="0.01" value="0.45"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-granular-synthesis" class="modal">
+  <div class="modal-header"><h3>Granular synthesis</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Granular synthesis</h3>
+      <label class="toggle-field"><input id="granular-synthesis-enabled" type="checkbox"><span>Granular synthesis enabled</span></label>
+      <label class="slider-field"><span>Grain size</span><output for="granular-synthesis-grain-ms" id="granular-synthesis-grain-ms-value">80 ms</output><input id="granular-synthesis-grain-ms" type="range" min="10" max="400" step="1" value="80"></label>
+      <label class="slider-field"><span>Overlap</span><output for="granular-synthesis-overlap" id="granular-synthesis-overlap-value">50%</output><input id="granular-synthesis-overlap" type="range" min="0" max="0.95" step="0.01" value="0.5"></label>
+      <label class="slider-field"><span>Jitter</span><output for="granular-synthesis-jitter-ms" id="granular-synthesis-jitter-ms-value">25 ms</output><input id="granular-synthesis-jitter-ms" type="range" min="0" max="300" step="1" value="25"></label>
+      <label class="slider-field"><span>Mix</span><output for="granular-synthesis-mix" id="granular-synthesis-mix-value">100%</output><input id="granular-synthesis-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-time-slicing" class="modal">
+  <div class="modal-header"><h3>Time slicing</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Time slicing</h3>
+      <label class="toggle-field"><input id="time-slicing-enabled" type="checkbox"><span>Time slicing enabled</span></label>
+      <label class="slider-field"><span>Slice</span><output for="time-slicing-slice-ms" id="time-slicing-slice-ms-value">120 ms</output><input id="time-slicing-slice-ms" type="range" min="10" max="600" step="1" value="120"></label>
+      <label class="slider-field"><span>Mix</span><output for="time-slicing-mix" id="time-slicing-mix-value">100%</output><input id="time-slicing-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-random-pitch-mod" class="modal">
+  <div class="modal-header"><h3>Random pitch mod</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Random pitch mod</h3>
+      <label class="toggle-field"><input id="random-pitch-mod-enabled" type="checkbox"><span>Random pitch mod enabled</span></label>
+      <label class="slider-field"><span>Depth</span><output for="random-pitch-mod-depth-semitones" id="random-pitch-mod-depth-semitones-value">2.0 st</output><input id="random-pitch-mod-depth-semitones" type="range" min="0" max="12" step="0.1" value="2"></label>
+      <label class="slider-field"><span>Segment</span><output for="random-pitch-mod-segment-ms" id="random-pitch-mod-segment-ms-value">180 ms</output><input id="random-pitch-mod-segment-ms" type="range" min="20" max="1200" step="1" value="180"></label>
+      <label class="slider-field"><span>Mix</span><output for="random-pitch-mod-mix" id="random-pitch-mod-mix-value">100%</output><input id="random-pitch-mod-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-vinyl-effect" class="modal">
+  <div class="modal-header"><h3>Vinyl effect</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Vinyl effect</h3>
+      <label class="toggle-field"><input id="vinyl-effect-enabled" type="checkbox"><span>Vinyl effect enabled</span></label>
+      <label class="slider-field"><span>Noise</span><output for="vinyl-effect-noise" id="vinyl-effect-noise-value">8%</output><input id="vinyl-effect-noise" type="range" min="0" max="1" step="0.01" value="0.08"></label>
+      <label class="slider-field"><span>Wow</span><output for="vinyl-effect-wow" id="vinyl-effect-wow-value">15%</output><input id="vinyl-effect-wow" type="range" min="0" max="1" step="0.01" value="0.15"></label>
+      <label class="slider-field"><span>Crackle</span><output for="vinyl-effect-crackle" id="vinyl-effect-crackle-value">12%</output><input id="vinyl-effect-crackle" type="range" min="0" max="1" step="0.01" value="0.12"></label>
+      <label class="slider-field"><span>Mix</span><output for="vinyl-effect-mix" id="vinyl-effect-mix-value">100%</output><input id="vinyl-effect-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-radio-effect" class="modal">
+  <div class="modal-header"><h3>Radio effect</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Radio effect</h3>
+      <label class="toggle-field"><input id="radio-effect-enabled" type="checkbox"><span>Radio effect enabled</span></label>
+      <label class="slider-field"><span>Noise level</span><output for="radio-effect-noise-level" id="radio-effect-noise-level-value">4%</output><input id="radio-effect-noise-level" type="range" min="0" max="1" step="0.01" value="0.04"></label>
+      <label class="slider-field"><span>Mix</span><output for="radio-effect-mix" id="radio-effect-mix-value">100%</output><input id="radio-effect-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-telephone-effect" class="modal">
+  <div class="modal-header"><h3>Telephone effect</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Telephone effect</h3>
+      <label class="toggle-field"><input id="telephone-effect-enabled" type="checkbox"><span>Telephone effect enabled</span></label>
+      <label class="slider-field"><span>Mix</span><output for="telephone-effect-mix" id="telephone-effect-mix-value">100%</output><input id="telephone-effect-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-8bit-retro-sound" class="modal">
+  <div class="modal-header"><h3>8-bit / retro sound</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>8-bit / retro sound</h3>
+      <label class="toggle-field"><input id="retro-8bit-enabled" type="checkbox"><span>8-bit / retro sound enabled</span></label>
+      <label class="slider-field"><span>Bit depth</span><output for="retro-8bit-bit-depth" id="retro-8bit-bit-depth-value">6-bit</output><input id="retro-8bit-bit-depth" type="range" min="2" max="16" step="1" value="6"></label>
+      <label class="slider-field"><span>Sample-rate reduction</span><output for="retro-8bit-sample-rate-reduction" id="retro-8bit-sample-rate-reduction-value">8x</output><input id="retro-8bit-sample-rate-reduction" type="range" min="1" max="32" step="1" value="8"></label>
+      <label class="slider-field"><span>Mix</span><output for="retro-8bit-mix" id="retro-8bit-mix-value">100%</output><input id="retro-8bit-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-slow-motion-extreme" class="modal">
+  <div class="modal-header"><h3>Slow motion extreme</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Slow motion extreme</h3>
+      <label class="toggle-field"><input id="slow-motion-extreme-enabled" type="checkbox"><span>Slow motion extreme enabled</span></label>
+      <label class="slider-field"><span>Rate</span><output for="slow-motion-extreme-rate" id="slow-motion-extreme-rate-value">0.45x</output><input id="slow-motion-extreme-rate" type="range" min="0.1" max="0.95" step="0.01" value="0.45"></label>
+      <label class="slider-field"><span>Tone ceiling</span><output for="slow-motion-extreme-tone-hz" id="slow-motion-extreme-tone-hz-value">4800 Hz</output><input id="slow-motion-extreme-tone-hz" type="range" min="400" max="12000" step="10" value="4800"></label>
+      <label class="slider-field"><span>Mix</span><output for="slow-motion-extreme-mix" id="slow-motion-extreme-mix-value">100%</output><input id="slow-motion-extreme-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-robot-voice" class="modal">
+  <div class="modal-header"><h3>Robot voice</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Robot voice</h3>
+      <label class="toggle-field"><input id="robot-voice-enabled" type="checkbox"><span>Robot voice enabled</span></label>
+      <label class="slider-field"><span>Carrier</span><output for="robot-voice-carrier-hz" id="robot-voice-carrier-hz-value">70 Hz</output><input id="robot-voice-carrier-hz" type="range" min="10" max="400" step="1" value="70"></label>
+      <label class="slider-field"><span>Mix</span><output for="robot-voice-mix" id="robot-voice-mix-value">85%</output><input id="robot-voice-mix" type="range" min="0" max="1" step="0.01" value="0.85"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-alien-voice" class="modal">
+  <div class="modal-header"><h3>Alien voice</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Alien voice</h3>
+      <label class="toggle-field"><input id="alien-voice-enabled" type="checkbox"><span>Alien voice enabled</span></label>
+      <label class="slider-field"><span>Pitch shift</span><output for="alien-voice-shift-semitones" id="alien-voice-shift-semitones-value">5.0 st</output><input id="alien-voice-shift-semitones" type="range" min="-12" max="12" step="0.1" value="5"></label>
+      <label class="slider-field"><span>Formant shift</span><output for="alien-voice-formant-shift" id="alien-voice-formant-shift-value">1.18x</output><input id="alien-voice-formant-shift" type="range" min="0.6" max="1.8" step="0.01" value="1.18"></label>
+      <label class="slider-field"><span>Mix</span><output for="alien-voice-mix" id="alien-voice-mix-value">80%</output><input id="alien-voice-mix" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+    </section>
+  </div>
+</div>

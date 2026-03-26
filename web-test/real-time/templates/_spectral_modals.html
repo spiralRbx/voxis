@@ -1,0 +1,101 @@
+<div id="modal-fft-filter" class="modal">
+  <div class="modal-header"><h3>FFT filter</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>FFT filter</h3>
+      <label class="toggle-field"><input id="fft-filter-enabled" type="checkbox"><span>FFT filter enabled</span></label>
+      <label class="slider-field"><span>Low Hz</span><output for="fft-filter-low-hz" id="fft-filter-low-hz-value">80 Hz</output><input id="fft-filter-low-hz" type="range" min="20" max="2000" step="1" value="80"></label>
+      <label class="slider-field"><span>High Hz</span><output for="fft-filter-high-hz" id="fft-filter-high-hz-value">12000 Hz</output><input id="fft-filter-high-hz" type="range" min="500" max="18000" step="10" value="12000"></label>
+      <label class="slider-field"><span>Mix</span><output for="fft-filter-mix" id="fft-filter-mix-value">100%</output><input id="fft-filter-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-gating" class="modal">
+  <div class="modal-header"><h3>Spectral gating</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral gating</h3>
+      <label class="toggle-field"><input id="spectral-gating-enabled" type="checkbox"><span>Spectral gating enabled</span></label>
+      <label class="slider-field"><span>Threshold</span><output for="spectral-gating-threshold-db" id="spectral-gating-threshold-db-value">-42 dB</output><input id="spectral-gating-threshold-db" type="range" min="-80" max="-6" step="1" value="-42"></label>
+      <label class="slider-field"><span>Floor</span><output for="spectral-gating-floor" id="spectral-gating-floor-value">8%</output><input id="spectral-gating-floor" type="range" min="0" max="1" step="0.01" value="0.08"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-blur" class="modal">
+  <div class="modal-header"><h3>Spectral blur</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral blur</h3>
+      <label class="toggle-field"><input id="spectral-blur-enabled" type="checkbox"><span>Spectral blur enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="spectral-blur-amount" id="spectral-blur-amount-value">45%</output><input id="spectral-blur-amount" type="range" min="0" max="1" step="0.01" value="0.45"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-freeze" class="modal">
+  <div class="modal-header"><h3>Spectral freeze</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral freeze</h3>
+      <label class="toggle-field"><input id="spectral-freeze-enabled" type="checkbox"><span>Spectral freeze enabled</span></label>
+      <label class="slider-field"><span>Start ms</span><output for="spectral-freeze-start-ms" id="spectral-freeze-start-ms-value">120 ms</output><input id="spectral-freeze-start-ms" type="range" min="0" max="3000" step="1" value="120"></label>
+      <label class="slider-field"><span>Mix</span><output for="spectral-freeze-mix" id="spectral-freeze-mix-value">70%</output><input id="spectral-freeze-mix" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-morphing" class="modal">
+  <div class="modal-header"><h3>Spectral morphing</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral morphing</h3>
+      <label class="toggle-field"><input id="spectral-morphing-enabled" type="checkbox"><span>Spectral morphing enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="spectral-morphing-amount" id="spectral-morphing-amount-value">50%</output><input id="spectral-morphing-amount" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-phase-vocoder" class="modal">
+  <div class="modal-header"><h3>Phase vocoder</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Phase vocoder</h3>
+      <label class="toggle-field"><input id="phase-vocoder-enabled" type="checkbox"><span>Phase vocoder enabled</span></label>
+      <label class="slider-field"><span>Rate</span><output for="phase-vocoder-rate" id="phase-vocoder-rate-value">0.85x</output><input id="phase-vocoder-rate" type="range" min="0.35" max="2" step="0.01" value="0.85"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-harmonic-percussive-separation" class="modal">
+  <div class="modal-header"><h3>Harmonic/percussive separation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Harmonic/percussive separation</h3>
+      <label class="toggle-field"><input id="harmonic-percussive-separation-enabled" type="checkbox"><span>Harmonic/percussive separation enabled</span></label>
+      <label class="field">
+        <span>Target</span>
+        <select id="harmonic-percussive-separation-target">
+          <option value="harmonic">Harmonic</option>
+          <option value="percussive">Percussive</option>
+          <option value="both">Both</option>
+        </select>
+      </label>
+      <label class="slider-field"><span>Mix</span><output for="harmonic-percussive-separation-mix" id="harmonic-percussive-separation-mix-value">100%</output><input id="harmonic-percussive-separation-mix" type="range" min="0" max="1" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spectral-delay" class="modal">
+  <div class="modal-header"><h3>Spectral delay</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Spectral delay</h3>
+      <label class="toggle-field"><input id="spectral-delay-enabled" type="checkbox"><span>Spectral delay enabled</span></label>
+      <label class="slider-field"><span>Max delay</span><output for="spectral-delay-max-delay-ms" id="spectral-delay-max-delay-ms-value">240 ms</output><input id="spectral-delay-max-delay-ms" type="range" min="10" max="2000" step="1" value="240"></label>
+      <label class="slider-field"><span>Feedback</span><output for="spectral-delay-feedback" id="spectral-delay-feedback-value">0.15</output><input id="spectral-delay-feedback" type="range" min="0" max="0.95" step="0.01" value="0.15"></label>
+      <label class="slider-field"><span>Mix</span><output for="spectral-delay-mix" id="spectral-delay-mix-value">35%</output><input id="spectral-delay-mix" type="range" min="0" max="1" step="0.01" value="0.35"></label>
+    </section>
+  </div>
+</div>

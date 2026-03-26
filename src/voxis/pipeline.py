@@ -103,11 +103,20 @@ class Pipeline:
     def _native_compatible(self, effect: Effect) -> bool:
         return effect.type in _NATIVE_EFFECT_TYPES and not requires_python_processing(effect)
 
+    def _run_python_segment(self, samples: Any, effects: list[Effect]) -> Any:
+        current = ensure_float32_frames(samples)
+        for effect in effects:
+            current = process_python_effect(
+                effect,
+                current,
+                self.sample_rate,
+                self.block_size,
+            )
+        return current
+
     def _run_native_segment(self, samples: Any, effects: list[Effect], workers: int) -> Any:
         if _process_pipeline is None:
-            raise RuntimeError(
-                "The Voxis native core is not available. Build/install the package first."
-            ) from _IMPORT_ERROR
+            return self._run_python_segment(samples, effects)
 
         specs = [effect.to_spec() for effect in effects]
         return _process_pipeline(
@@ -144,12 +153,7 @@ class Pipeline:
                 current = self._run_native_segment(current, native_segment, resolved_workers)
                 native_segment.clear()
 
-            current = process_python_effect(
-                effect,
-                current,
-                self.sample_rate,
-                self.block_size,
-            )
+            current = self._run_python_segment(current, [effect])
 
         if native_segment:
             current = self._run_native_segment(current, native_segment, resolved_workers)

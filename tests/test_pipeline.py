@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import voxis.pipeline as pipeline_module
 
 from voxis import (
     AudioClip,
@@ -175,3 +176,37 @@ def test_pipeline_info_contains_human_readable_steps() -> None:
 def test_preset_registry_exposes_expected_names() -> None:
     presets = set(preset_names())
     assert {"radio", "vocal_enhance", "cinematic", "wide_chorus"}.issubset(presets)
+
+
+def test_native_effects_fall_back_to_python_when_extension_is_missing(monkeypatch) -> None:
+    monkeypatch.setattr(pipeline_module, "_process_pipeline", None)
+    monkeypatch.setattr(pipeline_module, "_IMPORT_ERROR", ImportError("native core unavailable"))
+
+    samples = make_stereo_sine(duration_seconds=0.3, frequency_hz=880.0)
+    clip = AudioClip.from_array(samples, 48_000)
+
+    processed = clip.apply("podcast_clean")
+
+    assert processed.samples.shape == samples.shape
+    assert processed.samples.dtype == np.float32
+    assert np.isfinite(processed.samples).all()
+
+
+def test_eq_family_falls_back_to_python_when_extension_is_missing(monkeypatch) -> None:
+    monkeypatch.setattr(pipeline_module, "_process_pipeline", None)
+    monkeypatch.setattr(pipeline_module, "_IMPORT_ERROR", ImportError("native core unavailable"))
+
+    samples = make_stereo_sine(frequency_hz=1_500.0)
+    pipeline = Pipeline.from_effects(
+        48_000,
+        bandpass(1_500.0, q=1.2),
+        notch(400.0, q=2.0),
+        peak_eq(2_000.0, 2.5, q=0.9),
+        channels=2,
+    )
+
+    output = pipeline.process(samples)
+
+    assert output.shape == samples.shape
+    assert output.dtype == np.float32
+    assert np.isfinite(output).all()

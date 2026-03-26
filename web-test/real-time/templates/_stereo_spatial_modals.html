@@ -1,0 +1,74 @@
+<div id="modal-stereo-widening" class="modal">
+  <div class="modal-header"><h3>Stereo widening</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Stereo widening</h3>
+      <label class="toggle-field"><input id="stereo-widening-enabled" type="checkbox"><span>Stereo widening enabled</span></label>
+      <label class="slider-field"><span>Amount</span><output for="stereo-widening-amount" id="stereo-widening-amount-value">1.25x</output><input id="stereo-widening-amount" type="range" min="0" max="3" step="0.01" value="1.25"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-mid-side-processing" class="modal">
+  <div class="modal-header"><h3>Mid/Side processing</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Mid/Side processing</h3>
+      <label class="toggle-field"><input id="mid-side-processing-enabled" type="checkbox"><span>Mid/Side processing enabled</span></label>
+      <label class="slider-field"><span>Mid gain</span><output for="mid-side-processing-mid-gain-db" id="mid-side-processing-mid-gain-db-value">0.0 dB</output><input id="mid-side-processing-mid-gain-db" type="range" min="-24" max="24" step="0.1" value="0"></label>
+      <label class="slider-field"><span>Side gain</span><output for="mid-side-processing-side-gain-db" id="mid-side-processing-side-gain-db-value">0.0 dB</output><input id="mid-side-processing-side-gain-db" type="range" min="-24" max="24" step="0.1" value="0"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-stereo-imager" class="modal">
+  <div class="modal-header"><h3>Stereo imager</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Stereo imager</h3>
+      <label class="toggle-field"><input id="stereo-imager-enabled" type="checkbox"><span>Stereo imager enabled</span></label>
+      <label class="slider-field"><span>Low width</span><output for="stereo-imager-low-width" id="stereo-imager-low-width-value">0.90x</output><input id="stereo-imager-low-width" type="range" min="0" max="3" step="0.01" value="0.9"></label>
+      <label class="slider-field"><span>High width</span><output for="stereo-imager-high-width" id="stereo-imager-high-width-value">1.35x</output><input id="stereo-imager-high-width" type="range" min="0" max="3" step="0.01" value="1.35"></label>
+      <label class="slider-field"><span>Crossover</span><output for="stereo-imager-crossover-hz" id="stereo-imager-crossover-hz-value">280 Hz</output><input id="stereo-imager-crossover-hz" type="range" min="60" max="4000" step="1" value="280"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-binaural-effect" class="modal">
+  <div class="modal-header"><h3>Binaural effect</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Binaural effect</h3>
+      <label class="toggle-field"><input id="binaural-effect-enabled" type="checkbox"><span>Binaural effect enabled</span></label>
+      <label class="slider-field"><span>Azimuth</span><output for="binaural-effect-azimuth-deg" id="binaural-effect-azimuth-deg-value">25 deg</output><input id="binaural-effect-azimuth-deg" type="range" min="-90" max="90" step="1" value="25"></label>
+      <label class="slider-field"><span>Distance</span><output for="binaural-effect-distance" id="binaural-effect-distance-value">1.00x</output><input id="binaural-effect-distance" type="range" min="0.35" max="4" step="0.01" value="1"></label>
+      <label class="slider-field"><span>Room mix</span><output for="binaural-effect-room-mix" id="binaural-effect-room-mix-value">8%</output><input id="binaural-effect-room-mix" type="range" min="0" max="1" step="0.01" value="0.08"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-spatial-positioning" class="modal">
+  <div class="modal-header"><h3>3D audio positioning</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>3D audio positioning</h3>
+      <label class="toggle-field"><input id="spatial-positioning-enabled" type="checkbox"><span>3D audio positioning enabled</span></label>
+      <label class="slider-field"><span>Azimuth</span><output for="spatial-positioning-azimuth-deg" id="spatial-positioning-azimuth-deg-value">25 deg</output><input id="spatial-positioning-azimuth-deg" type="range" min="-90" max="90" step="1" value="25"></label>
+      <label class="slider-field"><span>Elevation</span><output for="spatial-positioning-elevation-deg" id="spatial-positioning-elevation-deg-value">0 deg</output><input id="spatial-positioning-elevation-deg" type="range" min="-60" max="60" step="1" value="0"></label>
+      <label class="slider-field"><span>Distance</span><output for="spatial-positioning-distance" id="spatial-positioning-distance-value">1.00x</output><input id="spatial-positioning-distance" type="range" min="0.35" max="4" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-hrtf-simulation" class="modal">
+  <div class="modal-header"><h3>HRTF simulation</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>HRTF simulation</h3>
+      <label class="toggle-field"><input id="hrtf-simulation-enabled" type="checkbox"><span>HRTF simulation enabled</span></label>
+      <label class="slider-field"><span>Azimuth</span><output for="hrtf-simulation-azimuth-deg" id="hrtf-simulation-azimuth-deg-value">30 deg</output><input id="hrtf-simulation-azimuth-deg" type="range" min="-90" max="90" step="1" value="30"></label>
+      <label class="slider-field"><span>Elevation</span><output for="hrtf-simulation-elevation-deg" id="hrtf-simulation-elevation-deg-value">0 deg</output><input id="hrtf-simulation-elevation-deg" type="range" min="-60" max="60" step="1" value="0"></label>
+      <label class="slider-field"><span>Distance</span><output for="hrtf-simulation-distance" id="hrtf-simulation-distance-value">1.00x</output><input id="hrtf-simulation-distance" type="range" min="0.35" max="4" step="0.01" value="1"></label>
+    </section>
+  </div>
+</div>

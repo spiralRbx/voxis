@@ -1,0 +1,55 @@
+<div id="modal-reverb" class="modal">
+  <div class="modal-header"><h3>Reverb (plate, hall, room)</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body">
+    <section class="control-group">
+      <h3>Reverb (plate, hall, room)</h3>
+      <label class="toggle-field"><input id="room-reverb-enabled" type="checkbox"><span>Room reverb enabled</span></label>
+      <label class="slider-field"><span>Room decay</span><output for="room-reverb-decay" id="room-reverb-decay-value">0.80 s</output><input id="room-reverb-decay" type="range" min="0.1" max="4" step="0.01" value="0.8"></label>
+      <label class="slider-field"><span>Room mix</span><output for="room-reverb-mix" id="room-reverb-mix-value">22%</output><input id="room-reverb-mix" type="range" min="0" max="1" step="0.01" value="0.22"></label>
+      <label class="slider-field"><span>Room tone</span><output for="room-reverb-tone" id="room-reverb-tone-value">8000 Hz</output><input id="room-reverb-tone" type="range" min="1000" max="16000" step="10" value="8000"></label>
+      <label class="toggle-field"><input id="hall-reverb-enabled" type="checkbox"><span>Hall reverb enabled</span></label>
+      <label class="slider-field"><span>Hall decay</span><output for="hall-reverb-decay" id="hall-reverb-decay-value">1.80 s</output><input id="hall-reverb-decay" type="range" min="0.1" max="8" step="0.01" value="1.8"></label>
+      <label class="slider-field"><span>Hall mix</span><output for="hall-reverb-mix" id="hall-reverb-mix-value">28%</output><input id="hall-reverb-mix" type="range" min="0" max="1" step="0.01" value="0.28"></label>
+      <label class="slider-field"><span>Hall tone</span><output for="hall-reverb-tone" id="hall-reverb-tone-value">7200 Hz</output><input id="hall-reverb-tone" type="range" min="1000" max="16000" step="10" value="7200"></label>
+      <label class="toggle-field"><input id="plate-reverb-enabled" type="checkbox"><span>Plate reverb enabled</span></label>
+      <label class="slider-field"><span>Plate decay</span><output for="plate-reverb-decay" id="plate-reverb-decay-value">1.20 s</output><input id="plate-reverb-decay" type="range" min="0.1" max="6" step="0.01" value="1.2"></label>
+      <label class="slider-field"><span>Plate mix</span><output for="plate-reverb-mix" id="plate-reverb-mix-value">24%</output><input id="plate-reverb-mix" type="range" min="0" max="1" step="0.01" value="0.24"></label>
+      <label class="slider-field"><span>Plate tone</span><output for="plate-reverb-tone" id="plate-reverb-tone-value">9500 Hz</output><input id="plate-reverb-tone" type="range" min="1000" max="20000" step="10" value="9500"></label>
+    </section>
+  </div>
+</div>
+
+<div id="modal-convolution-reverb" class="modal">
+  <div class="modal-header"><h3>Convolution reverb (IR)</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Convolution reverb (IR)</h3><label class="toggle-field"><input id="convolution-reverb-enabled" type="checkbox"><span>Convolution reverb enabled</span></label><label class="field"><span>Impulse response file</span><input id="convolution-ir-input" type="file" accept="audio/*"></label><p class="status-line"><strong>IR status:</strong> <span id="convolution-ir-name">No IR loaded</span></p><label class="toggle-field"><input id="convolution-reverb-normalize" type="checkbox" checked><span>Normalize IR on load</span></label><label class="slider-field"><span>Mix</span><output for="convolution-reverb-mix" id="convolution-reverb-mix-value">28%</output><input id="convolution-reverb-mix" type="range" min="0" max="1" step="0.01" value="0.28"></label></section></div>
+</div>
+
+<div id="modal-early-reflections" class="modal">
+  <div class="modal-header"><h3>Early reflections</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Early reflections</h3><label class="toggle-field"><input id="early-reflections-enabled" type="checkbox"><span>Early reflections enabled</span></label><label class="slider-field"><span>Pre-delay</span><output for="early-reflections-pre-delay" id="early-reflections-pre-delay-value">12 ms</output><input id="early-reflections-pre-delay" type="range" min="1" max="120" step="1" value="12"></label><label class="slider-field"><span>Spread</span><output for="early-reflections-spread" id="early-reflections-spread-value">8 ms</output><input id="early-reflections-spread" type="range" min="1" max="120" step="1" value="8"></label><label class="slider-field"><span>Taps</span><output for="early-reflections-taps" id="early-reflections-taps-value">6</output><input id="early-reflections-taps" type="range" min="1" max="16" step="1" value="6"></label><label class="slider-field"><span>Decay</span><output for="early-reflections-decay" id="early-reflections-decay-value">0.70</output><input id="early-reflections-decay" type="range" min="0.1" max="0.99" step="0.01" value="0.7"></label><label class="slider-field"><span>Mix</span><output for="early-reflections-mix" id="early-reflections-mix-value">22%</output><input id="early-reflections-mix" type="range" min="0" max="1" step="0.01" value="0.22"></label></section></div>
+</div>
+
+<div id="modal-delay" class="modal">
+  <div class="modal-header"><h3>Delay</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Delay</h3><label class="toggle-field"><input id="delay-enabled" type="checkbox"><span>Delay enabled</span></label><label class="slider-field"><span>Delay time</span><output for="delay-time" id="delay-time-value">180 ms</output><input id="delay-time" type="range" min="20" max="1500" step="1" value="180"></label><label class="slider-field"><span>Feedback</span><output for="delay-feedback" id="delay-feedback-value">0.25</output><input id="delay-feedback" type="range" min="0" max="0.92" step="0.01" value="0.25"></label><label class="slider-field"><span>Mix</span><output for="delay-mix" id="delay-mix-value">18%</output><input id="delay-mix" type="range" min="0" max="1" step="0.01" value="0.18"></label></section></div>
+</div>
+
+<div id="modal-echo" class="modal">
+  <div class="modal-header"><h3>Echo</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Echo</h3><label class="toggle-field"><input id="echo-enabled" type="checkbox"><span>Echo enabled</span></label><label class="slider-field"><span>Delay time</span><output for="echo-time" id="echo-time-value">320 ms</output><input id="echo-time" type="range" min="40" max="2000" step="1" value="320"></label><label class="slider-field"><span>Feedback</span><output for="echo-feedback" id="echo-feedback-value">0.38</output><input id="echo-feedback" type="range" min="0" max="0.95" step="0.01" value="0.38"></label><label class="slider-field"><span>Mix</span><output for="echo-mix" id="echo-mix-value">28%</output><input id="echo-mix" type="range" min="0" max="1" step="0.01" value="0.28"></label></section></div>
+</div>
+
+<div id="modal-ping-pong-delay" class="modal">
+  <div class="modal-header"><h3>Ping-pong delay</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Ping-pong delay</h3><label class="toggle-field"><input id="ping-pong-enabled" type="checkbox"><span>Ping-pong delay enabled</span></label><label class="slider-field"><span>Delay time</span><output for="ping-pong-time" id="ping-pong-time-value">280 ms</output><input id="ping-pong-time" type="range" min="40" max="2000" step="1" value="280"></label><label class="slider-field"><span>Feedback</span><output for="ping-pong-feedback" id="ping-pong-feedback-value">0.55</output><input id="ping-pong-feedback" type="range" min="0" max="0.95" step="0.01" value="0.55"></label><label class="slider-field"><span>Mix</span><output for="ping-pong-mix" id="ping-pong-mix-value">30%</output><input id="ping-pong-mix" type="range" min="0" max="1" step="0.01" value="0.3"></label></section></div>
+</div>
+
+<div id="modal-multi-tap-delay" class="modal">
+  <div class="modal-header"><h3>Multi-tap delay</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Multi-tap delay</h3><label class="toggle-field"><input id="multi-tap-enabled" type="checkbox"><span>Multi-tap delay enabled</span></label><label class="slider-field"><span>Base delay</span><output for="multi-tap-delay" id="multi-tap-delay-value">120 ms</output><input id="multi-tap-delay" type="range" min="10" max="1000" step="1" value="120"></label><label class="slider-field"><span>Taps</span><output for="multi-tap-taps" id="multi-tap-taps-value">4</output><input id="multi-tap-taps" type="range" min="1" max="12" step="1" value="4"></label><label class="slider-field"><span>Spacing</span><output for="multi-tap-spacing" id="multi-tap-spacing-value">65 ms</output><input id="multi-tap-spacing" type="range" min="1" max="300" step="1" value="65"></label><label class="slider-field"><span>Decay</span><output for="multi-tap-decay" id="multi-tap-decay-value">0.60</output><input id="multi-tap-decay" type="range" min="0.1" max="0.95" step="0.01" value="0.6"></label><label class="slider-field"><span>Mix</span><output for="multi-tap-mix" id="multi-tap-mix-value">32%</output><input id="multi-tap-mix" type="range" min="0" max="1" step="0.01" value="0.32"></label></section></div>
+</div>
+
+<div id="modal-slapback-delay" class="modal">
+  <div class="modal-header"><h3>Slapback delay</h3><button class="modal-close">&times;</button></div>
+  <div class="modal-body"><section class="control-group"><h3>Slapback delay</h3><label class="toggle-field"><input id="slapback-enabled" type="checkbox"><span>Slapback delay enabled</span></label><label class="slider-field"><span>Delay time</span><output for="slapback-time" id="slapback-time-value">95 ms</output><input id="slapback-time" type="range" min="10" max="350" step="1" value="95"></label><label class="slider-field"><span>Mix</span><output for="slapback-mix" id="slapback-mix-value">24%</output><input id="slapback-mix" type="range" min="0" max="1" step="0.01" value="0.24"></label></section></div>
+</div>
