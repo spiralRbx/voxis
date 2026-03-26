@@ -1,4 +1,4 @@
-name: Build and Publish Voxis
+name: Build and Publish Voxi
 
 on:
   pull_request:
