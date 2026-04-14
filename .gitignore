@@ -61,3 +61,10 @@ web-test/outputs/*
 tmp_*.wav
 tmp_*.ogg
 voxera_preview.*
+
+# Build artifacts (prepare-github.py)
+build-voxis/
+dist-api/
+*.zip
+tmp/
+page/

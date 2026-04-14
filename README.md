@@ -1,5 +1,11 @@
 # Voxis
 
+[![PyPI](https://img.shields.io/pypi/v/voxis)](https://pypi.org/project/voxis/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-voxis.org-blue)](https://voxis.org)
+
+**[Documentation](https://voxis.org)** | **[Getting Started](https://voxis.org/getting-started)** | **[Python Guide](https://voxis.org/python)** | **[Effects Reference](https://voxis.org/effects-reference)** | **[Realtime Guide](https://voxis.org/realtime)**
+
 Voxis is a hybrid Python + C++ audio library built for modular DSP pipelines, band-based processing, and a developer experience that feels closer to `pydub` than to low-level DSP toolkits.
 
 ## Goals
@@ -51,17 +57,18 @@ decoder (FFmpeg) -> PCM float32 buffer -> DSP pipeline -> encoder (FFmpeg)
 
 See [docs/EFFECTS.md](docs/EFFECTS.md) for the overview, [docs/EFFECT_REFERENCE.md](docs/EFFECT_REFERENCE.md) for the complete per-effect usage catalog, and [docs/REALTIME.md](docs/REALTIME.md) for the first realtime browser starter. The offline `web-test` app exposes items 1 through 12 with ready-to-demo defaults, independent control columns, metrics, and per-step timing.
 
-## Documentation site
+## Documentation
 
-The repository ships a static documentation site for GitHub Pages and local browsing:
+Full documentation is available at **[voxis.org](https://voxis.org)**:
 
-- `index.html`: documentation home page
-- `python.html`: step-by-step offline Python guide
-- `realtime.html`: step-by-step browser realtime guide
-- `realtime-example.html`: live minimal browser example with a `View code` toggle
-- `api/`: public browser runtime modules and the shipped WASM asset
-
-The public tutorials are written as learning material, not just reference pages. The Python guide starts from `AudioClip`, `Pipeline`, imports, and presets. The realtime guide explains the HTML + JavaScript wiring pattern, how file inputs connect to `createVoxisRealtimePlayer()`, how `player.setEffects([...])` works, and how to build a slider-based editor.
+- [Getting Started](https://voxis.org/getting-started) — install and first script
+- [Core Concepts](https://voxis.org/core-concepts) — AudioClip, Pipeline, Effects
+- [Python Guide](https://voxis.org/python) — complete offline processing guide
+- [Realtime Guide](https://voxis.org/realtime) — browser audio with WASM + Web Audio API
+- [Effects Reference](https://voxis.org/effects-reference) — all 95+ effects with parameters
+- [Tutorials](https://voxis.org/tutorials) — step-by-step learning projects
+- [Cookbook](https://voxis.org/cookbook) — quick recipes for common tasks
+- [API Reference](https://voxis.org/api-reference) — browse source documentation
 
 ## Quick start
 
@@ -181,7 +188,7 @@ Exports follow the same rule, so relative outputs are also created next to the s
 
 ```text
 project/
-  test/
+  tests/
     test_readme.md.py
 ```
 ---
@@ -194,7 +201,7 @@ The examples above will create:
 
 ```text
 project/
-  test/
+  tests/
     output-1.mp3
     outputs/
       clean.wav
