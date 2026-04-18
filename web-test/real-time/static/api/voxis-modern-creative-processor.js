@@ -148,6 +148,8 @@ class VoxisModernCreativeProcessor extends AudioWorkletProcessor {
     this.robotPhase = 0.0;
     this.vinylPhase = 0.0;
     this.formantStates = [];
+    this.inputEnvelope = 0.0;
+    this.inputGate = 0.0;
 
     this.port.onmessage = (event) => {
       if (event.data?.type === "config") {
@@ -690,8 +692,11 @@ class VoxisModernCreativeProcessor extends AudioWorkletProcessor {
     const read = this._renderVarispeed("vinylRead", frameSamples.length, wowRate, 1024, sampleRate * 2.5);
     this.vinylPhase += (2.0 * Math.PI * 0.35) / sampleRate;
 
-    const hissAmount = clamp(config.noise, 0.0, 1.0) * 0.02;
-    const crackleAmount = clamp(config.crackle, 0.0, 1.0);
+    // Gate the vinyl-generated noise by the input envelope so paused/silent
+    // audio does not leak crackle and hiss into the output bus.
+    const gate = this.inputGate;
+    const hissAmount = clamp(config.noise, 0.0, 1.0) * 0.02 * gate;
+    const crackleAmount = clamp(config.crackle, 0.0, 1.0) * gate;
     const lowpassed = this._bandLimit(read, "vinylTone", 60.0, 8500.0);
     const wet = lowpassed.map((sample) => {
       const hiss = (this._random() * 2.0 - 1.0) * hissAmount;
@@ -707,8 +712,11 @@ class VoxisModernCreativeProcessor extends AudioWorkletProcessor {
       return frameSamples;
     }
 
+    // Gate the radio hiss by input envelope so silent input stays silent.
+    const gate = this.inputGate;
+    const noiseAmount = clamp(config.noiseLevel, 0.0, 1.0) * 0.01 * gate;
     const wet = this._bandLimit(frameSamples, "radioBand", 180.0, 3800.0).map((sample) => {
-      const noisy = sample + (this._random() * 2.0 - 1.0) * clamp(config.noiseLevel, 0.0, 1.0) * 0.01;
+      const noisy = sample + (this._random() * 2.0 - 1.0) * noiseAmount;
       return Math.tanh(noisy * 1.7);
     });
     return mixArrays(frameSamples, wet, config.mix);
@@ -782,7 +790,9 @@ class VoxisModernCreativeProcessor extends AudioWorkletProcessor {
     const formantLow = 200.0 * clamp(config.formantShift, 0.6, 1.8);
     const formantHigh = 3400.0 * clamp(config.formantShift, 0.6, 1.8);
     let wet = this._bandLimit(shifted, "alienFormant", formantLow, formantHigh);
-    wet = wet.map((sample) => sample + (this._random() * 2.0 - 1.0) * 0.004);
+    // Gate alien-voice dithering by input so it does not hiss in silence.
+    const alienNoise = 0.004 * this.inputGate;
+    wet = wet.map((sample) => sample + (this._random() * 2.0 - 1.0) * alienNoise);
     return mixArrays(frameSamples, wet, config.mix);
   }
 
@@ -818,10 +828,29 @@ class VoxisModernCreativeProcessor extends AudioWorkletProcessor {
 
     for (let frame = 0; frame < frameCount; frame += 1) {
       const frameSamples = new Array(channelCount);
+      let peak = 0.0;
       for (let channel = 0; channel < channelCount; channel += 1) {
         const source = input[channel] || input[0];
-        frameSamples[channel] = source ? source[frame] : 0.0;
+        const value = source ? source[frame] : 0.0;
+        frameSamples[channel] = value;
+        const absValue = Math.abs(value);
+        if (absValue > peak) peak = absValue;
       }
+
+      // Input envelope follower (peak + slow release ~130ms at 44.1kHz).
+      // Used to gate self-generated noise so Vinyl/Radio/Alien hiss does not
+      // leak through when the input is paused or silent.
+      const envelopeRelease = 0.9995;
+      this.inputEnvelope = peak > this.inputEnvelope
+        ? peak
+        : this.inputEnvelope * envelopeRelease;
+      // Soft gate: 0 below -80dB, fully open above -50dB
+      const gateFloor = 0.0001;
+      const gateRange = 0.003;
+      this.inputGate = Math.min(
+        1.0,
+        Math.max(0.0, (this.inputEnvelope - gateFloor) / gateRange),
+      );
 
       this._writeRecentFrame(frameSamples);
 
