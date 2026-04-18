@@ -108,6 +108,7 @@ from .exceptions import FFmpegError, VoxisError
 from .ffmpeg import FORMAT_CAPABILITIES, prepare_export_settings
 from .pipeline import Pipeline
 from .presets import PRESETS, get_preset, preset_names
+from .waveform import Waveform
 
 __all__ = [
     "AudioClip",
@@ -122,6 +123,7 @@ __all__ = [
     "Pipeline",
     "PRESETS",
     "VoxisError",
+    "Waveform",
     "ai_enhancer",
     "alien_voice",
     "auto_pan",
