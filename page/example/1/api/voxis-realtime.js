@@ -1,2 +1,0 @@
-import{effects as r,buildEffectState as o,buildEffectStateWithWarnings as a}from"./voxis-realtime-effects.js";import{VoxisRealtimePlayer as i,createVoxisRealtimePlayer as l}from"./voxis-realtime-player.js";import{createLockedControl as m}from"./voxis-realtime-controls.js";export{i as VoxisRealtimePlayer,o as buildEffectState,a as buildEffectStateWithWarnings,m as createLockedControl,l as createVoxisRealtimePlayer,r as effects};
-
