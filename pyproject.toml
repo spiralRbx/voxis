@@ -7,7 +7,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "voxis"
-version = "0.0.5"
+version = "0.0.6"
 description = "Voxis is a hybrid Python + C++ audio DSP library for fast, modular effect pipelines."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -41,6 +41,13 @@ dev = [
 ]
 web = [
     "flask>=3.1",
+]
+waveform = [
+    "pillow>=10.0",
+]
+all = [
+    "flask>=3.1",
+    "pillow>=10.0",
 ]
 
 [tool.scikit-build]

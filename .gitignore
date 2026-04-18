@@ -68,3 +68,17 @@ dist-api/
 *.zip
 tmp/
 page/
+
+
+# Build artifacts (prepare-github.py)
+build-voxis/
+dist-api/
+*.zip
+tmp/
+
+# WASM source / build (security: hides effect limits)
+cpp/build_encoders/
+cpp/build_encoders_wasm.bat
+cpp/build_encoders_wasm.sh
+cpp/src/realtime_dynamics_wasm.cpp
+cpp/src/encoders/

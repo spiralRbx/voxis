@@ -1,9 +1,5 @@
 # Voxis
 
-[![PyPI](https://img.shields.io/pypi/v/voxis)](https://pypi.org/project/voxis/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Docs](https://img.shields.io/badge/docs-voxis.org-blue)](https://voxis.org)
-
 **[Documentation](https://voxis.org)** | **[Getting Started](https://voxis.org/getting-started)** | **[Python Guide](https://voxis.org/python)** | **[Effects Reference](https://voxis.org/effects-reference)** | **[Realtime Guide](https://voxis.org/realtime)**
 
 Voxis is a hybrid Python + C++ audio library built for modular DSP pipelines, band-based processing, and a developer experience that feels closer to `pydub` than to low-level DSP toolkits.
@@ -93,36 +89,24 @@ processed.export("output.wav")
 
 ## Realtime Starter
 
-The first realtime browser demo lives in `web-test/real-time/`.
+The realtime browser layer covers:
 
-- It now covers checklist sections `1. Basic effects`, `2. Dynamics`, `3. EQ / Filters`, `4. Modulation`, `5. Space / Ambience`, `6. Distortion / Saturation`, `7. Pitch / Time`, `8. Modern / AI-like effects`, `9. Creative / special effects`, `10. Spectral processing`, and `11. Advanced stereo / spatial` in realtime.
-- The popup menu now uses the same effect names from `list-effect.md`.
-- The basic `AudioWorklet` layer now carries realtime paths for gain, normalize, fade in, fade out, crossfade, trim, cut, silence removal, reverse, pan, mono ↔ stereo, and DC offset removal.
-- The WASM EQ/filter/dynamics chain now includes high-pass, low-pass, band-pass, notch, low shelf, high shelf, resonant filter, parametric equalizer, graphic EQ, dynamic EQ, formant filter, compressor, downward compression, upward compression, limiter, expander, noise gate, multiband compressor, de-esser, and transient shaper.
-- The modulation `AudioWorklet` layer now includes chorus, flanger, phaser, tremolo, vibrato, auto-pan, rotary speaker, ring modulation, and frequency shifter.
-- The realtime space / ambience rack now includes delay, echo, ping-pong delay, multi-tap delay, slapback delay, early reflections, room / hall / plate reverb, and convolution reverb (IR).
-- The realtime color/time `AudioWorklet` layer now includes distortion, overdrive, fuzz, bitcrusher, waveshaper, tube saturation, tape saturation, soft clipping, hard clipping, pitch shift, auto-tune, harmonizer, octaver, and formant shifting.
-- The realtime modern/creative `AudioWorklet` layer now includes noise reduction, voice isolation, source separation, de-reverb, de-echo, spectral repair, AI enhancer, speech enhancement, glitch effect, stutter, tape stop, reverse reverb, granular synthesis, time slicing, random pitch mod, vinyl effect, radio effect, telephone effect, 8-bit / retro sound, slow motion extreme, robot voice, and alien voice.
-- The realtime spectral/spatial `AudioWorklet` layer now includes FFT filter, spectral gating, spectral blur, spectral freeze, spectral morphing, phase vocoder, harmonic/percussive separation, spectral delay, stereo widening, mid/side processing, stereo imager, binaural effect, 3D audio positioning, and HRTF simulation.
-- `Time stretch` and `Time compression` now run in realtime preview through the browser file transport with preserved pitch. On microphone input, those two controls are bypassed.
+- Basic effects, dynamics, EQ / filters, modulation, space / ambience, distortion / saturation, pitch / time, modern / AI-like effects, creative / special effects, spectral processing, and advanced stereo / spatial processing — all in realtime.
+- The basic `AudioWorklet` layer carries realtime paths for gain, normalize, fade in, fade out, crossfade, trim, cut, silence removal, reverse, pan, mono ↔ stereo, and DC offset removal.
+- The WASM EQ/filter/dynamics chain includes high-pass, low-pass, band-pass, notch, low shelf, high shelf, resonant filter, parametric equalizer, graphic EQ, dynamic EQ, formant filter, compressor, downward compression, upward compression, limiter, expander, noise gate, multiband compressor, de-esser, and transient shaper.
+- The modulation `AudioWorklet` layer includes chorus, flanger, phaser, tremolo, vibrato, auto-pan, rotary speaker, ring modulation, and frequency shifter.
+- The realtime space / ambience rack includes delay, echo, ping-pong delay, multi-tap delay, slapback delay, early reflections, room / hall / plate reverb, and convolution reverb (IR).
+- The realtime color/time `AudioWorklet` layer includes distortion, overdrive, fuzz, bitcrusher, waveshaper, tube saturation, tape saturation, soft clipping, hard clipping, pitch shift, auto-tune, harmonizer, octaver, and formant shifting.
+- The realtime modern/creative `AudioWorklet` layer includes noise reduction, voice isolation, source separation, de-reverb, de-echo, spectral repair, AI enhancer, speech enhancement, glitch effect, stutter, tape stop, reverse reverb, granular synthesis, time slicing, random pitch mod, vinyl effect, radio effect, telephone effect, 8-bit / retro sound, slow motion extreme, robot voice, and alien voice.
+- The realtime spectral/spatial `AudioWorklet` layer includes FFT filter, spectral gating, spectral blur, spectral freeze, spectral morphing, phase vocoder, harmonic/percussive separation, spectral delay, stereo widening, mid/side processing, stereo imager, binaural effect, 3D audio positioning, and HRTF simulation.
+- `Time stretch` and `Time compression` run in realtime preview through the browser file transport with preserved pitch. On microphone input, those two controls are bypassed.
 - It uses Web Audio API plus `AudioWorklet` for low-latency preview with either a file source or microphone input.
-- The browser UI/controller lives in `app.js`; the realtime DSP entry points live in the processor files; the native EQ/filter/dynamics core is compiled to `voxis-realtime-dynamics.wasm`.
-- The processor files are part of the current browser-side Voxis realtime layer. The `.wasm` file alone is not enough by itself; it needs the JavaScript worklet bridge and Web Audio graph wiring around it.
-- The reusable browser module now lives in the root `api/` folder, with `voxis-realtime.js` as the public entry point, `voxis-realtime-player.js` handling the graph/player side, and `voxis-realtime-effects.js` exposing builder helpers for the checklist sections.
-- It still does not replace the offline `AudioClip` workflow. The browser demo uses streaming-safe counterparts for section 1 clip edits, while the offline API keeps the destructive full-buffer versions.
+- The reusable browser module lives in the `api/` folder, with `voxis-realtime.js` as the public entry point, `voxis-realtime-player.js` handling the graph/player side, and `voxis-realtime-effects.js` exposing builder helpers for the checklist sections.
+- The processor files are part of the browser-side Voxis realtime layer. The `.wasm` file alone is not enough by itself; it needs the JavaScript worklet bridge and Web Audio graph wiring around it.
+- The realtime layer does not replace the offline `AudioClip` workflow. The browser uses streaming-safe counterparts for section 1 clip edits, while the offline API keeps the destructive full-buffer versions.
 - For section 8, the browser path is a low-latency realtime approximation layer for monitoring and UI preview; the heavier offline restoration flow still lives in the Python/C++ path.
 
-Run it with:
-
-```bash
-python web-test/real-time/app.py
-```
-
-Then open `http://127.0.0.1:5101`.
-
-For the separate API test site with live range controls, run `python web-test/api-test/app.py` and open `http://127.0.0.1:5102`.
-
-For a browser-side reusable starter, you can also import:
+For a browser-side reusable starter, you can import:
 
 ```js
 import { createVoxisRealtimePlayer, effects } from "./api/voxis-realtime.js";
@@ -140,7 +124,13 @@ player.setEffects([
 ]);
 ```
 
-That wrapper now ships effect builders for sections `1` through `11`, creates a standard `<audio>` element automatically when you pass a container, resolves its processor and WASM files relative to the module location, and can load a file source, microphone source, crossfade partner, and convolution IR without depending on the main demo controller.
+That wrapper ships effect builders for all 11 sections, creates a standard `<audio>` element automatically when you pass a container, resolves its processor and WASM files relative to the module location, and can load a file source, microphone source, crossfade partner, and convolution IR.
+
+For app-side browser controls, the public API also exports `createLockedControl(...)`, which lets you define the real min/max/step in JavaScript so the effect value is normalized again before it reaches the realtime engine.
+
+That helps prevent casual DevTools edits from pushing the UI outside the limits you defined, but it is still app-side protection. Final product rules are always the responsibility of the project that embeds Voxis, because browser-side JavaScript still runs in an environment the end user controls.
+
+The shipped `voxis-realtime-dynamics.wasm` module is now also the native source of truth for realtime parameter metadata across the browser API. EQ/filter/dynamics values are still validated in the native DSP bridge itself, and the remaining realtime stages read their public limits from the WASM metadata before configuration reaches the JavaScript processors. In the browser API you can listen for warnings with `player.onWarning((warning) => { ... })`, inspect the full native metadata with `player.getNativeRealtimeLimits()`, and keep `player.getNativeDynamicsLimits()` as a compatibility alias.
 
 ## Path resolution
 
@@ -250,28 +240,7 @@ print(rendered.pipeline_info())
 python -m pip install voxis
 ```
 
-PyPI releases are meant to ship prebuilt wheels for Windows, Linux, and macOS. If `pip` ever falls back to the source distribution, Voxis can still install without a local C++ toolchain and will use the Python DSP backend automatically, with the native extension remaining an optional speed-up.
-
-For local development:
-
-```bash
-python -m pip install -e .[dev]
-```
-
-The build pulls `cmake`, `ninja`, and `pybind11` automatically through the package build backend when they are not already available on the machine.
-
-When the native DSP core changes, rerun `python -m pip install -e .[dev]` and restart `web-test/app.py` so the rebuilt extension is the one actually loaded.
-
-## Packaging
-
-```bash
-make install-dev
-make test
-make build
-make check
-```
-
-Tagged releases are published through GitHub Actions with `cibuildwheel`, so the normal `pip install voxis` path downloads a ready-made wheel instead of compiling C++ on the user's machine.
+PyPI releases ship prebuilt wheels for Windows, Linux, and macOS. If `pip` ever falls back to the source distribution, Voxis can still install without a local C++ toolchain and will use the Python DSP backend automatically, with the native extension remaining an optional speed-up.
 
 ## Roadmap
 
